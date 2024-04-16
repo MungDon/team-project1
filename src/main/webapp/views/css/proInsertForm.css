@@ -1,0 +1,7 @@
+@charset "UTF-8";
+.main{
+	display : felx;
+	flex-direction: column;
+	width : 100%;
+	border : 1px solid black;
+}

@@ -15,6 +15,10 @@ public class ProductDAO {
 	}
 	private ProductDAO() {}
 	
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	
 	private Connection getConn() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";

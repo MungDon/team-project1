@@ -1,6 +1,7 @@
 package project.bean.product;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class ProductDTO {
 
@@ -22,9 +23,15 @@ public class ProductDTO {
 	
 	private String brand;						// 제조사
 	
+	private int stock;								// 재고
+	
 	private Timestamp created_date;		// 상품 등록 일시
 	
 	private Timestamp modified_date;	// 상품 수정 일시
+
+	private List<ImgDTO> img;				// 이미지	
+	
+	private List<ImgDTO> textImg;		// 상품 설명 이미지
 
 	public int getProduct_num() {
 		return product_num;
@@ -64,7 +71,7 @@ public class ProductDTO {
 
 	public void setPrice(int price) {
 		this.price = price;
-	} 
+	}
 
 	public int getDelivery_price() {
 		return delivery_price;
@@ -112,6 +119,30 @@ public class ProductDTO {
 
 	public void setModified_date(Timestamp modified_date) {
 		this.modified_date = modified_date;
+	}
+
+	public List<ImgDTO> getImg() {
+		return img;
+	}
+
+	public void setImg(List<ImgDTO> img) {
+		this.img = img;
+	}
+
+	public List<ImgDTO> getTextImg() {
+		return textImg;
+	}
+
+	public void setTextImg(List<ImgDTO> textImg) {
+		this.textImg = textImg;
+	}
+
+	public int getStock() {
+		return stock;
+	}
+
+	public void setStock(int stock) {
+		this.stock = stock;
 	}
 	
 	
