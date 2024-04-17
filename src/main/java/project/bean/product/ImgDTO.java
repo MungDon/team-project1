@@ -9,6 +9,8 @@ public class ImgDTO {
 	private String original_name;	// 이미지 원본 이름
 	
 	private String extension;			// 이미지 확장자
+	
+	private String img_type;			// 이미지 타입
 
 	public int getProduct_num() {
 		return product_num;
@@ -40,6 +42,14 @@ public class ImgDTO {
 
 	public void setExtension(String extension) {
 		this.extension = extension;
+	}
+
+	public String getImg_type() {
+		return img_type;
+	}
+
+	public void setImg_type(String img_type) {
+		this.img_type = img_type;
 	}
 
 }

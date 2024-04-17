@@ -1,7 +1,10 @@
 package project.bean.product;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
+
+import com.oreilly.servlet.MultipartRequest;
 
 public class ProductDTO {
 
@@ -29,10 +32,10 @@ public class ProductDTO {
 	
 	private Timestamp modified_date;	// 상품 수정 일시
 
-	private List<ImgDTO> img;				// 이미지	
-	
-	private List<ImgDTO> textImg;		// 상품 설명 이미지
 
+	
+	// getter()/setter()//
+	
 	public int getProduct_num() {
 		return product_num;
 	}
@@ -121,21 +124,6 @@ public class ProductDTO {
 		this.modified_date = modified_date;
 	}
 
-	public List<ImgDTO> getImg() {
-		return img;
-	}
-
-	public void setImg(List<ImgDTO> img) {
-		this.img = img;
-	}
-
-	public List<ImgDTO> getTextImg() {
-		return textImg;
-	}
-
-	public void setTextImg(List<ImgDTO> textImg) {
-		this.textImg = textImg;
-	}
 
 	public int getStock() {
 		return stock;
@@ -144,6 +132,8 @@ public class ProductDTO {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
+
+
 	
 	
 }
