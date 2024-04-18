@@ -4,6 +4,8 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.oreilly.servlet.MultipartRequest;
 
 public class ProductDTO {
@@ -133,7 +135,22 @@ public class ProductDTO {
 		this.stock = stock;
 	}
 
-
+	// jsp 에 다쓰면 너무 지저분해 보여서 여기다 메서드로 따로 뺌
+	// 상품정보 받아온걸 multipartReq 로 dto 에 set 함
+	public ProductDTO setProductAdd(HttpServletRequest request) {
+		ProductDTO dto = new ProductDTO();
+		
+		dto.setMember_num(Integer.parseInt(request.getParameter("member_num")));// 회원 고유번호
+		dto.setProduct_name(request.getParameter("product_name"));
+		dto.setProduct_info(request.getParameter("product_info"));
+		dto.setPrice(Integer.parseInt(request.getParameter("price")));
+		dto.setDelivery_price(Integer.parseInt(request.getParameter("delivery_price")));
+		dto.setHas_delivery_fee(request.getParameter("has_delivery_fee"));
+		dto.setBrand(request.getParameter("brand"));
+		dto.setStock(Integer.parseInt(request.getParameter("stock")));
+		
+		return dto;
+	}
 	
 	
 }

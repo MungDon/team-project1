@@ -1,4 +1,4 @@
-package project.bean.product;
+package project.bean.img;
 
 public class ImgDTO {
 	
@@ -11,7 +11,7 @@ public class ImgDTO {
 	private String extension;			// 이미지 확장자
 	
 	private String img_type;			// 이미지 타입
-
+	
 	public int getProduct_num() {
 		return product_num;
 	}

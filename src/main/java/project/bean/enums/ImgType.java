@@ -1,4 +1,4 @@
-package project.bean.product;
+package project.bean.enums;
 
 public enum ImgType {
 	productImg(1, "상품이미지"),

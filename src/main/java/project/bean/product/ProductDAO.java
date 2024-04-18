@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import project.bean.img.ImgDTO;
+
 public class ProductDAO {
 	// 싱글톤 방식으로 사용
 	private static ProductDAO instance = new ProductDAO();
@@ -86,7 +88,6 @@ public class ProductDAO {
 		} finally {
 			close(conn, pstmt, rs);
 		}
-		System.out.println(product_num);
 		return product_num;
 	}
 	
@@ -97,11 +98,7 @@ public class ProductDAO {
 			sql ="insert into img values(img_seq.nextval, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 		
-			System.out.println(imgDTO.getProduct_num());
-			System.out.println(imgDTO.getImg_name());
-			System.out.println(imgDTO.getOriginal_name());
-			System.out.println(imgDTO.getExtension());
-			System.out.println(imgDTO.getImg_type());
+
 			pstmt.setInt(1,imgDTO.getProduct_num());
 			pstmt.setString(2, imgDTO.getImg_name());
 			pstmt.setString(3, imgDTO.getOriginal_name());
