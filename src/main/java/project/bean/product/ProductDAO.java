@@ -98,7 +98,7 @@ public class ProductDAO {
 			sql ="insert into img values(img_seq.nextval, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 		
-
+		
 			pstmt.setInt(1,imgDTO.getProduct_num());
 			pstmt.setString(2, imgDTO.getImg_name());
 			pstmt.setString(3, imgDTO.getOriginal_name());
@@ -106,6 +106,7 @@ public class ProductDAO {
 			pstmt.setString(5, imgDTO.getImg_type());
 			
 			result =  pstmt.executeUpdate();
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {

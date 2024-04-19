@@ -11,7 +11,8 @@ import project.bean.product.ProductDAO;
 public class ImgSave {
 	
 	
-	public static void insertImg(int product_num,Part part ,String fileName) {
+	public static int insertImg(int product_num,Part part ,String fileName) {
+		int result = 0;
 		ImgDTO imgDTO = new ImgDTO();
 		ProductDAO dao = ProductDAO.getInstance();
 		String uuid = String.valueOf(UUID.randomUUID()); 
@@ -31,6 +32,8 @@ public class ImgSave {
 	    		imgDTO.setImg_type(ImgType.thumbnail.name());
 	    		break;
 	    }
-	    dao.saveImg(imgDTO);
+	    result =  dao.saveImg(imgDTO);
+	    return result;
+	  
 	}
 }

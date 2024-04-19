@@ -24,7 +24,7 @@
 	%>
 --%>
 <div class="main">
-	<form action="productInsertPro.jsp" method="post" enctype="multipart/form-data">
+	<form action="<%=request.getContextPath() %>/productAdd" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="member_num" value="1"/>
 		상품명<input type="text" name="product_name"><br/>
 		상품 설명<textarea name="product_info"></textarea><br/>
