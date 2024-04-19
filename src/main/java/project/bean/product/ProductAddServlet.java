@@ -3,6 +3,7 @@ package project.bean.product;
 import java.io.File;
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ public class ProductAddServlet extends HttpServlet{
 	ProductDTO dto  = new ProductDTO();
 	ProductDAO dao = ProductDAO.getInstance();
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
-			String uploadPath ="C:/Program Files/sung/upload" ;
+			final String uploadPath ="C:/Program Files/sung/upload" ;
 			int uploadStatus = 0;
 			File filefolder = new File(uploadPath);
 			if(!filefolder.exists()) {
@@ -38,12 +39,16 @@ public class ProductAddServlet extends HttpServlet{
 				if(!("".equals(fileName))) {
 					uploadStatus = ImgSave.insertImg(product_num, part, fileName);
 					part.write(uploadPath+File.separator + fileName);
+					
 				}
 			}
+	
 			request.setAttribute("uploadStatus", uploadStatus);
-			response.sendRedirect("/project/views/product/productInsertPro.jsp");
 			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productInsertPro.jsp");
+			dispatcher.forward(request, response);
 	}
+	
 	
 	private String getFileName(Part part) {
 		String fileName  = "";

@@ -20,8 +20,8 @@ public class ImgSave {
 		imgDTO.setOriginal_name(part.getSubmittedFileName());
 	    imgDTO.setExtension(imgDTO.getOriginal_name().substring(imgDTO.getOriginal_name().lastIndexOf("."))); // 예시로 고정된 확장자
 	    imgDTO.setImg_name(uuid+imgDTO.getExtension());
-	    
-	    switch(fileName) {
+
+	    switch(part.getName()) {
 	    	case "img" :
 	    		imgDTO.setImg_type(ImgType.productImg.name());
 	    		break;
@@ -33,6 +33,7 @@ public class ImgSave {
 	    		break;
 	    }
 	    result =  dao.saveImg(imgDTO);
+	   
 	    return result;
 	  
 	}
