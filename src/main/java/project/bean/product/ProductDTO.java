@@ -1,12 +1,11 @@
 package project.bean.product;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.oreilly.servlet.MultipartRequest;
+import project.bean.img.ImgDTO;
 
 public class ProductDTO {
 
@@ -24,17 +23,13 @@ public class ProductDTO {
 	
 	private String has_delivery_fee;		// 배송비 유무 
 	
-	private int buy_limit;						// 구매 가능 수량
-	
-	private String brand;						// 제조사
-	
 	private int stock;								// 재고
 	
 	private Timestamp created_date;		// 상품 등록 일시
 	
 	private Timestamp modified_date;	// 상품 수정 일시
 
-
+	private List<ImgDTO> images;			// 조인해서 이미지 가져오기위해 사용
 	
 	// getter()/setter()//
 	
@@ -94,22 +89,6 @@ public class ProductDTO {
 		this.has_delivery_fee = has_delivery_fee;
 	}
 
-	public int getBuy_limit() {
-		return buy_limit;
-	}
-
-	public void setBuy_limit(int buy_limit) {
-		this.buy_limit = buy_limit;
-	}
-
-	public String getBrand() {
-		return brand;
-	}
-
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
 	public Timestamp getCreated_date() {
 		return created_date;
 	}
@@ -146,10 +125,17 @@ public class ProductDTO {
 		dto.setPrice(Integer.parseInt(request.getParameter("price")));
 		dto.setDelivery_price(Integer.parseInt(request.getParameter("delivery_price")));
 		dto.setHas_delivery_fee(request.getParameter("has_delivery_fee"));
-		dto.setBrand(request.getParameter("brand"));
 		dto.setStock(Integer.parseInt(request.getParameter("stock")));
 		
 		return dto;
+	}
+
+	public List<ImgDTO> getImages() {
+		return images;
+	}
+
+	public void setImages(List<ImgDTO> images) {
+		this.images = images;
 	}
 	
 	

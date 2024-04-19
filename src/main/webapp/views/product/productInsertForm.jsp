@@ -13,7 +13,7 @@
 			alert("로그인해주세요");
 			location.href="../member/loginFormV.jsp "
 		</script>	
-			
+		
 	<%	}else if(!svendor.equals("2")){%>
 		<script>
 			alert("판매자 권한이 없습니다");
@@ -36,7 +36,6 @@
 			배송비 <input type="number" name="delivery_price" value="0">원
 		</div><br>
 		상품 재고<input type="number" name="stock">개<br>
-		제조사<input type="text" name="brand"><br/>
 		대표 이미지<input type="file" name="thumbnail">
 		상품 이미지<input type="file" name="img" multiple><br/>
 		상품 설명 이미지<input type="file" name="textImg" multiple><br/>

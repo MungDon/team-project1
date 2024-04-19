@@ -7,7 +7,7 @@
 	if(status == 1){%>
 		<script>
 			alert("등록되었습니다");
-			location.href="main.jsp";
+			location.href="/project/views/main/main.jsp";
 		</script>	
 <%	}
 %>

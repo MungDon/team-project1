@@ -20,7 +20,7 @@ public class ProductAddServlet extends HttpServlet{
 	ProductDTO dto  = new ProductDTO();
 	ProductDAO dao = ProductDAO.getInstance();
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
-			final String uploadPath ="C:/Program Files/sung/upload" ;
+			final String uploadPath =request.getRealPath("views/upload") ;
 			int uploadStatus = 0;
 			File filefolder = new File(uploadPath);
 			if(!filefolder.exists()) {
@@ -36,9 +36,9 @@ public class ProductAddServlet extends HttpServlet{
 				fileName = getFileName(part);
 				
 				
-				if(!("".equals(fileName))) {
-					uploadStatus = ImgSave.insertImg(product_num, part, fileName);
-					part.write(uploadPath+File.separator + fileName);
+				if(!("".equals(fileName))) {// ""일반 파라미터 ""가아니면 파일
+					uploadStatus = ImgSave.insertImg(product_num, part, request);
+					
 					
 				}
 			}
@@ -49,7 +49,7 @@ public class ProductAddServlet extends HttpServlet{
 			dispatcher.forward(request, response);
 	}
 	
-	
+	// 이미지 파일인것만 걸러주는 메서드
 	private String getFileName(Part part) {
 		String fileName  = "";
 		String contentDispostion = part.getHeader("content-disposition");

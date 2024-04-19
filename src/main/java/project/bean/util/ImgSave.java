@@ -1,7 +1,10 @@
 package project.bean.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import project.bean.enums.ImgType;
@@ -11,7 +14,8 @@ import project.bean.product.ProductDAO;
 public class ImgSave {
 	
 	
-	public static int insertImg(int product_num,Part part ,String fileName) {
+	public static int insertImg(int product_num,Part part, HttpServletRequest request ) throws IOException {
+		final String uploadPath =request.getRealPath("views/upload") ;
 		int result = 0;
 		ImgDTO imgDTO = new ImgDTO();
 		ProductDAO dao = ProductDAO.getInstance();
@@ -32,6 +36,8 @@ public class ImgSave {
 	    		imgDTO.setImg_type(ImgType.thumbnail.name());
 	    		break;
 	    }
+	    part.write(uploadPath+File.separator + imgDTO.getImg_name());
+	    
 	    result =  dao.saveImg(imgDTO);
 	   
 	    return result;
