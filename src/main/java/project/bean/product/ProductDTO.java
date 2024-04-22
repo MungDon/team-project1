@@ -13,6 +13,8 @@ public class ProductDTO {
 	
 	private int member_num;					// 회원 FK/정보
 	
+	private int category_num;				// 카테코리 FK/정보
+	
 	private String product_name;			// 상품명
 	
 	private String product_info;				// 상품 정보	
@@ -30,6 +32,8 @@ public class ProductDTO {
 	private Timestamp modified_date;	// 상품 수정 일시
 
 	private List<ImgDTO> images;			// 조인해서 이미지 가져오기위해 사용
+	
+	private String category_name; 		// 카테고리이름
 	
 	// getter()/setter()//
 	
@@ -120,6 +124,7 @@ public class ProductDTO {
 		ProductDTO dto = new ProductDTO();
 		
 		dto.setMember_num(Integer.parseInt(request.getParameter("member_num")));// 회원 고유번호
+		dto.setCategory_num(Integer.parseInt(request.getParameter("category_num")));
 		dto.setProduct_name(request.getParameter("product_name"));
 		dto.setProduct_info(request.getParameter("product_info"));
 		dto.setPrice(Integer.parseInt(request.getParameter("price")));
@@ -136,6 +141,22 @@ public class ProductDTO {
 
 	public void setImages(List<ImgDTO> images) {
 		this.images = images;
+	}
+
+	public int getCategory_num() {
+		return category_num;
+	}
+
+	public void setCategory_num(int category_num) {
+		this.category_num = category_num;
+	}
+
+	public String getCategory_name() {
+		return category_name;
+	}
+
+	public void setCategory_name(String category_name) {
+		this.category_name = category_name;
 	}
 	
 	

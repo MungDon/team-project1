@@ -1,12 +1,10 @@
-package project.bean.categoty;
+package project.bean.category;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import project.bean.product.ProductDAO;
 
 public class CategoryDAO {
 	// 싱글톤 방식으로 사용
@@ -59,5 +57,20 @@ public class CategoryDAO {
 		}
 	}
 
-	
+	public int categoryAdd(CategoryDTO dto) {
+		int result=0;
+		try {
+			conn = getConn();
+			sql="insert into categorys values(categorys_seq.nextval, ?, systimestamp,systimestamp)";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getCategory_name());
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return result;
+	}
 }
