@@ -91,7 +91,7 @@ public class ProductDAO {
 		int product_num = 0;
 		try {
 			conn = getConn();
-			sql = "insert into product values(product_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 'N', systimestamp,systimestamp)";
+			sql = "insert into product values(product_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 'N', systimestamp,systimestamp,?)";
 			pstmt = conn.prepareStatement(sql, new String[] { "PRODUCT_NUM" });
 
 			pstmt.setInt(1, dto.getMember_num()); // 회원 정보
@@ -102,6 +102,7 @@ public class ProductDAO {
 			pstmt.setInt(6, dto.getDelivery_price()); // 배송비
 			pstmt.setString(7, dto.getHas_delivery_fee()); // 배송비 여부
 			pstmt.setInt(8, dto.getStock()); // 상품 재고
+			pstmt.setInt(9, dto.getFirst_stock()+dto.getStock());// 상품 최초 재고
 
 			pstmt.executeUpdate();
 
@@ -237,29 +238,33 @@ public class ProductDAO {
 			List<ProductDTO> list = new ArrayList<ProductDTO>();
 			try {
 				conn = getConn();
-				sql="select P.*,I.img_name from product  P left outer join img I on P.product_num = I.product_num left outer join categorys C on P.category_num = C.category_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and P.product_num = ? order by P.product_num desc";
+				sql="select P.*,I.img_name, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join categorys C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ? order by P.product_num desc";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, product_num);
 				rs = pstmt.executeQuery();
 				
-				while(rs.next()) {
+				if(rs.next()) {
 					ProductDTO dto = new ProductDTO();
-					ImgDTO imgDto = new ImgDTO();
 					dto.setProduct_num(rs.getInt("product_num"));
 					dto.setMember_num(rs.getInt("member_num"));
 					dto.setCategory_num(rs.getInt("category_num"));
+					dto.setCategory_name(rs.getString("category_name"));
 					dto.setProduct_name(rs.getString("product_name"));
 					dto.setProduct_info(rs.getString("product_info"));
+					dto.setStock(rs.getInt("stock"));
 					dto.setPrice(rs.getInt("price"));
 					dto.setDelivery_price(rs.getInt("delivery_price"));
 					dto.setHas_delivery_fee(rs.getString("has_delivery_fee"));
-					imgDto.setImg_name(rs.getString("img_name"));
 					
-					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
-					imgs.add(imgDto);
+					  // 이미지 정보
+		            List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+		            do {
+		                ImgDTO imgDto = new ImgDTO();
+		                imgDto.setImg_name(rs.getString("img_name"));
+		                imgs.add(imgDto);
+		            } while (rs.next() && product_num == rs.getInt("product_num")); // 같은 상품 번호인 경우에만 계속해서 이미지 추가
 					dto.setImages(imgs);
-					list.add(dto);
-					
+		            list.add(dto);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -268,29 +273,27 @@ public class ProductDAO {
 			}
 			return list;
 		}
+		// 상품 수정
 		public int updateProduct(ProductDTO dto) {
 			int result = 0;
 			try {
 				conn = getConn();
-				sql = "";
+				sql = "update product set category_num = ?, product_name = ?, product_info = ?, price = ?, delivery_price = ?, has_delivery_fee = ?, stock = ?, first_stock = ? where product_num = ?";
 				pstmt = conn.prepareStatement(sql);
 
-				pstmt.setInt(1, dto.getMember_num()); // 회원 정보
-				pstmt.setInt(2, dto.getCategory_num());	// 카테고리 정보
-				pstmt.setString(3, dto.getProduct_name()); // 상품 이름
-				pstmt.setString(4, dto.getProduct_info()); // 상품 정보
-				pstmt.setInt(5, dto.getPrice()); // 상품 가격
-				pstmt.setInt(6, dto.getDelivery_price()); // 배송비
-				pstmt.setString(7, dto.getHas_delivery_fee()); // 배송비 여부
-				pstmt.setInt(8, dto.getStock()); // 상품 재고
+				pstmt.setInt(1, dto.getCategory_num());	// 카테고리 정보
+				pstmt.setString(2, dto.getProduct_name()); // 상품 이름
+				pstmt.setString(3, dto.getProduct_info()); // 상품 정보
+				pstmt.setInt(4, dto.getPrice()); // 상품 가격
+				pstmt.setInt(5, dto.getDelivery_price()); // 배송비
+				pstmt.setString(6, dto.getHas_delivery_fee()); // 배송비 여부
+				pstmt.setInt(7, dto.getStock()); // 상품 재고
+				pstmt.setInt(8, dto.getStock()+dto.getFirst_stock());	 // 상품 최초 재고
+				pstmt.setInt(9, dto.getProduct_num());	// 상품 번호
 
-				pstmt.executeUpdate();
+				result = pstmt.executeUpdate();
 
-				rs = pstmt.getGeneratedKeys();
 
-				if (rs.next()) {
-					result = rs.getInt(1);
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

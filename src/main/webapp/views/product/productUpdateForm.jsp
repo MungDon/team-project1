@@ -3,8 +3,10 @@
 <%@ page import="project.bean.product.ProductDAO"%>
 <%@ page import="project.bean.product.ProductDTO" %>
 <%@ page import="project.bean.category.CategoryDTO" %>
+<%@ page import="project.bean.img.ImgDTO" %>
 <%@ page import="java.util.List" %>
 <% 
+	int i = 0;
 	int product_num = Integer.parseInt(request.getParameter("product_num"));
 	
 	ProductDAO dao = ProductDAO.getInstance();	
@@ -15,27 +17,67 @@
 %>
 <div class="main">
 	<form action="<%=request.getContextPath() %>/productUpdate" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="member_num" value="1"/>
+		<%--상품번호 히든 --%>
 		<input type="hidden" name="product_num" value="<%=product_num %>"/>
+		
+		<%--상품카테고리 --%>
 		<select name="category_num">
 			<option value="<%=data.getCategory_num()%>" selected><%=data.getCategory_name() %></option>
 			<% for(CategoryDTO dto : list){ %>
 			<option value="<%=dto.getCategory_num()%>"><%=dto.getCategory_name() %></option>
 			<%} %>
 		</select>
+		
+		<%--상품정보 --%>
 		상품명<input type="text" name="product_name" value="<%=data.getProduct_name()%>"><br/>
 		상품 설명<textarea name="product_info"><%=data.getProduct_info() %></textarea><br/>
 		상품 가격<input type="number" name="price" value="<%=data.getPrice()%>">원<br/>
-		배송비 유무 <br/>
-		<input type="radio" name="has_delivery_fee" onclick="showInputBox()" value="있음">있음
+		
+		<%--상품배송비 --%>
+		배송비 유무 및 배송비 수정<br/>
+		<% if(data.getHas_delivery_fee().equals("있음")){ %>
+		<input type="radio" name="has_delivery_fee" onclick="showInputBox()" value="있음" checked>있음
 		<input type="radio" name="has_delivery_fee" onclick="closeInputBox()" value="없음">없음
+			<div id="d_price" style="display : block">
+			배송비 <input type="number" name="delivery_price" value="<%=data.getDelivery_price()%>">원
+		</div><br>
+		
+	
+		<%}else{%>
+		<input type="radio" name="has_delivery_fee" onclick="showInputBox()" value="있음" >있음
+		<input type="radio" name="has_delivery_fee" onclick="closeInputBox()" value="없음"checked>없음
 		<div id="d_price" style="display : none">
 			배송비 <input type="number" name="delivery_price" value="0">원
 		</div><br>
-		상품 재고<input type="number" name="stock" value="<%=data.getStock()%>">개<br>
-		대표 이미지<input type="file" name="thumbnail">
+		<%}%>
+		
+		<br>
+		<br>
+		
+		<%--상품재고 --%>
+		현재 상품 재고<%=data.getStock()%>개<br>
+		<input type="hidden" name="stock" value="<%=data.getStock()%>"/>
+		추가 재고 
+		<input type="number" name="first_stock" value="0"/><br>
+
+		<%--상품 이미지 --%>
+		<h2>현재이미지</h2>
+		<div>
+		<% if(data.getImages()!=null){
+				for(ImgDTO img : data.getImages()){ 
+			
+				%>
+			<input type="hidden" name="orgImg" value="<%=img.getImg_name() %>"/>		
+			<img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/><br/>
+			 <%} 
+		   }%>
+
+		<h2>수정할 이미지</h2>
+		대표 이미지<input type="file" name="thumbnail"><br/>
 		상품 이미지<input type="file" name="img" multiple><br/>
 		상품 설명 이미지<input type="file" name="textImg" multiple><br/>
+		</div><br/>
+
 		<input type="submit" value="상품 수정"><br/>
 	</form>
 </div>

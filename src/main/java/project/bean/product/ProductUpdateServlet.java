@@ -37,13 +37,11 @@ public class ProductUpdateServlet  extends HttpServlet{
 				
 				if(!("".equals(fileName))) {// ""일반 파라미터 ""가아니면 파일
 					uploadStatus = ImgSave.insertImg(dto.getProduct_num(), part, request);
-					
-					
 				}
 			}
 	
 			request.setAttribute("uploadStatus", uploadStatus);
-			
+			request.setAttribute("result", result);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productInsertPro.jsp");
 			dispatcher.forward(request, response);
 	}

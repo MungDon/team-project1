@@ -35,6 +35,8 @@ public class ProductDTO {
 	
 	private String category_name; 		// 카테고리이름
 	
+	private int first_stock;						// 최초 재고
+	
 	// getter()/setter()//
 	
 	public int getProduct_num() {
@@ -131,6 +133,7 @@ public class ProductDTO {
 		dto.setDelivery_price(Integer.parseInt(request.getParameter("delivery_price")));
 		dto.setHas_delivery_fee(request.getParameter("has_delivery_fee"));
 		dto.setStock(Integer.parseInt(request.getParameter("stock")));
+		dto.setStock(Integer.parseInt(request.getParameter("first_stock")));
 		
 		return dto;
 	}
@@ -157,6 +160,14 @@ public class ProductDTO {
 
 	public void setCategory_name(String category_name) {
 		this.category_name = category_name;
+	}
+
+	public int getFirst_stock() {
+		return first_stock;
+	}
+
+	public void setFirst_stock(int first_stock) {
+		this.first_stock = first_stock;
 	}
 	
 	

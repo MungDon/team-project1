@@ -34,6 +34,7 @@
 	
 %>
 <h3>총 상품수는 <%=productCount %>개 입니다.</h3>
+
 <center>
 <table>
 	<%for (ProductDTO dto : list){ %>
@@ -41,6 +42,7 @@
 		<% for(ImgDTO img : dto.getImages()){ 
 		%>
 		<td>
+			<a href="../product/productUpdateForm.jsp?product_num=<%=dto.getProduct_num()%>">수정</a>
 			<a href="../product/content.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/></a>
 		</td>
 		<% } 
@@ -63,7 +65,7 @@
 		<% for(ImgDTO img : dto.getImages()){ %>
 		<td>
 	
-			<a href="../product/content.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/></a>
+			<a href="../product/productContent.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/></a>
 	
 		</td>
 		<% } %>
