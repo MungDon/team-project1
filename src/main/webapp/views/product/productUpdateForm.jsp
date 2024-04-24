@@ -20,6 +20,9 @@
 		<%--상품번호 히든 --%>
 		<input type="hidden" name="product_num" value="<%=product_num %>"/>
 		
+		<%--이미지삭제 예약 리스트 히든 --%>
+		<div id="deleteListHidden"></div>
+		
 		<%--상품카테고리 --%>
 		<select name="category_num">
 			<option value="<%=data.getCategory_num()%>" selected><%=data.getCategory_name() %></option>
@@ -65,10 +68,11 @@
 		<div>
 		<% if(data.getImages()!=null){
 				for(ImgDTO img : data.getImages()){ 
-			
 				%>
-			<input type="hidden" name="orgImg" value="<%=img.getImg_name() %>"/>		
-			<img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/><br/>
+			<img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/>
+			<input type="button"  value="삭제예약" onclick="deleteImg(<%=img.getImg_num()%>)">
+			<input type="button"  value="삭제예약취소" onclick="deleteCencel(<%=img.getImg_num()%>)"><br/>
+			
 			 <%} 
 		   }%>
 
@@ -83,10 +87,37 @@
 </div>
 <%	} %>
 <script>
+	let deletelist = [];
+	let deleteHidden = document.getElementById("deleteListHidden");
+	console.log(deletelist);
+	
+	function deleteImg(imgSid){
+		deletelist.push(imgSid);
+	}
+	
+	function deleteCencel(imgSid){
+		let index = deletelist.indexof(imgSid);
+		
+		if(index !== -1){
+			deletelist.splice(index, 1);
+		}
+	}
+	
+	deletelist.forEach(function(imgSid){
+	    let input = document.createElement("input");
+	    input.type = "hidden";
+	    input.name = "delete[]";
+	    input.value = deletelist;
+	    deleteHidden.appendChild(input);
+	});
+	
+
+
 	function showInputBox(){
 		document.getElementById("d_price").style.display="block";
 	}
 	function closeInputBox(){
 		document.getElementById("d_price").style.display="none";
 	}
+	
 </script>	

@@ -31,6 +31,18 @@ public class ProductUpdateServlet  extends HttpServlet{
 			int result = dao.saveProduct(data);
 			String fileName="";
 			
+			String[] imgNums = request.getParameterValues("deletelist[]");
+			System.out.println(imgNums);
+			if(imgNums != null){
+				for(String imgNum : imgNums) {
+					
+					String imgName = dao.getImgName(Integer.parseInt(imgNum));
+					File fileToDelete = new File(uploadPath, imgName);
+					if(fileToDelete.exists()) {
+						fileToDelete.delete();
+					}
+				}
+			}
 			for(Part part : request.getParts()) {
 				fileName = getFileName(part);
 				

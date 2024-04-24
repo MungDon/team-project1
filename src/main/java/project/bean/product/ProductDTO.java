@@ -18,7 +18,7 @@ public class ProductDTO {
 	private String product_name;			// 상품명
 	
 	private String product_info;				// 상품 정보	
-	
+	 
 	private int price;								// 상품 가격
 	
 	private int delivery_price;				// 배송비

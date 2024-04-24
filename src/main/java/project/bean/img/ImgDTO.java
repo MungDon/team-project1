@@ -4,6 +4,8 @@ public class ImgDTO {
 	
 	private int product_num;			// 상품 시퀀스 받아와서 어떤 상품의 이미지인지 알수있게함
 	
+	private int img_num;				// 이미지 시퀀스
+	
 	private String img_name;			// 이미지 명
 	
 	private String original_name;	// 이미지 원본 이름
@@ -50,6 +52,14 @@ public class ImgDTO {
 
 	public void setImg_type(String img_type) {
 		this.img_type = img_type;
+	}
+
+	public int getImg_num() {
+		return img_num;
+	}
+
+	public void setImg_num(int img_num) {
+		this.img_num = img_num;
 	}
 
 }

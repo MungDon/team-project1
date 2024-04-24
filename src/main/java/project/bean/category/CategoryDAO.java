@@ -21,12 +21,11 @@ public class CategoryDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private String sql;
-	private String category_name;
 
 	private Connection getConn() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "scott";
+		String user = "project1";
 		String pw = "tiger";
 
 		Connection conn = DriverManager.getConnection(dburl, user, pw);

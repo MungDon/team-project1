@@ -26,7 +26,7 @@
 %>
 <div class="main">
 	<form action="<%=request.getContextPath() %>/productAdd" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="member_num" value="1"/>
+		<input type="hidden" name="member_num" value="2"/>
 		<input type="hidden" name="first_stock" value="0"/>
 		<select name="category_num">
 			<% for(CategoryDTO dto : list){ %>

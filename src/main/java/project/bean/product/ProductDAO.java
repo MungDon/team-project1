@@ -26,12 +26,11 @@ public class ProductDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private String sql;
-	private String category_name;		// 입력 받을 변수가 하나이기 때문에 그냥 변수 하나로 둠
 
 	private Connection getConn() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "scott";
+		String user = "project1   ";
 		String pw = "tiger";
 
 		Connection conn = DriverManager.getConnection(dburl, user, pw);
@@ -238,7 +237,7 @@ public class ProductDAO {
 			List<ProductDTO> list = new ArrayList<ProductDTO>();
 			try {
 				conn = getConn();
-				sql="select P.*,I.img_name, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join categorys C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ? order by P.product_num desc";
+				sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join categorys C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ? order by P.product_num desc";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, product_num);
 				rs = pstmt.executeQuery();
@@ -257,10 +256,11 @@ public class ProductDAO {
 					dto.setHas_delivery_fee(rs.getString("has_delivery_fee"));
 					
 					  // 이미지 정보
-		            List<ImgDTO> imgs = new ArrayList<ImgDTO>();
-		            do {
+					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+     		            do {
 		                ImgDTO imgDto = new ImgDTO();
 		                imgDto.setImg_name(rs.getString("img_name"));
+		                imgDto.setImg_num(rs.getInt("img_num"));
 		                imgs.add(imgDto);
 		            } while (rs.next() && product_num == rs.getInt("product_num")); // 같은 상품 번호인 경우에만 계속해서 이미지 추가
 					dto.setImages(imgs);
@@ -302,4 +302,42 @@ public class ProductDAO {
 			return result;
 		}
 		
+		// 이미지 이름 가져오기
+		public String getImgName(int imgNum) {
+			String imgName="";
+			try {
+				conn = getConn();
+				sql="select img_name from img where img_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, imgNum);
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					imgName = rs.getString("img_name");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return imgName;
+		}
+		
+		// 이미지 삭제 
+		public void deleteImg(int imgNum) {
+			try {
+				conn = getConn();
+				sql="delete from img where img_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, imgNum);
+				
+				pstmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				close(conn, pstmt, rs);
+			}
+			
+		}
 }

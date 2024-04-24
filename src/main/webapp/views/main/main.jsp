@@ -21,7 +21,7 @@
 	int startRow = ( currentPage - 1 ) * pageSize + 1;
 	int endRow = currentPage * pageSize;
 	int productCount = dao.productCount();
-	
+		
 	// 상품 목록
 	
 	int categoiry_num = 0; 
