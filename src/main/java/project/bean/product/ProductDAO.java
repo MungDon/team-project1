@@ -30,7 +30,7 @@ public class ProductDAO {
 	private Connection getConn() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "project1   ";
+		String user = "scott";
 		String pw = "tiger";
 
 		Connection conn = DriverManager.getConnection(dburl, user, pw);
@@ -192,7 +192,7 @@ public class ProductDAO {
 				while(rs.next()) {
 					ProductDTO dto = new ProductDTO();
 					ImgDTO imgDto = new ImgDTO();
-					dto.setProduct_num(rs.getInt("product_num"));
+					dto.setProduct_num(rs.getInt("product_num")); 
 					dto.setProduct_name(rs.getString("product_name"));
 					dto.setProduct_info(rs.getString("product_info"));
 					dto.setPrice(rs.getInt("price"));
@@ -301,6 +301,28 @@ public class ProductDAO {
 			}
 			return result;
 		}
+		//썸네일이미지 가져오기
+		public String getThumbnail(int product_num) {
+			String thumbnail="";
+			try {
+				conn = getConn();
+				sql="select img_name from img where product_num = ? and img_type = 'thumbnail'";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, product_num);
+				
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					thumbnail = rs.getString("img_name");
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				close(conn, pstmt, rs);
+			}
+			return thumbnail;
+		}
 		
 		// 이미지 이름 가져오기
 		public String getImgName(int imgNum) {
@@ -324,13 +346,13 @@ public class ProductDAO {
 		}
 		
 		// 이미지 삭제 
-		public void deleteImg(int imgNum) {
+		public void deleteImg(String imgName) {
 			try {
 				conn = getConn();
-				sql="delete from img where img_num = ?";
+				sql="delete from img where img_name = ?";
 				pstmt = conn.prepareStatement(sql);
 				
-				pstmt.setInt(1, imgNum);
+				pstmt.setString(1, imgName);
 				
 				pstmt.executeUpdate();
 			} catch (Exception e) {

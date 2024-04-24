@@ -39,14 +39,12 @@
 <table>
 	<%for (ProductDTO dto : list){ %>
 	<tr>
-		<% for(ImgDTO img : dto.getImages()){ 
-		%>
+		<% for(ImgDTO img : dto.getImages()){ %>
 		<td>
 			<a href="../product/productUpdateForm.jsp?product_num=<%=dto.getProduct_num()%>">수정</a>
-			<a href="../product/content.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/></a>
+			<a href="../product/productContent.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200" alt="썸네일"/></a>
 		</td>
-		<% } 
-		%>
+<%		   }%>
 	</tr>
 	<tr>
 		<td><%=dto.getProduct_name() %></td>
@@ -64,9 +62,11 @@
 	<tr>
 		<% for(ImgDTO img : dto.getImages()){ %>
 		<td>
-	
+			<%if(img.getImg_name()!=null){ %>
 			<a href="../product/productContent.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/></a>
-	
+			<%}else{%>
+			<p>썸네일 이미지가 없어요</p>
+		 <%	} %>
 		</td>
 		<% } %>
 	</tr>

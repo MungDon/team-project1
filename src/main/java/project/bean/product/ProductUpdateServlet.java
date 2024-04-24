@@ -12,49 +12,67 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import project.bean.util.ImgSave;
+import project.bean.util.ImageProcess;
 @WebServlet("/productUpdate")
 @MultipartConfig
 public class ProductUpdateServlet  extends HttpServlet{
 	ProductDTO dto  = new ProductDTO();
 	ProductDAO dao = ProductDAO.getInstance();
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+			request.setCharacterEncoding("UTF-8");
+		
 			final String uploadPath =request.getRealPath("views/upload") ;
+		
 			int uploadStatus = 0;
+			String fileName="";
+			
+			// 수정 정보 저장
+			ProductDTO data =  dto.setProductAdd(request);
+			int result = dao.updateProduct(data);
+
+			// 기존 썸네일 제거
+			String thumbnail = dao.getThumbnail(data.getProduct_num());
+			if(!(thumbnail.equals(""))) {
+				ImageProcess.deleteImg(uploadPath, thumbnail);
+				
+			}
+			
+			
+			// 폴더가없다면 생성
 			File filefolder = new File(uploadPath);
 			if(!filefolder.exists()) {
 				filefolder.mkdirs();
 			}
 			
-			request.setCharacterEncoding("UTF-8");
-			ProductDTO data =  dto.setProductAdd(request);
-			int result = dao.saveProduct(data);
-			String fileName="";
-			
-			String[] imgNums = request.getParameterValues("deletelist[]");
-			System.out.println(imgNums);
-			if(imgNums != null){
-				for(String imgNum : imgNums) {
-					
-					String imgName = dao.getImgName(Integer.parseInt(imgNum));
-					File fileToDelete = new File(uploadPath, imgName);
-					if(fileToDelete.exists()) {
-						fileToDelete.delete();
-					}
+			// 삭제 할 이미지 처리
+			String totalImgNums = request.getParameter("deleteList");
+			if(!totalImgNums.equals("")) {
+				String[] imgNums = totalImgNums.split(",");
+				
+				Integer[] convertImgNums = new Integer[imgNums.length];
+				for(int i = 0; i<convertImgNums.length; i++) {
+					convertImgNums[i] = Integer.parseInt(imgNums[i]);
 				}
-			}
+				for(int imgNum : convertImgNums) {
+					
+					String imgName = dao.getImgName(imgNum);
+					ImageProcess.deleteImg(uploadPath, imgName);
+				}
+			}	
+			
+			// 이미지 저장
 			for(Part part : request.getParts()) {
 				fileName = getFileName(part);
 				
-				
 				if(!("".equals(fileName))) {// ""일반 파라미터 ""가아니면 파일
-					uploadStatus = ImgSave.insertImg(dto.getProduct_num(), part, request);
+					uploadStatus = ImageProcess.insertImg(data.getProduct_num(), part, request);
 				}
 			}
-	
+			
+			// 모든 처리후 포워드로 이동
 			request.setAttribute("uploadStatus", uploadStatus);
 			request.setAttribute("result", result);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productInsertPro.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productUpdatePro.jsp");
 			dispatcher.forward(request, response);
 	}
 	

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import project.bean.util.ImgSave;
+import project.bean.util.ImageProcess;
 
 @WebServlet("/productAdd")
 @MultipartConfig
@@ -37,7 +37,7 @@ public class ProductAddServlet extends HttpServlet{
 				
 				
 				if(!("".equals(fileName))) {// ""일반 파라미터 ""가아니면 파일
-					uploadStatus = ImgSave.insertImg(product_num, part, request);
+					uploadStatus = ImageProcess.insertImg(product_num, part, request);
 					
 					
 				}

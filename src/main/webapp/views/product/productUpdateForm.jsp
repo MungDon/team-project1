@@ -8,7 +8,7 @@
 <% 
 	int i = 0;
 	int product_num = Integer.parseInt(request.getParameter("product_num"));
-	
+	System.out.println(product_num);
 	ProductDAO dao = ProductDAO.getInstance();	
 	List<CategoryDTO> list = dao.loadCategorys();   
 	
@@ -17,12 +17,10 @@
 %>
 <div class="main">
 	<form action="<%=request.getContextPath() %>/productUpdate" method="post" enctype="multipart/form-data">
-		<%--상품번호 히든 --%>
-		<input type="hidden" name="product_num" value="<%=product_num %>"/>
+		<input type="hidden"name="product_num" value="<%=product_num%>"/>	
 		
 		<%--이미지삭제 예약 리스트 히든 --%>
-		<div id="deleteListHidden"></div>
-		
+		<input type="hidden"name="deleteList"/>		
 		<%--상품카테고리 --%>
 		<select name="category_num">
 			<option value="<%=data.getCategory_num()%>" selected><%=data.getCategory_name() %></option>
@@ -71,7 +69,7 @@
 				%>
 			<img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/>
 			<input type="button"  value="삭제예약" onclick="deleteImg(<%=img.getImg_num()%>)">
-			<input type="button"  value="삭제예약취소" onclick="deleteCencel(<%=img.getImg_num()%>)"><br/>
+			<input type="button"  value="삭제예약취소" onclick="deleteCancel(<%=img.getImg_num()%>)"><br/>
 			
 			 <%} 
 		   }%>
@@ -87,29 +85,31 @@
 </div>
 <%	} %>
 <script>
-	let deletelist = [];
-	let deleteHidden = document.getElementById("deleteListHidden");
-	console.log(deletelist);
+	let deleteList = [];
+	const input = document.querySelector('input[name="deleteList"]');
+	
+	
 	
 	function deleteImg(imgSid){
-		deletelist.push(imgSid);
+		deleteList.push(imgSid);
+		input.value = deleteList.join(',');
+		
+		console.log(deleteList);
+		console.log(input);
 	}
 	
-	function deleteCencel(imgSid){
-		let index = deletelist.indexof(imgSid);
+	function deleteCancel(imgSid){
+		let index = deleteList.indexOf(imgSid);
 		
 		if(index !== -1){
-			deletelist.splice(index, 1);
+			deleteList.splice(index, 1);
+			input.value = deleteList.join(',');
+			console.log(deleteList);
+			console.log(input);
 		}
 	}
 	
-	deletelist.forEach(function(imgSid){
-	    let input = document.createElement("input");
-	    input.type = "hidden";
-	    input.name = "delete[]";
-	    input.value = deletelist;
-	    deleteHidden.appendChild(input);
-	});
+
 	
 
 

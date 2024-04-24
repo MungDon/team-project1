@@ -120,23 +120,6 @@ public class ProductDTO {
 		this.stock = stock;
 	}
 
-	// jsp 에 다쓰면 너무 지저분해 보여서 여기다 메서드로 따로 뺌
-	// 상품정보 받아온걸 multipartReq 로 dto 에 set 함
-	public ProductDTO setProductAdd(HttpServletRequest request) {
-		ProductDTO dto = new ProductDTO();
-		
-		dto.setMember_num(Integer.parseInt(request.getParameter("member_num")));// 회원 고유번호
-		dto.setCategory_num(Integer.parseInt(request.getParameter("category_num")));
-		dto.setProduct_name(request.getParameter("product_name"));
-		dto.setProduct_info(request.getParameter("product_info"));
-		dto.setPrice(Integer.parseInt(request.getParameter("price")));
-		dto.setDelivery_price(Integer.parseInt(request.getParameter("delivery_price")));
-		dto.setHas_delivery_fee(request.getParameter("has_delivery_fee"));
-		dto.setStock(Integer.parseInt(request.getParameter("stock")));
-		dto.setStock(Integer.parseInt(request.getParameter("first_stock")));
-		
-		return dto;
-	}
 
 	public List<ImgDTO> getImages() {
 		return images;
@@ -170,5 +153,26 @@ public class ProductDTO {
 		this.first_stock = first_stock;
 	}
 	
+	// jsp 에 다쓰면 너무 지저분해 보여서 여기다 메서드로 따로 뺌
+	// 상품정보 받아온걸 multipartReq 로 dto 에 set 함
+	public ProductDTO setProductAdd(HttpServletRequest request) {
+		ProductDTO dto = new ProductDTO();
+		if(request.getParameter("product_num")!=null) {
+			dto.setProduct_num(Integer.parseInt(request.getParameter("product_num")));
+		}
+		if(request.getParameter("member_num")!=null) {
+			dto.setMember_num(Integer.parseInt(request.getParameter("member_num")));// 회원 고유번호
+		}
+		dto.setCategory_num(Integer.parseInt(request.getParameter("category_num")));
+		dto.setProduct_name(request.getParameter("product_name"));
+		dto.setProduct_info(request.getParameter("product_info"));
+		dto.setPrice(Integer.parseInt(request.getParameter("price")));
+		dto.setDelivery_price(Integer.parseInt(request.getParameter("delivery_price")));
+		dto.setHas_delivery_fee(request.getParameter("has_delivery_fee"));
+		dto.setStock(Integer.parseInt(request.getParameter("stock")));
+		dto.setFirst_stock(Integer.parseInt(request.getParameter("first_stock")));
+		System.out.println(dto.getProduct_num());
+		return dto;
+	}
 	
 }
