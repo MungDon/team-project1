@@ -4,6 +4,7 @@
 <%@ page import="project.bean.product.ProductDTO" %>
 <%@ page import="project.bean.img.ImgDTO" %>
 <%@ page import="java.util.List" %>    
+<jsp:include page="header.jsp"/>
  <jsp:include page="categorys.jsp" />
 	<%	
 	ProductDAO dao = ProductDAO.getInstance();

@@ -30,7 +30,7 @@ public class ProductDAO {
 	private Connection getConn() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "scott";
+		String user = "project1";
 		String pw = "tiger";
 
 		Connection conn = DriverManager.getConnection(dburl, user, pw);
@@ -144,14 +144,18 @@ public class ProductDAO {
 	}
 	
 	// 상품 목록 보기
-	public List<ProductDTO> productList(int start, int end) {
+	public List<ProductDTO> productList(int start, int end, String keyword) {
 		List<ProductDTO> list = new ArrayList<ProductDTO>();
+		String trimKeyWord = keyword.trim();
 		try {
 			conn = getConn();
-			sql="select * from (select p.*, rownum r from (select P.*, I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' order by P.product_num desc) p ) where r between ? and ?";
+			sql="select * from (select p.*, rownum r from (select P.*, I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and product_name like ? order by P.product_num desc) p ) where r between ? and ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, start);
-			pstmt.setInt(2, end);
+			
+			
+			pstmt.setString(1, "%" + trimKeyWord + "%");
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -277,8 +281,24 @@ public class ProductDAO {
 		// 상품 수정
 		public int updateProduct(ProductDTO dto) {
 			int result = 0;
+			int dbFirstStock = 0;
 			try {
 				conn = getConn();
+				
+				// 상품등록시 기입되었던 최초 재고를가져옴
+				sql="select first_stock from product where product_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, dto.getProduct_num());
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					dbFirstStock = rs.getInt("first_stock");
+				}
+				
+				// 수정하면서 추가 재고를 최초재고에 더하고
+				// 현재재고에도 추가재고를더해서 갭차이를 유지 = 판매수량 계산에 지장없게하기위해
 				sql = "update product set category_num = ?, product_name = ?, product_info = ?, price = ?, delivery_price = ?, has_delivery_fee = ?, stock = ?, first_stock = ? where product_num = ?";
 				pstmt = conn.prepareStatement(sql);
 
@@ -289,7 +309,7 @@ public class ProductDAO {
 				pstmt.setInt(5, dto.getDelivery_price()); // 배송비
 				pstmt.setString(6, dto.getHas_delivery_fee()); // 배송비 여부
 				pstmt.setInt(7, dto.getStock()+dto.getFirst_stock()); // 상품 재고
-			//	pstmt.setInt(8, dto.getStock()+dto.getFirst_stock());	 // 상품 최초 재고
+				pstmt.setInt(8,	dbFirstStock+dto.getFirst_stock());	 // 상품 최초 재고
 				pstmt.setInt(9, dto.getProduct_num());	// 상품 번호
 
 				result = pstmt.executeUpdate();
@@ -360,6 +380,25 @@ public class ProductDAO {
 			}finally {
 				close(conn, pstmt, rs);
 			}
+			
+		}
+		public int deleteProduct(int product_num) {
+			int result = 0;
+			try {
+				conn = getConn();
+				sql="update product set delete_yn = 'Y' where product_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, product_num);
+				
+				result = pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				close(conn, pstmt, rs);
+			}
+			return result;
 			
 		}
 }

@@ -1,64 +1,14 @@
-	const productImgDragZone = document.getElementById("productImgDragZone");
-	const productImgInput = document.getElementById("productImgInput");
-	const productImgPreview = document.getElementById("productImgPreview");
-	const productImgCount = document.getElementById("productImgCount");
 	const deleteBtn = document.getElementById("deleteBtn");
 	const cancleBtn = document.getElementById('cancelBtn');
 	
 	const input = document.querySelector('input[name="deleteList"]');
 	
+		
 	// 이미지 삭제 예약 
 	let deleteList = [];
 	
-	// 상품이미지 드래그 & 드롭
-	productImgDragZone.addEventListener("dragover", (e) => {
-		e.preventDefault();
-	});
-
-	productImgDragZone.addEventListener("drop", (e) => {
-	    e.preventDefault();
-
-	    const files = e.dataTransfer.files;
-	    if (files.length > 0) {
-	    	displayImage(files,productImgPreview);
-	    	productImgInput.files = files;
-	    	productImgCount.innerText = files.length;
-	    	
-	    }
-	 });
-
-	 productImgDragZone.addEventListener("click", () => {
-	    productImgInput.click();
-	 });
-
-	 productImgInput.addEventListener("change", () => {
-	    const files = productImgInput.files;
-	    if (files.length > 0) {
-	       displayImage(files,productImgPreview);
-	    }
-	 });
-
-	    function displayImage(files,productImgPreview) {
-	    	console.log(files)
-	    	 for (let i = 0; i < files.length; i++) {
-	    		 const file = files[i];
-	        	const reader = new FileReader();
-	        	reader.onload = () => {
-	        		const imgElement = document.createElement("img");
-	        		imgElement.src = reader.result;
-	        		imgElement.style.display = "block";
-	        		imgElement.style.width = "100"
-	        		imgElement.style.height = "100"
-	            	imgElement.classList.add("pro-preview-image");
-	            	productImgPreview.appendChild(imgElement);
-	       	 	};
-	        	reader.readAsDataURL(file);
-	    	};
-	    	
-	    };
-
-
 	
+	// 삭제버튼 누를시 deleteList 에 해당 값 추가
 	function deleteImg(imgSid){
 		deleteList.push(imgSid);
 		document.getElementById(imgSid).style.opacity = "0.3";
@@ -66,6 +16,7 @@
 		console.log(deleteList);
 	}
 	
+	// 취소버튼 누를시 deleteList 에서 해당 값 제거
 	function deleteCancel(imgSid){
 		let index = deleteList.indexOf(imgSid);
 		
@@ -76,7 +27,7 @@
 		}
 	}
 	
-	
+	// 수정완료 버튼 누를 시 배열을 하나의 덩어리로 만들어 input에 value 로  넣어주고 전송
 	function listJoin(){
 		input.value = deleteList.join(',');
 	}

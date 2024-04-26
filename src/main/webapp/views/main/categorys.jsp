@@ -17,6 +17,7 @@
 	ProductDAO dao = ProductDAO.getInstance();	
 	List<CategoryDTO> list = dao.loadCategorys();   
 %>
+
 <center>
 <table class="category">
 	<tr>

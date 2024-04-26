@@ -1,3 +1,4 @@
+<%@page import="java.sql.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="project.bean.product.ProductDAO"%>
@@ -18,7 +19,7 @@ form{
 	align-items: center;
 }
 .imgCon{
-	width : 1405px;
+	width : auto;
 	padding : 20px;
 	border : 1px solid darkgray;
 	border-radius :10px;
@@ -31,20 +32,14 @@ form > .info{
 	border-radius :10px;
 	padding : 20px;
 }
-#productImgDragZone{
+#productImgDragZone,#textImgDragZone{
 	border-radius :10px;
 	border : 1px dashed black;
 	width : 200px;
 	height: 100px;
 	text-align: center;
 }
-#textImgDragZone{
-	border-radius :10px;
-	border : 1px dashed black;
-	width : 200px;
-	height: 100px;
-	text-align: center;
-}
+
 #imgBox{
 	display: flex;
 	flex-direction: column;
@@ -53,7 +48,7 @@ form > .info{
 	display: flex;
 	flex-direction: row;
 }
-#productImgPreview{
+#productImgPreview,#textImgPreview{
 	display: flex;
 	flex-direction: row;
 }
@@ -79,6 +74,17 @@ form > .info{
 	padding : 20px;
 }
 #submit{
+	color : white;
+	font-weight : bolder;
+	font-size : 20px;
+	border-radius :10px;
+	border-style : none;
+	width: 300px;
+	height : 50px;
+	background-color: darkgray;
+}
+.cancel{
+	margin-top:10px;
 	color : white;
 	font-weight : bolder;
 	font-size : 20px;
@@ -151,7 +157,6 @@ form > .info{
 			<input type="number" name="first_stock" value="0"/><br>
 		</div>
 		
-		
 		<%--상품 이미지 --%>
 			<br>
 			<h2>현재이미지</h2>
@@ -176,11 +181,11 @@ form > .info{
 		
 			<div class="setImg">
 				<h2>수정할 이미지</h2>
-				<h4>대표 이미지</h4>
+				<h4>[대표 이미지]</h4>
 				<input type="file" name="thumbnail" ><br/>
 				<br/>
 				<br/>
-				<h4>상품 이미지</h4>
+				<h4>[상품 이미지]</h4>
 				
 				<div id="productImgDragZone">
 					<p>클릭하거나 상품이미지를 드래그 & 드롭 해주세요</p>
@@ -191,9 +196,9 @@ form > .info{
 		
 				<br>
 				<br>
-				<h4>상품 설명 이미지</h4>
+				<h4>[상품 설명 이미지]</h4>
 				<div id="textImgDragZone">
-					<p>상품설명이미지를 드래그 & 드롭 해주세요</p>
+					<p>클릭하거나 상품설명이미지를 드래그 & 드롭 해주세요</p>
 					<input id="textImgInput"  type="file" name="textImg" style="display:none"  multiple><br/>
 				</div>
 				<div id="textImgPreview"></div>
@@ -203,9 +208,11 @@ form > .info{
 		<br/>
 		<br/>
 		<input id="submit" type="submit" value="수정 완료" onclick="listJoin()">
+		<button class="cancel" type="button" onclick="location.href='../main/main.jsp'">취소</button>
 		
 	</form>
 </div>
 <script type="text/javascript" src="/project/views/js/updateForm.js"></script>
-<script type="text/javascript" src="/project/views/js/updateForm2.js"></script>
+<script type="text/javascript" src="/project/views/js/dragAndDrop.js"></script>
+<script type="text/javascript" src="/project/views/js/dragAndDrop2.js"></script>
 <%	} %>
