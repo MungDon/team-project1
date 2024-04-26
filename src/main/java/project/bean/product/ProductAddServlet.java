@@ -17,8 +17,11 @@ import project.bean.util.ImageProcess;
 @WebServlet("/productAdd")
 @MultipartConfig
 public class ProductAddServlet extends HttpServlet{
+	
 	ProductDTO dto  = new ProductDTO();
 	ProductDAO dao = ProductDAO.getInstance();
+	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 			final String uploadPath =request.getRealPath("views/upload") ;
 			int uploadStatus = 0;
@@ -30,11 +33,12 @@ public class ProductAddServlet extends HttpServlet{
 			request.setCharacterEncoding("UTF-8");
 			ProductDTO data =  dto.setProductAdd(request);
 			int product_num = dao.saveProduct(data);
+			
 			String fileName="";
 			
 			for(Part part : request.getParts()) {
 				fileName = getFileName(part);
-				
+				 
 				
 				if(!("".equals(fileName))) {// ""일반 파라미터 ""가아니면 파일
 					uploadStatus = ImageProcess.insertImg(product_num, part, request);

@@ -27,7 +27,7 @@
 			for(CategoryDTO dto : list){
 		%>
 		<td>
-			<a href="main.jsp?category_num=<%=dto.getCategory_num() %>"><%=dto.getCategory_name() %></a>
+			<a href="categoryMain.jsp?category_num=<%=dto.getCategory_num() %>"><%=dto.getCategory_name() %></a>
 		<%	} %>
 		</td>
 		<td>

@@ -37,6 +37,12 @@ public class ProductDTO {
 	
 	private int first_stock;						// 최초 재고
 	
+	private int sales_number;			//판매수량
+	
+	private int sales;					//매출
+	
+	private int sales_price;			//판매금액
+	
 	// getter()/setter()//
 	
 	public int getProduct_num() {
@@ -162,6 +168,7 @@ public class ProductDTO {
 		}
 		if(request.getParameter("member_num")!=null) {
 			dto.setMember_num(Integer.parseInt(request.getParameter("member_num")));// 회원 고유번호
+		
 		}
 		dto.setCategory_num(Integer.parseInt(request.getParameter("category_num")));
 		dto.setProduct_name(request.getParameter("product_name"));
@@ -171,8 +178,32 @@ public class ProductDTO {
 		dto.setHas_delivery_fee(request.getParameter("has_delivery_fee"));
 		dto.setStock(Integer.parseInt(request.getParameter("stock")));
 		dto.setFirst_stock(Integer.parseInt(request.getParameter("first_stock")));
-		System.out.println(dto.getProduct_num());
+		
 		return dto;
+	}
+
+	public int getSales_number() {
+		return sales_number;
+	}
+
+	public void setSales_number(int sales_number) {
+		this.sales_number = sales_number;
+	}
+
+	public int getSales() {
+		return sales;
+	}
+
+	public void setSales(int sales) {
+		this.sales = sales;
+	}
+
+	public int getSales_price() {
+		return sales_price;
+	}
+
+	public void setSales_price(int sales_price) {
+		this.sales_price = sales_price;
 	}
 	
 }

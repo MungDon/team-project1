@@ -23,21 +23,13 @@ public class ProductUpdateServlet  extends HttpServlet{
 		
 			final String uploadPath =request.getRealPath("views/upload") ;
 		
-			int uploadStatus = 0;
+			int uploadStatus = 0;	// 이미지 저장 성공 여부 상태  성공 1, 실패 0
 			String fileName="";
 			
 			// 수정 정보 저장
 			ProductDTO data =  dto.setProductAdd(request);
 			int result = dao.updateProduct(data);
 
-			// 기존 썸네일 제거
-			String thumbnail = dao.getThumbnail(data.getProduct_num());
-			if(!(thumbnail.equals(""))) {
-				ImageProcess.deleteImg(uploadPath, thumbnail);
-				
-			}
-			
-			
 			// 폴더가없다면 생성
 			File filefolder = new File(uploadPath);
 			if(!filefolder.exists()) {
@@ -46,13 +38,17 @@ public class ProductUpdateServlet  extends HttpServlet{
 			
 			// 삭제 할 이미지 처리
 			String totalImgNums = request.getParameter("deleteList");
-			if(!totalImgNums.equals("")) {
+			
+			// 삭제할 이미지가 없으면 "" 로넘어옴
+			if(!(totalImgNums.equals(""))) {
 				String[] imgNums = totalImgNums.split(",");
 				
 				Integer[] convertImgNums = new Integer[imgNums.length];
+				
 				for(int i = 0; i<convertImgNums.length; i++) {
 					convertImgNums[i] = Integer.parseInt(imgNums[i]);
 				}
+				
 				for(int imgNum : convertImgNums) {
 					
 					String imgName = dao.getImgName(imgNum);
@@ -63,6 +59,14 @@ public class ProductUpdateServlet  extends HttpServlet{
 			// 이미지 저장
 			for(Part part : request.getParts()) {
 				fileName = getFileName(part);
+				
+				// 기존 썸네일 제거
+				if(!(fileName.equals("")) && part.getSize() > 0 && part.getName().equals("thumbnail")) {
+					String thumbnail = dao.getThumbnail(data.getProduct_num());
+					if(!(thumbnail.equals(""))) {
+						ImageProcess.deleteImg(uploadPath, thumbnail);
+					}
+				}
 				
 				if(!("".equals(fileName))) {// ""일반 파라미터 ""가아니면 파일
 					uploadStatus = ImageProcess.insertImg(data.getProduct_num(), part, request);
@@ -85,10 +89,8 @@ public class ProductUpdateServlet  extends HttpServlet{
 		for(String item : items) {
 			if(item.trim().startsWith("filename")){//대부분의 브라우저에서는 파일 이름을 filename 이라는 문자열과 함께 content-disposition 헤더에 포함시킴
 				fileName = item.substring(item.indexOf("=")+2, item.length() -1);
-				
 			}
 		}
-		
 		return fileName;
 	}
 }

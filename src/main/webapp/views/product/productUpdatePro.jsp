@@ -9,5 +9,11 @@
 			alert("수정되었습니다");
 			location.href="/project/views/main/main.jsp";
 		</script>	
+<%	}else{%>
+	<script>
+		alert("수정에 실패하였습니다. ");
+		location.href="/project/views/main/main.jsp";
+	</script>	
+	
 <%	}
 %>

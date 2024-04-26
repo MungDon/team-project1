@@ -5,6 +5,91 @@
 <%@ page import="project.bean.category.CategoryDTO" %>
 <%@ page import="project.bean.img.ImgDTO" %>
 <%@ page import="java.util.List" %>
+<style>
+.main{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+form{
+	margin-top : 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.imgCon{
+	width : 1405px;
+	padding : 20px;
+	border : 1px solid darkgray;
+	border-radius :10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+form > .info{
+	border : 1px solid darkgray;
+	border-radius :10px;
+	padding : 20px;
+}
+#productImgDragZone{
+	border-radius :10px;
+	border : 1px dashed black;
+	width : 200px;
+	height: 100px;
+	text-align: center;
+}
+#textImgDragZone{
+	border-radius :10px;
+	border : 1px dashed black;
+	width : 200px;
+	height: 100px;
+	text-align: center;
+}
+#imgBox{
+	display: flex;
+	flex-direction: column;
+}
+.currentImg{
+	display: flex;
+	flex-direction: row;
+}
+#productImgPreview{
+	display: flex;
+	flex-direction: row;
+}
+#imgBox > input{
+	font-weight : bolder;
+	border-radius :5px;
+	border : 1px solid darkgray;
+	width: 200px;
+	height: 30px;
+	background-color: white;
+	margin:5px;
+}	
+#imgBox > img{
+	border-radius :5px;
+	border : 1px solid darkgray;
+	margin:5px;
+}
+.setImg{
+	padding : 20px;
+	margin-left: 50px;
+	border : 1px solid darkgray;
+	border-radius :10px;
+	padding : 20px;
+}
+#submit{
+	color : white;
+	font-weight : bolder;
+	font-size : 20px;
+	border-radius :10px;
+	border-style : none;
+	width: 300px;
+	height : 50px;
+	background-color: darkgray;
+}
+</style>
+
 <% 
 	int i = 0;
 	int product_num = Integer.parseInt(request.getParameter("product_num"));
@@ -15,109 +100,112 @@
 	List<ProductDTO> updateData = dao.updateForm(product_num);
 	for(ProductDTO data : updateData){
 %>
+
 <div class="main">
 	<form action="<%=request.getContextPath() %>/productUpdate" method="post" enctype="multipart/form-data">
 		<input type="hidden"name="product_num" value="<%=product_num%>"/>	
 		
 		<%--이미지삭제 예약 리스트 히든 --%>
-		<input type="hidden"name="deleteList"/>		
-		<%--상품카테고리 --%>
-		<select name="category_num">
-			<option value="<%=data.getCategory_num()%>" selected><%=data.getCategory_name() %></option>
-			<% for(CategoryDTO dto : list){ %>
-			<option value="<%=dto.getCategory_num()%>"><%=dto.getCategory_name() %></option>
-			<%} %>
-		</select>
+		<input type="hidden"name="deleteList"/>	
 		
-		<%--상품정보 --%>
-		상품명<input type="text" name="product_name" value="<%=data.getProduct_name()%>"><br/>
-		상품 설명<textarea name="product_info"><%=data.getProduct_info() %></textarea><br/>
-		상품 가격<input type="number" name="price" value="<%=data.getPrice()%>">원<br/>
-		
-		<%--상품배송비 --%>
-		배송비 유무 및 배송비 수정<br/>
-		<% if(data.getHas_delivery_fee().equals("있음")){ %>
-		<input type="radio" name="has_delivery_fee" onclick="showInputBox()" value="있음" checked>있음
-		<input type="radio" name="has_delivery_fee" onclick="closeInputBox()" value="없음">없음
-			<div id="d_price" style="display : block">
-			배송비 <input type="number" name="delivery_price" value="<%=data.getDelivery_price()%>">원
-		</div><br>
-		
-	
-		<%}else{%>
-		<input type="radio" name="has_delivery_fee" onclick="showInputBox()" value="있음" >있음
-		<input type="radio" name="has_delivery_fee" onclick="closeInputBox()" value="없음"checked>없음
-		<div id="d_price" style="display : none">
-			배송비 <input type="number" name="delivery_price" value="0">원
-		</div><br>
-		<%}%>
-		
-		<br>
-		<br>
-		
-		<%--상품재고 --%>
-		현재 상품 재고<%=data.getStock()%>개<br>
-		<input type="hidden" name="stock" value="<%=data.getStock()%>"/>
-		추가 재고 
-		<input type="number" name="first_stock" value="0"/><br>
-
-		<%--상품 이미지 --%>
-		<h2>현재이미지</h2>
-		<div>
-		<% if(data.getImages()!=null){
-				for(ImgDTO img : data.getImages()){ 
-				%>
-			<img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/>
-			<input type="button"  value="삭제예약" onclick="deleteImg(<%=img.getImg_num()%>)">
-			<input type="button"  value="삭제예약취소" onclick="deleteCancel(<%=img.getImg_num()%>)"><br/>
+		<div class="info">
+		<h2>상품정보</h2>	
+			<%--상품카테고리 --%>
+			<select name="category_num">
+				<option value="<%=data.getCategory_num()%>" selected><%=data.getCategory_name() %></option>
+				<% for(CategoryDTO dto : list){ %>
+				<option value="<%=dto.getCategory_num()%>"><%=dto.getCategory_name() %></option>
+				<%} %>
+			</select>
 			
+			<%--상품정보 --%>
+			상품명<input type="text" name="product_name" value="<%=data.getProduct_name()%>"><br/>
+			상품 설명<textarea name="product_info"><%=data.getProduct_info() %></textarea><br/>
+			상품 가격<input type="number" name="price" value="<%=data.getPrice()%>">원<br/>
+			
+			<%--상품배송비 --%>
+			배송비 유무 및 배송비 수정<br/>
+			<% if(data.getHas_delivery_fee().equals("있음")){ %>
+			<input type="radio" name="has_delivery_fee" onclick="showInputBox()" value="있음" checked>있음
+			<input type="radio" name="has_delivery_fee" onclick="closeInputBox()" value="없음">없음
+				<div id="d_price" style="display : block">
+				배송비 <input type="number" name="delivery_price" value="<%=data.getDelivery_price()%>">원
+			</div><br>
+			
+		
+			<%}else{%>
+			<input type="radio" name="has_delivery_fee" onclick="showInputBox()" value="있음" >있음
+			<input type="radio" name="has_delivery_fee" onclick="closeInputBox()" value="없음"checked>없음
+			<div id="d_price" style="display : none">
+				배송비 <input type="number" name="delivery_price" value="0">원
+			</div><br>
+			<%}%>
+			
+			<br>
+			<br>
+			
+			<%--상품재고 --%>
+			현재 상품 재고<%=data.getStock()%>개<br>
+			<input type="hidden" name="stock" value="<%=data.getStock()%>"/>
+			추가 재고 
+			<input type="number" name="first_stock" value="0"/><br>
+		</div>
+		
+		
+		<%--상품 이미지 --%>
+			<br>
+			<h2>현재이미지</h2>
+		<div class="imgCon">
+			
+			<div class="currentImg">
+			
+			<% if(data.getImages()!=null){
+					for(ImgDTO img : data.getImages()){ 
+					%>
+				<div id="imgBox">
+				
+				<img src="../upload/<%=img.getImg_name()%>" width="200" height="200" id="<%=img.getImg_num()%>"/>
+				<input type="button" id="deleteBtn" value="삭제" onclick="deleteImg(<%=img.getImg_num()%>)">
+				<input type="button" id="cancelBtn" value="취소" onclick="deleteCancel(<%=img.getImg_num()%>)"><br/>
+			</div>
 			 <%} 
 		   }%>
+		 
+		</div>
 
-		<h2>수정할 이미지</h2>
-		대표 이미지<input type="file" name="thumbnail"><br/>
-		상품 이미지<input type="file" name="img" multiple><br/>
-		상품 설명 이미지<input type="file" name="textImg" multiple><br/>
-		</div><br/>
-
-		<input type="submit" value="상품 수정"><br/>
+		
+			<div class="setImg">
+				<h2>수정할 이미지</h2>
+				<h4>대표 이미지</h4>
+				<input type="file" name="thumbnail" ><br/>
+				<br/>
+				<br/>
+				<h4>상품 이미지</h4>
+				
+				<div id="productImgDragZone">
+					<p>클릭하거나 상품이미지를 드래그 & 드롭 해주세요</p>
+					<input id="productImgInput" type="file" name="img" style="display:none" multiple><br/>
+				</div>
+				<div id="productImgPreview" ></div>
+				상품이미지 업로드파일 수 :<span id="productImgCount"></span>개
+		
+				<br>
+				<br>
+				<h4>상품 설명 이미지</h4>
+				<div id="textImgDragZone">
+					<p>상품설명이미지를 드래그 & 드롭 해주세요</p>
+					<input id="textImgInput"  type="file" name="textImg" style="display:none"  multiple><br/>
+				</div>
+				<div id="textImgPreview"></div>
+				상품설명이미지 업로드파일 수 :<span id="textImgCount"></span>개
+			</div>
+		</div>								
+		<br/>
+		<br/>
+		<input id="submit" type="submit" value="수정 완료" onclick="listJoin()">
+		
 	</form>
 </div>
+<script type="text/javascript" src="/project/views/js/updateForm.js"></script>
+<script type="text/javascript" src="/project/views/js/updateForm2.js"></script>
 <%	} %>
-<script>
-	let deleteList = [];
-	const input = document.querySelector('input[name="deleteList"]');
-	
-	
-	
-	function deleteImg(imgSid){
-		deleteList.push(imgSid);
-		input.value = deleteList.join(',');
-		
-		console.log(deleteList);
-		console.log(input);
-	}
-	
-	function deleteCancel(imgSid){
-		let index = deleteList.indexOf(imgSid);
-		
-		if(index !== -1){
-			deleteList.splice(index, 1);
-			input.value = deleteList.join(',');
-			console.log(deleteList);
-			console.log(input);
-		}
-	}
-	
-
-	
-
-
-	function showInputBox(){
-		document.getElementById("d_price").style.display="block";
-	}
-	function closeInputBox(){
-		document.getElementById("d_price").style.display="none";
-	}
-	
-</script>	

@@ -255,7 +255,7 @@ public class ProductDAO {
 					dto.setDelivery_price(rs.getInt("delivery_price"));
 					dto.setHas_delivery_fee(rs.getString("has_delivery_fee"));
 					
-					  // 이미지 정보
+					// 이미지 정보
 					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
      		            do {
 		                ImgDTO imgDto = new ImgDTO();
@@ -273,6 +273,7 @@ public class ProductDAO {
 			}
 			return list;
 		}
+		
 		// 상품 수정
 		public int updateProduct(ProductDTO dto) {
 			int result = 0;
@@ -287,12 +288,11 @@ public class ProductDAO {
 				pstmt.setInt(4, dto.getPrice()); // 상품 가격
 				pstmt.setInt(5, dto.getDelivery_price()); // 배송비
 				pstmt.setString(6, dto.getHas_delivery_fee()); // 배송비 여부
-				pstmt.setInt(7, dto.getStock()); // 상품 재고
-				pstmt.setInt(8, dto.getStock()+dto.getFirst_stock());	 // 상품 최초 재고
+				pstmt.setInt(7, dto.getStock()+dto.getFirst_stock()); // 상품 재고
+			//	pstmt.setInt(8, dto.getStock()+dto.getFirst_stock());	 // 상품 최초 재고
 				pstmt.setInt(9, dto.getProduct_num());	// 상품 번호
 
 				result = pstmt.executeUpdate();
-
 
 			} catch (Exception e) {
 				e.printStackTrace();

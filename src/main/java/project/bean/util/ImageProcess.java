@@ -13,7 +13,7 @@ import project.bean.product.ProductDAO;
 
 public class ImageProcess {
 	
-	
+	// 이미지 등록
 	public static int insertImg(int product_num,Part part, HttpServletRequest request ) throws IOException {
 		final String uploadPath =request.getRealPath("views/upload") ;
 		int result = 0;
