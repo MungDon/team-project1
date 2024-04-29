@@ -4,7 +4,7 @@
 <%@ page import="project.bean.category.CategoryDTO" %>
 <%@ page import="java.util.List" %>
     <link rel="stylesheet" href="../css/proInsertForm.css">
-<%-- 	
+
 	<% 
 		int snum = 0;
 		if(!session.getAttribute("snum").equals(null)){
@@ -19,10 +19,10 @@
 		</script>	
 	<%	}
 	%>
---%>
+
 <% 
 	ProductDAO dao = ProductDAO.getInstance();	
-	List<CategoryDTO> list = dao.loadCategorys();   
+	List<CategoryDTO> list = dao.loadCategory();   
 %>
 <div class="main">
 	<form action="<%=request.getContextPath() %>/productAdd" method="post" enctype="multipart/form-data">

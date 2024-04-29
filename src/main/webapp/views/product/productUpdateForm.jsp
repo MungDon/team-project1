@@ -101,7 +101,7 @@ form > .info{
 	int product_num = Integer.parseInt(request.getParameter("product_num"));
 	System.out.println(product_num);
 	ProductDAO dao = ProductDAO.getInstance();	
-	List<CategoryDTO> list = dao.loadCategorys();   
+	List<CategoryDTO> list = dao.loadCategory();   
 	
 	List<ProductDTO> updateData = dao.updateForm(product_num);
 	for(ProductDTO data : updateData){

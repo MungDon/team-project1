@@ -57,12 +57,12 @@ public class CategoryDAO {
 	}
 
 	public int categoryAdd(CategoryDTO dto) {
-		int result=0;
+		int result = 0;
 		try {
 			conn = getConn();
-			sql="insert into categorys values(categorys_seq.nextval, ?, systimestamp,systimestamp)";
+			sql = "insert into category values(category_seq.nextval, ?, systimestamp,systimestamp)";
 			pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setString(1, dto.getCategory_name());
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {

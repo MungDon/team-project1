@@ -15,14 +15,18 @@
 	}
 </style>
 <% 
+	int snum = 0;
+	if(session.getAttribute("snum")!=null){
+		snum = (int)session.getAttribute("snum");
+	}
 	ProductDAO dao = ProductDAO.getInstance();	
-	List<CategoryDTO> list = dao.loadCategorys();   
+	List<CategoryDTO> list = dao.loadCategory();   
 %>
 
 <table class="headerTable">
 	<tr>
 		<td>
-			<a href="../mypage/main.jsp"><img src="../images/COOL.png" width="100" height="100"></a>
+			<a href="../main/main.jsp"><img src="../images/COOL.png" width="100" height="100"></a>
 		</td>
 		<td><a href="../main/main.jsp">전체 상품</a></td>	
 		<td >
@@ -32,7 +36,12 @@
 			</form>
 		</td>	
 		<td>
-			<a href="../mypage/main.jsp"><img src="../images/myinfo.png"></a>
+		<% if(snum!=0){%>
+			<a href="../member/logout.jsp">로그아웃</a>
+		<%}else{%>
+			<a href="../member/loginSelect.jsp">로그인</a>
+		<%} %>		
+			<a href="../member/mypage/main.jsp"><img src="../images/myinfo.png"></a>
 			<a href="#"><img src="../images/cart.png"></a>
 		</td>	
 	

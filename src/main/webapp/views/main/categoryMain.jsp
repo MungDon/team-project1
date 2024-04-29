@@ -5,7 +5,7 @@
 <%@ page import="project.bean.img.ImgDTO" %>
 <%@ page import="java.util.List" %>    
 <jsp:include page="header.jsp"/>
- <jsp:include page="categorys.jsp" />
+ <jsp:include page="category.jsp" />
 	<%	
 	ProductDAO dao = ProductDAO.getInstance();
 	// 페이징
@@ -48,11 +48,12 @@
 	<tr>
 		<td><b><%=dto.getPrice() %>원</b></td>
 	</tr>
+	<%	} %>
 </table>
 
 
-	<%	} 
-		 
+	
+	<% 	 
 		if( productCount > 0 ){
 			int pageCount = productCount / pageSize +( productCount % pageSize == 0 ? 0 : 1 );
 			int startPage = (int)((currentPage-1)/10) * 10 +1;

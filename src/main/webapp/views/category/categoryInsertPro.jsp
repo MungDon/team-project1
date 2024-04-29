@@ -13,12 +13,12 @@
 	
 	for(int i = 0; i <= count; i++){
 		String names = "category_name["+i+"]";
-		String categorys = request.getParameter(names);
-		if(categorys == null|| categorys.trim().isEmpty()){
+		String category = request.getParameter(names);
+		if(category == null|| category.trim().isEmpty()){
 			continue;
 		}else{
 			CategoryDTO dto = new CategoryDTO();
-			dto.setCategory_name(categorys);
+			dto.setCategory_name(category);
 			result = dao.categoryAdd(dto);
 		}
 	}

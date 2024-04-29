@@ -10,7 +10,7 @@
 	if(result == 1){%>
 		<script>
 			alert('삭제되었습니다');
-			location.href="../main/main.jsp";
+			location.href="../member/mypage/main.jsp";
 		</script>	
 <%	}
 %>

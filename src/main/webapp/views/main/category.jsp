@@ -15,7 +15,7 @@
 </style>
 <% 
 	ProductDAO dao = ProductDAO.getInstance();	
-	List<CategoryDTO> list = dao.loadCategorys();   
+	List<CategoryDTO> list = dao.loadCategory();   
 %>
 
 <center>
@@ -31,14 +31,7 @@
 			<a href="categoryMain.jsp?category_num=<%=dto.getCategory_num() %>"><%=dto.getCategory_name() %></a>
 		<%	} %>
 		</td>
-		<td>
-		<button type="button" onclick="goProductForm()">상품등록</button>
-		</td>	
+
 	</tr>
 </table>
 </center>
-<script>
-	function goProductForm(){
-		location.href="../product/productInsertForm.jsp";
-	}
-</script>

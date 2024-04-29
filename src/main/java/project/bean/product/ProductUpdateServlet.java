@@ -58,7 +58,7 @@ public class ProductUpdateServlet  extends HttpServlet{
 			
 			// 이미지 저장
 			for(Part part : request.getParts()) {
-				fileName = getFileName(part);
+				fileName = ImageProcess.getFileName(part);
 				
 				// 기존 썸네일 제거
 				if(!(fileName.equals("")) && part.getSize() > 0 && part.getName().equals("thumbnail")) {
@@ -78,19 +78,5 @@ public class ProductUpdateServlet  extends HttpServlet{
 			request.setAttribute("result", result);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productUpdatePro.jsp");
 			dispatcher.forward(request, response);
-	}
-	
-	// 이미지 파일인것만 걸러주는 메서드
-	private String getFileName(Part part) {
-		String fileName  = "";
-		String contentDispostion = part.getHeader("content-disposition");
-		String[] items = contentDispostion.split(";");
-		
-		for(String item : items) {
-			if(item.trim().startsWith("filename")){//대부분의 브라우저에서는 파일 이름을 filename 이라는 문자열과 함께 content-disposition 헤더에 포함시킴
-				fileName = item.substring(item.indexOf("=")+2, item.length() -1);
-			}
-		}
-		return fileName;
 	}
 }

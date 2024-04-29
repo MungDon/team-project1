@@ -61,12 +61,23 @@ public class ProductDAO {
 		}
 	}
 	
+	// 롤백 메서드
+	private void rollBack(Connection conn) {
+		if(conn != null) {
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				System.out.println("롤백");
+			}
+		}
+	}
+	
 	// 카테고리 불러오기
-	public List<CategoryDTO> loadCategorys(){
+	public List<CategoryDTO> loadCategory(){
 		List<CategoryDTO> list = new ArrayList<CategoryDTO>();
 		try {
 			conn = getConn();
-			sql="select category_name,category_num from categorys ";
+			sql="select category_name,category_num from category ";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -90,9 +101,12 @@ public class ProductDAO {
 		int product_num = 0;
 		try {
 			conn = getConn();
+			conn.setAutoCommit(false);
 			sql = "insert into product values(product_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 'N', systimestamp,systimestamp,?)";
+			
 			pstmt = conn.prepareStatement(sql, new String[] { "PRODUCT_NUM" });
-
+		
+			
 			pstmt.setInt(1, dto.getMember_num()); // 회원 정보
 			pstmt.setInt(2, dto.getCategory_num());	// 카테고리 정보
 			pstmt.setString(3, dto.getProduct_name()); // 상품 이름
@@ -103,13 +117,20 @@ public class ProductDAO {
 			pstmt.setInt(8, dto.getStock()); // 상품 재고
 			pstmt.setInt(9, dto.getFirst_stock()+dto.getStock());// 상품 최초 재고
 
-			pstmt.executeUpdate();
-
+			int success = pstmt.executeUpdate();
+			throw new SQLException();
+			if(success==1) {
+				conn.commit();
+			}else {
+				rollBack(conn);
+			}
+			
 			rs = pstmt.getGeneratedKeys();
 
 			if (rs.next()) {
 				product_num = rs.getInt(1);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -241,7 +262,7 @@ public class ProductDAO {
 			List<ProductDTO> list = new ArrayList<ProductDTO>();
 			try {
 				conn = getConn();
-				sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join categorys C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ? order by P.product_num desc";
+				sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ? order by P.product_num desc";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, product_num);
 				rs = pstmt.executeQuery();
@@ -400,5 +421,178 @@ public class ProductDAO {
 			}
 			return result;
 			
+		}
+		
+//		-------------------------universe's made-------------------------
+
+//		-------------------------------상품-------------------------------
+//		상품 상세 페이지
+		public ProductDTO productContent(int product_num) {
+			ProductDTO dto = new ProductDTO();
+			try {
+				conn = getConn();
+				sql = "select * from product where product_num=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, product_num);
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					dto.setProduct_num(rs.getInt("product_num"));
+					dto.setCategory_num(rs.getInt("category_num"));
+					dto.setProduct_name(rs.getString("product_name"));
+					dto.setProduct_info(rs.getString("product_info"));
+					dto.setPrice(rs.getInt("price"));
+					dto.setStock(rs.getInt("stock"));
+					dto.setDelivery_price(rs.getInt("delivery_price"));
+					dto.setHas_delivery_fee(rs.getString("has_delivery_fee"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return dto;
+		}
+		
+//		썸네일 1장뽑기
+		public List<ProductDTO> thumbnail(int product_num) {
+			List<ProductDTO> list = new ArrayList<ProductDTO>();
+			try {
+				conn = getConn();
+				sql = "select b.* from (select P.*, I.img_name, I.img_num from product P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' order by P.product_num desc) b where product_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, product_num);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					ProductDTO dto = new ProductDTO();
+					ImgDTO imgDto = new ImgDTO();
+					imgDto.setImg_name(rs.getString("img_name"));
+					imgDto.setImg_num(rs.getInt("img_num"));
+					
+					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+					imgs.add(imgDto);
+					dto.setImages(imgs);
+					list.add(dto);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return list;
+		}
+		
+//		썸네일 1장 + 상품정보 + 회원정보 + 주소정보 4개 join		안쓰임
+		public List<ProductDTO> orderList(int product_num) {
+			List<ProductDTO> list = new ArrayList<ProductDTO>();
+			try {
+				conn = getConn();
+				sql = "select b.* from (select P.*, I.img_name from product P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' order by P.product_num desc) b where product_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, product_num);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					ProductDTO dto = new ProductDTO();
+					ImgDTO imgDto = new ImgDTO();
+					imgDto.setImg_name(rs.getString("img_name"));
+					
+					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+					imgs.add(imgDto);
+					dto.setImages(imgs);
+					list.add(dto);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return list;
+		}
+
+//		상품이미지 (상품설명 이미지 제외)
+		public List<ProductDTO> productImages(int product_num) {
+			List<ProductDTO> list = new ArrayList<ProductDTO>();
+			try {
+				conn = getConn();
+				sql = "select b.* from (select P.*, I.img_name from product P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' or I.img_type = 'productImg' order by P.product_num desc) b where product_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, product_num);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					ProductDTO dto = new ProductDTO();
+					ImgDTO imgDto = new ImgDTO();
+					dto.setProduct_num(product_num);
+					imgDto.setImg_name(rs.getString("img_name"));
+					
+					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+					imgs.add(imgDto);
+					dto.setImages(imgs);
+					list.add(dto);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return list;
+		}
+		
+//		상품설명 이미지
+		public List<ProductDTO> textImages(int product_num){
+			List<ProductDTO> list = new ArrayList<ProductDTO>();
+			try {
+				conn = getConn();
+				sql = "select b.* from (select P.*, I.img_name from product P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'textImg' order by P.product_num desc) b where product_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, product_num);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					ProductDTO dto = new ProductDTO();
+					ImgDTO imgDto = new ImgDTO();
+					dto.setProduct_num(product_num);
+					imgDto.setImg_name(rs.getString("img_name"));
+					
+					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+					imgs.add(imgDto);
+					dto.setImages(imgs);
+					list.add(dto);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return list;
+		}
+		
+//		관련상품 이미지 (카테고리 중 최신글 4개)
+		public List<ProductDTO> connImg(int product_num, int category_num){
+			List<ProductDTO> list = new ArrayList<ProductDTO>();
+			try {
+				conn = getConn();
+				sql = "select * from (select b.*, rownum r from (select P.*, I.img_name, C.category_name from product P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and C.category_num = ? order by P.product_num desc) b where product_num != ?) where r <= 4";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, category_num);
+				pstmt.setInt(2, product_num);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					ProductDTO dto = new ProductDTO();
+					ImgDTO imgDto = new ImgDTO();
+					dto.setProduct_num(rs.getInt("product_num"));
+					dto.setCategory_num(rs.getInt("category_num"));
+					dto.setProduct_name(rs.getString("product_name"));
+					dto.setPrice(rs.getInt("price"));
+					imgDto.setImg_name(rs.getString("img_name"));
+					
+					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+					imgs.add(imgDto);
+					dto.setImages(imgs);
+					list.add(dto);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return list;
 		}
 }

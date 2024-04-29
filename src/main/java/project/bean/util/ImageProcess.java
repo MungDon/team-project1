@@ -55,4 +55,20 @@ public class ImageProcess {
 		ProductDAO dao = ProductDAO.getInstance();
 		dao.deleteImg(imgName);
 	}
+	
+	// 이미지 이름추출
+	public static String getFileName(Part part) {
+		String fileName  = "";
+		String contentDispostion = part.getHeader("content-disposition");
+		String[] items = contentDispostion.split(";");
+		
+		for(String item : items) {
+			if(item.trim().startsWith("filename")){//대부분의 브라우저에서는 파일 이름을 filename 이라는 문자열과 함께 content-disposition 헤더에 포함시킴
+				fileName = item.substring(item.indexOf("=")+2, item.length() -1);
+				
+			}
+		}
+		
+		return fileName;
+	}
 }
