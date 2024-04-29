@@ -23,17 +23,21 @@ public class ProductAddServlet extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
-			final String uploadPath =request.getRealPath("views/upload") ;
-			
-			int uploadStatus = 0;
-			String fileName="";
-			
-			File filefolder = new File(uploadPath);
-			if(!filefolder.exists()) {
-				filefolder.mkdirs();
-			}
-			
-			request.setCharacterEncoding("UTF-8");
+		
+		int uploadStatus = 0;
+		String fileName="";	
+		final String uploadPath =getServletContext().getResource("/views/upload").getPath();
+		
+		
+		File filefolder = new File(uploadPath);
+		if(!filefolder.exists()) {
+			filefolder.mkdirs();
+		}
+		
+		request.setCharacterEncoding("UTF-8");
+		
+		
+
 			ProductDTO data =  dto.setProductAdd(request);
 			
 			
@@ -46,7 +50,7 @@ public class ProductAddServlet extends HttpServlet{
 				 
 				
 				if(!("".equals(fileName))) {// ""일반 파라미터 ""가아니면 파일
-					uploadStatus = ImageProcess.insertImg(product_num, part, request);
+					uploadStatus = ImageProcess.insertImg(uploadPath,product_num, part, request);
 					
 					
 				}

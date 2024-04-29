@@ -284,7 +284,7 @@ public class MypageDAO {
 		ArrayList<MypageWrapper>list = new ArrayList<MypageWrapper>();
 		try {
 			conn = getConn();
-			sql = "select* from (select p.*, rownum r from (select O.*, P.*, I.img_name from orders O left outer join product P on O.product_num= P.product_num left outer join img I on O.product_num = I.product_num where P.delete_yn='N' and I.img_type='thumbnail' and O.member_num=? and trunc(O.orders_date) >= trunc(sysdate) - 30 order by O.orders_date desc)p) where r between ? and ?";
+			sql = "select * from (select p.*, rownum r from (select O.*, P.*, I.img_name from orders O left outer join product P on O.product_num= P.product_num left outer join img I on O.product_num = I.product_num where P.delete_yn='N' and I.img_type='thumbnail' and O.member_num=? and trunc(O.orders_date) >= trunc(sysdate) - 30 order by O.orders_date desc)p) where r between ? and ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, memberNum);
 			pstmt.setInt(2, start);

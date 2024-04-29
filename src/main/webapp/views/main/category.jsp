@@ -8,7 +8,7 @@
 		text-align : center;
 		width : 1000px;
 	}
-	.category,td,tr{
+	.category,.tr,.td1,.td2{
 		border: 1px solid darkgray;
 		border-collapse: collapse;
 	}
@@ -20,14 +20,14 @@
 
 <center>
 <table class="category">
-	<tr>
-		<td>
+	<tr class="tr">
+		<td class="td1">
 		<a href="main.jsp">전체상품</a>
 		</td>
 		<% 
 			for(CategoryDTO dto : list){
 		%>
-		<td>
+		<td class="td2">
 			<a href="categoryMain.jsp?category_num=<%=dto.getCategory_num() %>"><%=dto.getCategory_name() %></a>
 		<%	} %>
 		</td>

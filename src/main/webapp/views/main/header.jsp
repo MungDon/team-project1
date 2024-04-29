@@ -6,14 +6,14 @@
 <style>
 	.headerTable{
 		width : 100%;
-	}
-	.headerTable,tr,td{
-		
-		border : 1px solid black;
 		border-collapse: collapse;
 		text-align: center;
 	}
+	tr{
+		border-bottom: 1px solid darkgray;
+	}
 </style>
+
 <% 
 	int snum = 0;
 	if(session.getAttribute("snum")!=null){
@@ -28,7 +28,16 @@
 		<td>
 			<a href="../main/main.jsp"><img src="../images/COOL.png" width="100" height="100"></a>
 		</td>
-		<td><a href="../main/main.jsp">전체 상품</a></td>	
+		<td>
+		    <div class="dropDown">
+		        <button class="dropDown-btn">전체상품</button>
+		        <div class="subMenu">
+		        <%for(CategoryDTO dto : list){ %>
+		            <a href="categoryMain.jsp?category_num=<%=dto.getCategory_num() %>"><%=dto.getCategory_name() %></a>
+		        <%} %>
+		        </div>
+    		</div>
+		</td>	
 		<td >
 			<form action="main.jsp" method="get">
 				<input type="text" name="keyWord" placeholder="상품명을 검색하세요 ex)대대포막걸리">

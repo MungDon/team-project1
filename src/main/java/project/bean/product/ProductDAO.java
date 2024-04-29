@@ -61,16 +61,6 @@ public class ProductDAO {
 		}
 	}
 	
-	// 롤백 메서드
-	private void rollBack(Connection conn) {
-		if(conn != null) {
-			try {
-				conn.rollback();
-			} catch (SQLException e) {
-				System.out.println("롤백");
-			}
-		}
-	}
 	
 	// 카테고리 불러오기
 	public List<CategoryDTO> loadCategory(){
@@ -101,7 +91,6 @@ public class ProductDAO {
 		int product_num = 0;
 		try {
 			conn = getConn();
-			conn.setAutoCommit(false);
 			sql = "insert into product values(product_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 'N', systimestamp,systimestamp,?)";
 			
 			pstmt = conn.prepareStatement(sql, new String[] { "PRODUCT_NUM" });
@@ -117,14 +106,8 @@ public class ProductDAO {
 			pstmt.setInt(8, dto.getStock()); // 상품 재고
 			pstmt.setInt(9, dto.getFirst_stock()+dto.getStock());// 상품 최초 재고
 
-			int success = pstmt.executeUpdate();
-			throw new SQLException();
-			if(success==1) {
-				conn.commit();
-			}else {
-				rollBack(conn);
-			}
-			
+			pstmt.executeUpdate();
+		
 			rs = pstmt.getGeneratedKeys();
 
 			if (rs.next()) {
@@ -243,7 +226,7 @@ public class ProductDAO {
 			int result = 0;
 			try {
 				conn = getConn();
-				sql = "select count(*) from product";
+				sql = "select count(*) from product where delete_yn = 'N'";
 				pstmt = conn.prepareStatement(sql);
 				rs= pstmt.executeQuery();
 				if(rs.next()) {

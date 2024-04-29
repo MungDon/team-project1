@@ -34,7 +34,6 @@
 		<% for(ImgDTO img : dto.getImages()){ %>
 		<td>
 			<%if(img.getImg_name()!=null){ %>
-			<a href="../product/productUpdateForm.jsp?product_num=<%=dto.getProduct_num()%>">수정</a>
 			<a href="../product/productContent.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/></a>
 			<%}else{%>
 			<p>썸네일 이미지가 없어요</p>
@@ -66,13 +65,13 @@
 			}
 			
 			if( startPage > 10 ){ %>
-			<a href="list.jsp?pageNum=<%=startPage-10 %>">[이전]</a>
+			<a href="../main/main.jsp?pageNum=<%=startPage-10 %>">[이전]</a>
 <% 		}
 		for( int i = startPage; i <= endPage; i++ ){ %>
-			<a href="list.jsp?pageNum=<%=i%>">[<%=i %>]</a>
+			<a href="../main/main.jsp?pageNum=<%=i%>">[<%=i %>]</a>
 <%		}
 		if( endPage < pageCount){ %>
-			<a href="list.jsp?pageNum=<%=startPage+10 %>">[다음]</a>
+			<a href="../main/main.jsp?pageNum=<%=startPage+10 %>">[다음]</a>
 <%		}
 	}
 	

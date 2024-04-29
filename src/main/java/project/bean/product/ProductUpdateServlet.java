@@ -19,22 +19,28 @@ public class ProductUpdateServlet  extends HttpServlet{
 	ProductDTO dto  = new ProductDTO();
 	ProductDAO dao = ProductDAO.getInstance();
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
-			request.setCharacterEncoding("UTF-8");
-		
-			final String uploadPath =request.getRealPath("views/upload") ;
-		
 			int uploadStatus = 0;	// 이미지 저장 성공 여부 상태  성공 1, 실패 0
 			String fileName="";
+		
+			request.setCharacterEncoding("UTF-8");
+		
+			final String uploadPath =getServletContext().getResource("/views/upload").getPath();
+		
+	
 			
-			// 수정 정보 저장
-			ProductDTO data =  dto.setProductAdd(request);
-			int result = dao.updateProduct(data);
+
 
 			// 폴더가없다면 생성
 			File filefolder = new File(uploadPath);
 			if(!filefolder.exists()) {
 				filefolder.mkdirs();
 			}
+			
+			// 수정 정보 저장
+			ProductDTO data =  dto.setProductAdd(request);
+			
+			
+			int result = dao.updateProduct(data);
 			
 			// 삭제 할 이미지 처리
 			String totalImgNums = request.getParameter("deleteList");
@@ -69,7 +75,7 @@ public class ProductUpdateServlet  extends HttpServlet{
 				}
 				
 				if(!("".equals(fileName))) {// ""일반 파라미터 ""가아니면 파일
-					uploadStatus = ImageProcess.insertImg(data.getProduct_num(), part, request);
+					uploadStatus = ImageProcess.insertImg(uploadPath,data.getProduct_num(), part, request);
 				}
 			}
 			
