@@ -5,20 +5,25 @@
 <%@page import="project.bean.product.ProductDAO"%>
 <style>
 	.category{
+		height : 50px;
 		text-align : center;
 		width : 1000px;
-	}
-	.category,.tr,.td1,.td2{
-		border: 1px solid darkgray;
+		border-style: hidden;
 		border-collapse: collapse;
 	}
+	.table{
+		height : 50px;
+		border : 1px solid #ddd;
+		border-radius : 50px;	
+	}
 </style>
-<% 
+<%  	
 	ProductDAO dao = ProductDAO.getInstance();	
 	List<CategoryDTO> list = dao.loadCategory();   
+
 %>
 
-<center>
+<div class="table">
 <table class="category">
 	<tr class="tr">
 		<td class="td1">
@@ -26,12 +31,13 @@
 		</td>
 		<% 
 			for(CategoryDTO dto : list){
+			int categoryProductCnt = dao.categoryProductCount(dto.getCategory_num());
 		%>
 		<td class="td2">
-			<a href="categoryMain.jsp?category_num=<%=dto.getCategory_num() %>"><%=dto.getCategory_name() %></a>
+			<a href="categoryMain.jsp?category_num=<%=dto.getCategory_num() %>"><%=dto.getCategory_name() %>(<%=categoryProductCnt %>)</a>
 		<%	} %>
 		</td>
 
 	</tr>
 </table>
-</center>
+</div>

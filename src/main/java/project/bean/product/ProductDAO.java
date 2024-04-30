@@ -85,6 +85,26 @@ public class ProductDAO {
 		return list;
 	}
 	
+	//카테고리 총 개수 가져오기
+	public int categoryCount() {
+		int count = 0;
+		try {
+			conn = getConn();
+			sql="select count(*) from category";
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("count(*)");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return count;
+	}
+	
 	
 	//상품 등록
 	public int saveProduct(ProductDTO dto) {
@@ -228,6 +248,26 @@ public class ProductDAO {
 				conn = getConn();
 				sql = "select count(*) from product where delete_yn = 'N'";
 				pstmt = conn.prepareStatement(sql);
+				rs= pstmt.executeQuery();
+				if(rs.next()) {
+					result = rs.getInt("count(*)");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return result;
+		}
+		
+		//카테고리 별 상품수
+		public int categoryProductCount(int category_num) {
+			int result = 0;
+			try {
+				conn = getConn();
+				sql = "select count(*) from product where delete_yn = 'N' and category_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1,category_num);
 				rs= pstmt.executeQuery();
 				if(rs.next()) {
 					result = rs.getInt("count(*)");

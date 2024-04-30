@@ -68,7 +68,13 @@ public class ImageProcess {
 				
 			}
 		}
-		
 		return fileName;
+	}
+	// 공백체크
+	public static boolean isEmpty(String fileName) {
+		if(!fileName.equals("")) {
+			return false;
+		}
+		return true;
 	}
 }

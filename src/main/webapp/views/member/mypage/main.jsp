@@ -24,8 +24,22 @@
 </STYLE>
 
 <%
-	int snum = (int)session.getAttribute("snum");
-	String svendor = (String)session.getAttribute("svendor");
+	int snum =0; 
+	String svendor ="";
+	if(session.getAttribute("snum")!=null){
+		snum = (int)session.getAttribute("snum");
+	}	
+
+	if(session.getAttribute("svendor")!=null){
+		svendor = (String)session.getAttribute("svendor");
+	}
+	if(snum == 0){%>
+		<script>
+			alert("로그인 해주세요");
+			location.href="../loginSelect.jsp";
+		</script>
+<%	}
+	
 	
 	MypageDAO dao = MypageDAO.getInstance();
 	
@@ -45,7 +59,7 @@
 	ArrayList<MypageWrapper> list = dao.orders_main(snum, startRow, endRow);
 	ArrayList<MypageWrapper> listV = dao.registration_main(snum,startRow, endRow);
 %>
-
+	
 <%	if(svendor.equals("1")) {	//30일간의 주문/배송현황
 %>
 		<TABLE border="1" width=780px">

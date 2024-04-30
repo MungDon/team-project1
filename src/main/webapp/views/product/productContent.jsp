@@ -27,8 +27,10 @@
 </style>
 
 <%
-int product_num = Integer.parseInt(request.getParameter("product_num"));
+	int snum = 0; 
+	int product_num = Integer.parseInt(request.getParameter("product_num"));
 	int category_num = Integer.parseInt(request.getParameter("category_num"));
+	
 	ProductDAO productDao = ProductDAO.getInstance();
 	ProductDTO dto = productDao.productContent(product_num);
 	
@@ -37,7 +39,9 @@ int product_num = Integer.parseInt(request.getParameter("product_num"));
 	
 	List<ProductDTO> list = productDao.thumbnail(product_num);
 	
-	int snum = (int)session.getAttribute("snum");
+	if(session.getAttribute("snum")!=null){
+		snum = (int)session.getAttribute("snum");
+	}
 	MemberDAO memberDao = MemberDAO.getInstance();
 	MemberDTO memberDto = memberDao.memberInfo(snum);
 

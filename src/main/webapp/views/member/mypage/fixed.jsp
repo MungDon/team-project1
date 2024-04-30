@@ -55,10 +55,16 @@
 	}
 </SCRIPT>
 
-<%
-	int snum = (int)session.getAttribute("snum");
-	String svendor = (String)session.getAttribute("svendor");
 
+<%
+	int snum = 0;
+	String svendor ="";
+	if(session.getAttribute("snum")!=null){
+		 snum = (int)session.getAttribute("snum");
+	}
+	if(session.getAttribute("svendor")!=null){
+		svendor = (String)session.getAttribute("svendor");
+	}
 	MypageDAO dao = MypageDAO.getInstance();
 	
 	String grade = dao.grade(snum);

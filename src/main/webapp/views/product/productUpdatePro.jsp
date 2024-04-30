@@ -3,7 +3,7 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 <% 
 	int result = (int)request.getAttribute("result");
-
+	int uploadStatus = (int)request.getAttribute("uploadStatus");
 	if(result == 1){%>
 		<script>
 			alert("수정되었습니다");

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import project.bean.util.ImageProcess;
+import project.bean.util.Util;
 
 @WebServlet("/productAdd")
 @MultipartConfig
@@ -26,7 +27,7 @@ public class ProductAddServlet extends HttpServlet{
 		
 		int uploadStatus = 0;
 		String fileName="";	
-		final String uploadPath =getServletContext().getResource("/views/upload").getPath();
+		final String uploadPath =getServletContext().getRealPath("/views/upload");
 		
 		
 		File filefolder = new File(uploadPath);
@@ -47,13 +48,13 @@ public class ProductAddServlet extends HttpServlet{
 			int product_num = dao.saveProduct(data);
 			for(Part part : request.getParts()) {
 				fileName = ImageProcess.getFileName(part);
-				 
 				
-				if(!("".equals(fileName))) {// ""일반 파라미터 ""가아니면 파일
-					uploadStatus = ImageProcess.insertImg(uploadPath,product_num, part, request);
-					
-					
+				if(Util.isEmpty(fileName)) {
+					continue;
 				}
+				 
+				uploadStatus = ImageProcess.insertImg(uploadPath,product_num, part, request);
+				
 			}
 	
 			request.setAttribute("uploadStatus", uploadStatus);
