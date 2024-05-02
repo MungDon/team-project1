@@ -8,7 +8,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-
+<jsp:include page="/views/main/header.jsp"/>
 <jsp:include page="fixed.jsp" />
 
 <% request.setCharacterEncoding("UTF-8"); %>
@@ -231,4 +231,3 @@
 		alert("삭제가 취소되었습니다.");
 		}
 	});
-</script>

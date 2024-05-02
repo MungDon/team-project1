@@ -58,11 +58,10 @@ public class ProductAddServlet extends HttpServlet{
 				uploadStatus += ImageProcess.insertImg(uploadPath,product_num, part, request);
 				resultCount++;
 			}
-			int imgAddCount = dao.ImgInsertCount(data.getProduct_num());
+			int imgAddCount = dao.ImgInsertCount(product_num);
 			if(resultCount == imgAddCount && resultCount == uploadStatus) {
 				totalStatus = 1;
 			}
-			
 			request.setAttribute("totalStatus", totalStatus);
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productInsertPro.jsp");

@@ -22,8 +22,10 @@
 		justify-content: center;
 		align-items: center;
 	}
-		.mainTable{
+	.mainTable{
+		margin-top : 50px;
 		margin-left : 110px;
+		margin-bottom : 110px;
 		display: flex;
 		flex-direction : row;
 		justify-content: flex-start;
@@ -34,6 +36,20 @@
 		margin-top : 10px;
 		width :1000px;
 		text-align: left;
+	}
+	.count{
+		margin-top : 10px;
+		width :1000px;
+		text-align: left;
+	}
+	.thumnail{
+		border : 1px solid white;
+	}
+	.thumnail:hover{
+		opacity:0.5;
+	}
+	#soldOut{
+		opacity:0.5;
 	}
 </style>  
 <jsp:include page="header.jsp"/>
@@ -98,20 +114,31 @@
 	<%if(categoryProductCnt!=0){ %>
 <div class="mainTable">
 		<%for (ProductDTO dto : list){ %>
-<table style="border : 1px solid darkgray;border-collapse: collapse; margin-left: 10px;">
+<table style=" margin: 50px;">
 	<tr>
 		<% for(ImgDTO img : dto.getImages()){ %>
 		<td>
-			<%if(img.getImg_name()!=null){ %>
-				<a href="../product/productContent.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200"/></a>
-			<%}else{%>
-			<p>썸네일 이미지가 없어요</p>
-		 <%	} %>
+			<% if(dto.getStock()==0){ %>
+				<div class="thumnail">
+					<img src="../upload/<%=img.getImg_name()%>" width="200" height="200" alt="썸네일" id="soldOut"  />
+				</div>
+			<%}else{ %>
+			<div class="thumnail">
+				<a href="../product/productContent.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>&category_num=<%=dto.getCategory_num()%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200" alt="썸네일"/></a>
+			</div>
+			<%} %>
 		</td>
 		<% } %>
 	</tr>
 	<tr>
-		<td><%=dto.getProduct_name() %></td>
+		
+	<% if(dto.getStock()==0){ %>
+		<td>
+			<%=dto.getProduct_name() %> => 품절
+		</td>
+	<%}else{ %>
+	<td><%=dto.getProduct_name() %></td>
+	<%} %>
 	</tr>
 	<tr>
 		<td><b><%=dto.getPrice() %>원</b></td>

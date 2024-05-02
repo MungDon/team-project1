@@ -190,6 +190,7 @@ public class ProductDAO {
 				dto.setProduct_info(rs.getString("product_info"));
 				dto.setPrice(rs.getInt("price"));
 				dto.setDelivery_price(rs.getInt("delivery_price"));
+				dto.setStock(rs.getInt("stock"));
 				imgDto.setImg_name(rs.getString("img_name"));
 				
 				List<ImgDTO> imgs = new ArrayList<ImgDTO>();
@@ -225,6 +226,7 @@ public class ProductDAO {
 					dto.setProduct_info(rs.getString("product_info"));
 					dto.setPrice(rs.getInt("price"));
 					dto.setDelivery_price(rs.getInt("delivery_price"));
+					dto.setStock(rs.getInt("stock"));
 					imgDto.setImg_name(rs.getString("img_name"));
 					
 					List<ImgDTO> imgs = new ArrayList<ImgDTO>();

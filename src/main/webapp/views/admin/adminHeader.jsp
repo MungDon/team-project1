@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page import="project.bean.category.CategoryDTO"%>
-<%@ page import="java.util.List"%>
-<%@page import="project.bean.product.ProductDAO"%>
+    pageEncoding="UTF-8"%>
 <style>
 
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
@@ -22,7 +19,7 @@
   font-weight: 400;
   color : rgb(37, 37, 37);
   padding : 12px;
-  width :200px;
+  width :300px;
   text-align: left;
   cursor : pointer;
   font-size : 25px;
@@ -96,19 +93,6 @@ form{
 .search >.submit{
 	background-color: white;
 }
-.QNABtn{
-  border-style : none;
-  border-radius : 4px;
-  background-color: white;
-  font-weight: 400;
-  color : rgb(37, 37, 37);
-  padding : 12px;
-  width :200px;
-  text-align: left;
-  cursor : pointer;
-  font-size : 25px;
-  padding-left : 50px;
-}
 </style>
 
 <%
@@ -116,36 +100,18 @@ form{
 	if (session.getAttribute("snum") != null) {
 		snum = (int) session.getAttribute("snum");
 	}
-	ProductDAO dao = ProductDAO.getInstance();
-	List<CategoryDTO> list = dao.loadCategory();
 %>
 
 <table class="headerTable">
 	<tr class="h_tr">
-		<td><a href="../main/introMain.jsp"><img src="../images/sooltong.png"
-				width="150" height="150"></a></td>
 		<td>
-			<div class="dropdown">
-				<button class="dropbtn" onclick="location.href='main.jsp'">전체 상품
-				</button>
-				<div class="dropdown-content">
-					<%for (CategoryDTO dto : list) { %> 			
-							<a href="categoryMain.jsp?category_num=<%=dto.getCategory_num()%>"><%=dto.getCategory_name()%></a>
-					<%}%>
-				</div>
-			</div> 
+			<a href="../main/adminMain.jsp"><img src="../images/admin2.png" width="250" height="250"></a>
 		</td>
 		<td>
-			<div class="dropdown">
-				<button class="dropbtn" onclick="location.href='../notice/noticeList.jsp'">문의 게시판</button>
-			<div class="dropdown-content">
-				<a href="../notice/noticeList.jsp">공지사항</a>
-				<a href="../faq/faqList.jsp">자주찾는 질문</a>
-				<a href="../qna/qnaList.jsp">1:1문의</a>
-				<a href="../vendorQna/vendorQnaList.jsp">사업자문의</a>
-				<a href="#">상품문의</a>
-			</div>
-			</div>
+			<button  class="dropbtn" type="button" onclick="location.href='../admin/allMemberList.jsp'">전체 회원관리</button>
+		</td>
+		<td>
+			<button  class="dropbtn" type="button" onclick="location.href='../category/categoryInsertForm.jsp'">카테고리등록</button>
 		</td>
 
 		<td>
@@ -158,31 +124,6 @@ form{
 				</div>	
 			</form>
 		</td>
-		<td>
-			<%
-			if (snum != 0) {%>
-				<img src="../images/logout3.png" width="100" height="100" onclick="location.href='../member/logout.jsp'">	
-			 <%
-			} else {
-				 %> 
-				 <img src="../images/login3.png" width="100" height="80" onclick="location.href='../member/loginSelect.jsp'">
-			
-		<% } %>
-
-
-		</td>
-	
-		<td>
-			<% if (snum != 0) {%>
-			<a href="../cart/cartList.jsp?member_num=<%= snum %>"><img src="../images/cart.png"></a>
-			<%}else {%>
-			<a href="#"><img src="../images/cart.png" onclick="cartImg()"></a>
-			<%}%>
-		</td>
-		<td><a href="../member/mypage/main.jsp"><img
-				src="../images/myinfo.png" width="25" height="25"></a></td>
-
-
 	</tr>
 
 </table>
@@ -197,9 +138,5 @@ form{
 		document.getElementById("searchForm").submit();
 	});
 	
-	function cartImg(){
-		alert("로그인 후 이용해주세요.");
-		location.href="../member/loginForm.jsp";
-	}
 
 </script>

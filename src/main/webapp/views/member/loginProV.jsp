@@ -26,7 +26,7 @@
 %>
 		<SCRIPT>
 			alert("로그인 되셨습니다.");
-			window.location="../main/main.jsp"
+			window.location="../main/introMain.jsp"
 		</SCRIPT>
 <%		}else {
 %>	

@@ -43,6 +43,9 @@
 	.thumnail:hover{
 		opacity:0.5;
 	}
+	#soldOut{
+		opacity:0.5;
+	}
 </style>
 <jsp:include page="header.jsp"/>
 <div class="mainCon">
@@ -97,17 +100,38 @@
 	<tr>
 		<% for(ImgDTO img : dto.getImages()){ %>
 		<td>
+			<% if(dto.getStock()==0){ %>
+			<div class="thumnail">
+				<img src="../upload/<%=img.getImg_name()%>" width="200" height="200" alt="썸네일" id="soldOut"  />
+			</div>
+			<%}else{ %>
 			<div class="thumnail">
 				<a href="../product/productContent.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>&category_num=<%=dto.getCategory_num()%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200" alt="썸네일"/></a>
 			</div>
+			<%} %>
 		</td>
 <%		   }%>
 	</tr>
 	<tr>
-		<td><%=dto.getProduct_name() %></td>
+		<% if(dto.getStock()==0){ %>
+			<td >
+				<b style="text-decoration: line-through;"><%=dto.getProduct_name() %></b>
+				<b style="color:red">품절</b>
+			</td>
+		<%}else{ %>
+		<td>
+			<%=dto.getProduct_name() %>
+		</td>
+		<%} %>
 	</tr>
 	<tr>
+		<% if(dto.getStock()==0){ %>
+		<td style="text-decoration: line-through;">
+			<%=dto.getPrice() %>
+		</td>
+		<%}else{ %>
 		<td><b><%=dto.getPrice() %>원</b></td>
+		<%} %>
 	</tr>
 </table>
 
@@ -142,6 +166,11 @@
 %>
 </div>
 <script>
+	const soldOutImg = document.getElementById("soldOut");
+	
+	soldOutImg.addEventListener("click",()=>{
+		alert("품절된 상품입니다");
+	});
 	function goProductForm(){ 
 		location.href="../product/productInsertForm.jsp";
 	}
