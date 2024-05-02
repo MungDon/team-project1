@@ -142,7 +142,7 @@
 %>
 </div>
 <script>
-	function goProductForm(){
+	function goProductForm(){ 
 		location.href="../product/productInsertForm.jsp";
 	}
 </script>	

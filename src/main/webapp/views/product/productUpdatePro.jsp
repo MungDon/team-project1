@@ -3,8 +3,8 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 <% 
 	int result = (int)request.getAttribute("result");
-	int uploadStatus = (int)request.getAttribute("uploadStatus");
-	if(result == 1){%>
+	int totalStatus = (int)request.getAttribute("totalStatus");
+	if(result == 1 && totalStatus == 1){%>
 		<script>
 			alert("수정되었습니다");
 			location.href="/project/views/main/main.jsp";

@@ -7,7 +7,7 @@
 
 	<% 
 		int snum = 0;
-		if(!session.getAttribute("snum").equals(null)){
+		if(session.getAttribute("snum") != null){
 			snum = (int)session.getAttribute("snum"); // 판매자 세션
 		}
 		String svendor = (String)session.getAttribute("svendor");

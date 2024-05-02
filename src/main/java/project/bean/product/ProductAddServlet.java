@@ -27,6 +27,8 @@ public class ProductAddServlet extends HttpServlet{
 		
 		int uploadStatus = 0;
 		String fileName="";	
+		int resultCount = 0;	// 넘어온 이미지 수 만큼 카운트
+		int totalStatus = 0; // 이미지 저장 성공 여부 상태 성공 1, 실패 0
 		final String uploadPath =getServletContext().getRealPath("/views/upload");
 		
 		
@@ -53,11 +55,15 @@ public class ProductAddServlet extends HttpServlet{
 					continue;
 				}
 				 
-				uploadStatus = ImageProcess.insertImg(uploadPath,product_num, part, request);
-				
+				uploadStatus += ImageProcess.insertImg(uploadPath,product_num, part, request);
+				resultCount++;
 			}
-	
-			request.setAttribute("uploadStatus", uploadStatus);
+			int imgAddCount = dao.ImgInsertCount(data.getProduct_num());
+			if(resultCount == imgAddCount && resultCount == uploadStatus) {
+				totalStatus = 1;
+			}
+			
+			request.setAttribute("totalStatus", totalStatus);
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productInsertPro.jsp");
 			dispatcher.forward(request, response);

@@ -426,6 +426,8 @@ public class ProductDAO {
 			}
 			
 		}
+		
+		// 상품 삭제
 		public int deleteProduct(int product_num) {
 			int result = 0;
 			try {
@@ -443,8 +445,31 @@ public class ProductDAO {
 				close(conn, pstmt, rs);
 			}
 			return result;
-			
 		}
+		
+		// 등록된 이미지 개수 불러오기 => 확실하게 전체다 등록되었는지 확인하기 위함
+		public int ImgInsertCount(int product_num) {
+			int imgAddCnt = 0;
+			try {
+				conn = getConn();
+				sql = "select count(*) from img where product_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, product_num);
+				
+				rs  = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					imgAddCnt = rs.getInt("count(*)");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return imgAddCnt;
+		}
+	
 		
 //		-------------------------universe's made-------------------------
 

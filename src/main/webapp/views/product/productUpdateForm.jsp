@@ -96,10 +96,23 @@ form > .info{
 }
 </style>
 
-<% 
+<%
+	int snum = 0;
+	String svendor="";
+	
+	if(session.getAttribute("snum")!=null){
+		snum  = (int)session.getAttribute("snum");
+	}
+	if(session.getAttribute("svendor")!=null){
+		svendor = (String)session.getAttribute("svendor");
+	}
+	
+	if(snum == 0 || svendor == ""){%>
+		
+<%	}
+	
 	int i = 0;
 	int product_num = Integer.parseInt(request.getParameter("product_num"));
-	System.out.println(product_num);
 	ProductDAO dao = ProductDAO.getInstance();	
 	List<CategoryDTO> list = dao.loadCategory();   
 	

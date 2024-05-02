@@ -77,12 +77,13 @@ form{
 	outline:none;
 }
 
-.search > input {
+.search > input {	
 	
 	height : 35px;
 	border-style: none;
 } 
 .search{
+	margin-top: 20px;
 	display : flex;
 	flex-direction: row;
 	align-items : center;
@@ -120,8 +121,11 @@ form{
 					<%}%>
 				</div>
 			</div> 
-	
 		</td>
+		<td>
+			<a href="../notice/noticeList.jsp">문의 게시판</a>
+		</td>
+
 		<td>
 			<form id="searchForm" action="main.jsp" method="get">
 				<div class="search">

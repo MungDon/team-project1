@@ -23,8 +23,10 @@ public class ProductUpdateServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		int uploadStatus = 0; // 이미지 저장 성공 여부 상태 성공 1, 실패 0
-		String fileName = "";
+		int uploadStatus = 0; 
+		int totalStatus = 0; // 이미지 저장 성공 여부 상태 성공 1, 실패 0
+		String fileName = ""; 
+		int resultCount = 0;	// 넘어온 이미지 수 만큼 카운트
 
 		request.setCharacterEncoding("UTF-8");
 
@@ -43,9 +45,8 @@ public class ProductUpdateServlet extends HttpServlet {
 
 		// 삭제 할 이미지 처리
 		String totalImgNums = request.getParameter("deleteList");
-
 		// 삭제할 이미지가 없으면 "" 로넘어옴
-		if (!(totalImgNums.equals(""))) {
+		if (!(Util.isEmpty(totalImgNums))) {
 			String[] imgNums = totalImgNums.split(",");
 
 			Integer[] convertImgNums = new Integer[imgNums.length];
@@ -60,25 +61,37 @@ public class ProductUpdateServlet extends HttpServlet {
 				ImageProcess.deleteImg(uploadPath, imgName);
 			}
 		}
-		// 공백체크 -> continue -> 업로드 - > 썸네일 체크 - > 썸네일삭제
+
 		// 이미지 저장
 		for (Part part : request.getParts()) {
+			
 			fileName = ImageProcess.getFileName(part);
 
 			// 파일이 공백이라면 continue
 			if (Util.isEmpty(fileName)) {
 				continue;
 			}
-			
-			uploadStatus = ImageProcess.insertImg(uploadPath, data.getProduct_num(), part, request);
+			// 기존 썸네일 제거
 			if (part.getSize() > 0 && part.getName().equals("thumbnail")) {
 				String thumbnail = dao.getThumbnail(data.getProduct_num());
 				ImageProcess.deleteImg(uploadPath, thumbnail);
 			}
+			
+			uploadStatus += ImageProcess.insertImg(uploadPath, data.getProduct_num(), part, request);
+			
+			resultCount++;
 		}
-
+		int imgAddCount = dao.ImgInsertCount(data.getProduct_num());
+		System.out.println(resultCount);
+		System.out.println(imgAddCount);
+		System.out.println(uploadStatus);
+		if(resultCount == imgAddCount && resultCount == uploadStatus) {
+			totalStatus = 1;
+		}
+		
+		
 		// 모든 처리후 포워드로 이동
-		request.setAttribute("uploadStatus", uploadStatus);
+		request.setAttribute("totalStatus", totalStatus);
 		request.setAttribute("result", result);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productUpdatePro.jsp");
 		dispatcher.forward(request, response);
