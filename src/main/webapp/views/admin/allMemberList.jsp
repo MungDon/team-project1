@@ -30,6 +30,8 @@
 <jsp:include page="../admin/adminHeader.jsp"></jsp:include>
 <%	
 	AdminDAO dao = AdminDAO.getInstance();
+	String vendor ="";
+	String del ="";
 	//페이징
 	int pageSize = 10;
 	
@@ -43,11 +45,12 @@
 	int allMemberCount = dao.AllMemberCount();	
 	
 	List<MemberDTO> list = dao.loadAllMemeber(startRow, endRow);
+	
 %>
 
 <div class="main">
 <div style="text-align: left;width: 1400px;">
-<p style="font-size:20px;">전체회원수 <b style="color:skyblue"><%= allMemberCount%></b>명</p>
+<p style="font-size:20px;">전체회원수 <b style="color:skyblue"><%=allMemberCount%></b>명</p>
 </div>
 <table class="adminTable">
 	<tr class="tr1" style="border-top:2px solid black;border-bottom:2px solid black;">
@@ -62,11 +65,34 @@
 		<th class="9">탈퇴여부</th>
 		<th class="9">회원관리</th>
 	</tr>
-	<% for(MemberDTO dto : list){ %>
+	<% for(MemberDTO dto : list){ 
+		
+		switch(dto.getVendor()){
+		case "0":
+			vendor = "판매자 가입 승인대기";
+			break;
+		case "1" : 
+			vendor = "일반회원";
+			break;
+		case "2" : 
+			vendor = "판매자 회원";
+			break;
+	}
+	    switch(dto.getDel()){
+    	case "1" :
+    		del = "가입";
+    		break;
+    	case "2" :
+    		del="탈퇴";
+    		break;
+    }
+	
+	%>
+	
 	<tr class="tr2" >
 		<td class="1"><%=dto.getMember_num() %></td>
 		<td class="2"><%=dto.getId()%></td>
-		<td class="3"><%=dto.getVendor()%></td>
+		<td class="3"><%=vendor%></td>
 		<%if(dto.getBusiness_number()!=null){ %>
 		<td class="4"><%=dto.getBusiness_number() %></td>
 		<%}else{ %>
@@ -80,9 +106,9 @@
 		<td class="6"><%=dto.getName() %></td>
 		<td class="7"><%=dto.getGender() %></td>
 		<td class="8"><%=dto.getGrade() %></td>
-		<td class="9"><%=dto.getDel() %></td>
+		<td class="9"><%=del %></td>
 		<td class="9">
-			<button type="button" onclick="location.href='MemberDetail.jsp?member_num=<%=dto.getMember_num()%>'">관리</button>
+			<button type="button" onclick="location.href='memberDetail.jsp?member_num=<%=dto.getMember_num()%>'">관리</button>
 		</td>
 	</tr>
 	<%} %>

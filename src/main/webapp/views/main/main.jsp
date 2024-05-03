@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="project.bean.product.ProductDAO" %>
 <%@ page import="project.bean.product.ProductDTO" %>
+<%@ page import="project.bean.search.SearchDTO" %>
 <%@ page import="project.bean.img.ImgDTO" %>
 <%@ page import="java.util.List" %>
 <style>
@@ -46,6 +47,11 @@
 	#soldOut{
 		opacity:0.5;
 	}
+	#pageActive{
+		color: skyblue; /* 선택된 링크의 색상 */
+		font-weight: bold; /* 선택된 링크의 텍스트를 굵게 표시 */
+	}
+
 </style>
 <jsp:include page="header.jsp"/>
 <div class="mainCon">
@@ -54,7 +60,9 @@
 <%
 	int snum =0;
 	String svendor="";
-
+	String keyWord ="";
+	String sortName="";
+	String sort="";
 	
 	if(session.getAttribute("snum")!=null){
 		snum = (int)session.getAttribute("snum");
@@ -62,7 +70,18 @@
 	if(session.getAttribute("svendor")!=null){
 		 svendor = (String)session.getAttribute("svendor");
 	}
+	if(request.getParameter("keyWord")!=null){
+		 keyWord = request.getParameter("keyWord");
+	}
+	if(request.getParameter("sortName")!=null){
+		sortName = request.getParameter("sortName");
+	}
+	if(request.getParameter("sort")!=null){
+		sort = request.getParameter("sort");
+	}	
+
 	ProductDAO dao = ProductDAO.getInstance();
+	
 	// 페이징
 	int pageSize = 10;
 	
@@ -74,14 +93,11 @@
 	int startRow = ( currentPage - 1 ) * pageSize + 1;
 	int endRow = currentPage * pageSize;
 	int productCount = dao.productCount();
-	// 검색어 
-	String keyWord ="";
-	if(request.getParameter("keyWord")!=null){
-		 keyWord = request.getParameter("keyWord");
-	}	
 	
+	SearchDTO searchDto = new SearchDTO(startRow,endRow,keyWord,sortName,sort);
+
 	// 상품 목록
-		List<ProductDTO> list = dao.productList(startRow,endRow, keyWord);
+	List<ProductDTO> list = dao.productList(searchDto);
 	
 %>
 <div class="count" >
@@ -91,6 +107,7 @@
 	<p>전체 상품 <b style="color:skyblue"><%=productCount %></b>개</p>
 	<hr color="darkgray">
 </div>
+<jsp:include page="sort.jsp"></jsp:include>
 <div class="main">		
 <%if(productCount!=0){ %>
 <div class="mainTable">
@@ -153,13 +170,13 @@
 		}%>
 </div>	
 	<%	if( startPage > 10 ){ %>
-			<a href="../main/main.jsp?pageNum=<%=startPage-10 %>">[이전]</a>
+			<a href="../main/main.jsp?pageNum=<%=startPage-10 %>&sortName=<%=sortName %>&sort=<%=sort%>">[이전]</a>
 <% 		}
 		for( int i = startPage; i <= endPage; i++ ){ %>
-			<a href="../main/main.jsp?pageNum=<%=i%>">[<%=i %>]</a>
+			<a href="../main/main.jsp?pageNum=<%=i%>&sortName=<%=sortName %>&sort=<%=sort%>"<%if(currentPage==i){%>id="pageActive" <%}%>>[<%=i %>]</a>
 <%		}
 		if( endPage < pageCount){ %>
-			<a href="../main/main.jsp?pageNum=<%=startPage+10 %>">[다음]</a>
+			<a href="../main/main.jsp?pageNum=<%=startPage+10 %>&sortName=<%=sortName %>&sort=<%=sort%>">[다음]</a>
 <%		}
 	}
 	
@@ -174,4 +191,5 @@
 	function goProductForm(){ 
 		location.href="../product/productInsertForm.jsp";
 	}
+
 </script>	

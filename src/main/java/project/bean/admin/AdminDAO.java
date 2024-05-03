@@ -59,21 +59,20 @@ public class AdminDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// 전체 회원목록
-	public List<MemberDTO> loadAllMemeber(int start, int end){
+	public List<MemberDTO> loadAllMemeber(int start, int end) {
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
 		try {
 			conn = getConn();
-			sql="select * from (select M.*, rownum r from (select * from member order by member_num desc) M ) where r between ? and ?";
+			sql = "select * from (select M.*, rownum r from (select * from member order by member_num desc) M ) where r between ? and ?";
 			pstmt = conn.prepareStatement(sql);
-			
-			
+
 			pstmt.setInt(1, start);
 			pstmt.setInt(2, end);
 			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				MemberDTO dto = new MemberDTO();
 				dto.setMember_num(rs.getInt("member_num"));
 				dto.setId(rs.getString("id"));
@@ -92,29 +91,65 @@ public class AdminDAO {
 			close(conn, pstmt, rs);
 		}
 		return list;
-		
-		
+
 	}
+
 	// 전체 회원수 가져오기
 	public int AllMemberCount() {
 		int count = 0;
 		try {
 			conn = getConn();
-			sql="select count(*) from member";
+			sql = "select count(*) from member";
 			pstmt = conn.prepareStatement(sql);
-			
+
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				count = rs.getInt("count(*)");
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			close(conn, pstmt, rs);
 		}
-		
+
 		return count;
+	}
+
+	// 회원 상세정보
+	public MemberDTO memberDetail(int member_num) {
+		MemberDTO dto = new MemberDTO();
+		try {
+			conn = getConn();
+			sql="select * from member where member_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, member_num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setMember_num(rs.getInt("member_num"));
+				dto.setId(rs.getString("id"));
+				dto.setVendor(rs.getString("vendor"));
+				dto.setBusiness_number(rs.getString("business_number"));
+				dto.setBusiness_name(rs.getString("business_name"));
+				dto.setName(rs.getString("name"));
+				dto.setEmail(rs.getString("email"));
+				dto.setCellphone(rs.getString("cellphone"));
+				dto.setPhone(rs.getString("phone"));
+				dto.setGender(rs.getString("gender"));
+				dto.setGrade(rs.getString("grade"));
+				dto.setReg(rs.getTimestamp("reg"));
+				dto.setDel(rs.getString("del"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return dto;
+
 	}
 }

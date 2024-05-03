@@ -10,6 +10,7 @@ import java.util.List;
 
 import project.bean.category.CategoryDTO;
 import project.bean.img.ImgDTO;
+import project.bean.search.SearchDTO;
 
 public class ProductDAO {
 	// 싱글톤 방식으로 사용
@@ -168,18 +169,17 @@ public class ProductDAO {
 	}
 	
 	// 상품 목록 보기
-	public List<ProductDTO> productList(int start, int end, String keyword) {
+	public List<ProductDTO> productList(SearchDTO searchDTO) {
 		List<ProductDTO> list = new ArrayList<ProductDTO>();
-		String trimKeyWord = keyword.trim();
+		String trimKeyWord = searchDTO.getKeyWord().trim();
 		try {
 			conn = getConn();
-			sql="select * from (select p.*, rownum r from (select P.*, I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and product_name like ? order by P.product_num desc) p ) where r between ? and ?";
+			sql="select * from (select p.*, rownum r from (select P.*, I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and product_name like ? order by P."+searchDTO.getSortName().trim() +" "+ searchDTO.getSort().trim() +" ) p ) where r between ? and ?";
 			pstmt = conn.prepareStatement(sql);
 			
-			
 			pstmt.setString(1, "%" + trimKeyWord + "%");
-			pstmt.setInt(2, start);
-			pstmt.setInt(3, end);
+			pstmt.setInt(2, searchDTO.getStart());
+			pstmt.setInt(3, searchDTO.getEnd());
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -207,15 +207,15 @@ public class ProductDAO {
 		return list;
 	}
 	// 카테고리별 상품 목록 보기
-		public List<ProductDTO> CateProductList(int category_num, int start, int end) {
+		public List<ProductDTO> CateProductList(SearchDTO searchDTO, int category_num) {
 			List<ProductDTO> list = new ArrayList<ProductDTO>();
 			try {
 				conn = getConn();
-				sql="select * from (select p.*, rownum r from (select P.*,I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and category_num = ? order by P.product_num desc) p ) where r between ? and ?";
+				sql="select * from (select p.*, rownum r from (select P.*,I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and category_num = ? order by P."+ searchDTO.getSortName().trim() + " "+ searchDTO.getSort().trim() + " ) p ) where r between ? and ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, category_num);
-				pstmt.setInt(2, start);
-				pstmt.setInt(3, end);
+				pstmt.setInt(2, searchDTO.getStart());
+				pstmt.setInt(3, searchDTO.getEnd());
 				rs = pstmt.executeQuery();
 				
 				while(rs.next()) {

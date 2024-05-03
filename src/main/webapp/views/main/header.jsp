@@ -126,11 +126,11 @@ form{
 				width="150" height="150"></a></td>
 		<td>
 			<div class="dropdown">
-				<button class="dropbtn" onclick="location.href='main.jsp'">전체 상품
+				<button class="dropbtn" onclick="location.href='main.jsp?sortName=created_date&sort=desc'">전체 상품
 				</button>
 				<div class="dropdown-content">
 					<%for (CategoryDTO dto : list) { %> 			
-							<a href="categoryMain.jsp?category_num=<%=dto.getCategory_num()%>"><%=dto.getCategory_name()%></a>
+							<a href="categoryMain.jsp?sortName=created_date&sort=desc&category_num=<%=dto.getCategory_num()%>"><%=dto.getCategory_name()%></a>
 					<%}%>
 				</div>
 			</div> 
@@ -152,6 +152,8 @@ form{
 			<form id="searchForm" action="main.jsp" method="get">
 				<div class="search">
 					<input type="text" class="text" name="keyWord" placeholder="상품명을 검색하세요 ex)대대포막걸리">
+					<input type="hidden" name="sortName" value="created_date">
+					<input type="hidden" name="sort" value="desc">
 					<div>	
 						<img id="searchIcon" src="../images/search.png" width="30" height="25" >
 					</div>
@@ -176,13 +178,16 @@ form{
 			<% if (snum != 0) {%>
 			<a href="../cart/cartList.jsp?member_num=<%= snum %>"><img src="../images/cart.png"></a>
 			<%}else {%>
-			<a href="#"><img src="../images/cart.png" onclick="cartImg()"></a>
+			<a href="#"><img src="../images/cart.png" onclick="noSession()"></a>
 			<%}%>
 		</td>
-		<td><a href="../member/mypage/main.jsp"><img
-				src="../images/myinfo.png" width="25" height="25"></a></td>
-
-
+		<td>
+			<%if(snum!=0){%>
+				<a href="../member/mypage/main.jsp"><img src="../images/myinfo.png" width="25" height="25"></a>
+			<%}else{ %>
+				<img src="../images/myinfo.png" width="25" height="25" onclick="noSession()">
+			<%} %>
+		</td>
 	</tr>
 
 </table>
@@ -197,7 +202,7 @@ form{
 		document.getElementById("searchForm").submit();
 	});
 	
-	function cartImg(){
+	function noSession(){
 		alert("로그인 후 이용해주세요.");
 		location.href="../member/loginForm.jsp";
 	}
