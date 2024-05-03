@@ -15,7 +15,6 @@
 	  width: 1400px;
 	  height: 700px;
 	  border-collapse: collapse;
-	  border-radius: 10px;
 	  text-align: center;
 	  font-size: 25px;
 	  margin-bottom: 40px;

@@ -15,7 +15,6 @@
 		Cookie coo = new Cookie ("cid", dto.getId());
 		
 		coo.setMaxAge(60*60*24*2);
-		
 		response.addCookie(coo);
 	}
 	
