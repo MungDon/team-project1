@@ -119,22 +119,18 @@
 </table>
 </div>
 <button type="button" onclick="location.href='memberUpdateForm.jsp?member_num=<%=member_num%>'">수정</button>
-<<<<<<< HEAD:src/main/webapp/views/adminmember/memberDetail.jsp
-<%if(del.equals("가입")){ %>	
-	<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
-<%}else{ %>
-	<button type="button" onclick="restore(<%=member_num%>)">회원복구</button>
-<%} %>
-=======
-<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
->>>>>>> 985aa94e13d847cb082451a7180777d1ca208f91:src/main/webapp/views/admin/memberDetail.jsp
+	<%if(del.equals("가입")){ %>	
+		<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
+	<%}else{ %>
+		<button type="button" onclick="restore(<%=member_num%>)">회원복구</button>
+	<%} %>
+		<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
 </div>
 <script>
 	function deleteMember(member_num){
 		if(!confirm("회원을 탈퇴시키겠습니까?")){
 			return false;
 		}
-<<<<<<< HEAD:src/main/webapp/views/adminmember/memberDetail.jsp
 		location.href="memberDeletePro.jsp?del=2&member_num="+member_num;
 	}
 	function restore(member_num){
@@ -144,9 +140,7 @@
 		location.href="memberRestorePro.jsp?del=1&member_num="+member_num";
 		
 	}
-=======
 		location.href="memberDeletePro.jsp";
 	}
 
->>>>>>> 985aa94e13d847cb082451a7180777d1ca208f91:src/main/webapp/views/admin/memberDetail.jsp
 </script>
