@@ -25,7 +25,7 @@
 	List<CategoryDTO> list = dao.loadCategory();   
 %>
 <div class="main">
-	<form action="<%=request.getContextPath() %>/productAdd" method="post" enctype="multipart/form-data">
+	<form action="<%=request.getContextPath() %>/productAdd" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 		<input type="hidden" name="member_num" value="6"/>
 		<input type="hidden" name="first_stock" value="0"/>
 		
@@ -106,6 +106,17 @@
 <script type="text/javascript" src="/project/views/js/dragAndDrop.js"></script>
 <script type="text/javascript" src="/project/views/js/dragAndDrop2.js"></script>
 <script>
+	
+	function validateForm(){
+		let thumbnailInput = document.querySelector('input[name="thumbnail"]');
+		if(thumbnailInput.files.length === 0){
+			alert("썸네일 이미지는 필수 선택입니다.");
+			return false;
+		}
+		return true;
+	}	
+
+
 	function showInputBox(){
 		document.getElementById("d_price").style.display="block";
 	}

@@ -60,6 +60,7 @@ public class AdminDAO {
 		}
 	}
 
+	/*-----------------관리자 - 회원 파트 --------------------*/
 	// 전체 회원목록
 	public List<MemberDTO> loadAllMemeber(int start, int end) {
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
@@ -122,14 +123,14 @@ public class AdminDAO {
 		MemberDTO dto = new MemberDTO();
 		try {
 			conn = getConn();
-			sql="select * from member where member_num = ?";
+			sql = "select * from member where member_num = ?";
 			pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setInt(1, member_num);
-			
+
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				dto.setMember_num(rs.getInt("member_num"));
 				dto.setId(rs.getString("id"));
 				dto.setVendor(rs.getString("vendor"));
@@ -150,6 +151,104 @@ public class AdminDAO {
 			close(conn, pstmt, rs);
 		}
 		return dto;
+	}
 
+	// 회원 정보 수정
+	public int updateMember(MemberDTO dto) {
+		int result = 0;
+		try {
+			conn = getConn();
+			sql = "update member set id = ?, vendor = ?, name = ?, grade = ? where member_num = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, dto.getId());
+			pstmt.setString(2, dto.getVendor());
+			pstmt.setString(3, dto.getName());
+			pstmt.setString(4, dto.getGrade());
+			pstmt.setInt(5, dto.getMember_num());
+
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return result;
+	}
+
+	// 회원 가입상태 변경
+	public int changeMemberDel(int memeber_num, String del) {
+		int result = 0;
+		try {
+			conn = getConn();
+			sql = "update member set del = ? where member_num = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, del);
+			pstmt.setInt(2, memeber_num);
+
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return result;
+	}
+
+	// 판매자 승인대기 목록
+	public List<MemberDTO> loadWaitingMemeber(int start, int end) {
+		List<MemberDTO> list = new ArrayList<MemberDTO>();
+		try {
+			conn = getConn();
+			sql = "select * from (select M.*, rownum r from (select * from member order by member_num desc where vendor = '0') M ) where r between ? and ?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				MemberDTO dto = new MemberDTO();
+				dto.setMember_num(rs.getInt("member_num"));
+				dto.setId(rs.getString("id"));
+				dto.setVendor(rs.getString("vendor"));
+				dto.setBusiness_number(rs.getString("business_number"));
+				dto.setBusiness_name(rs.getString("business_name"));
+				dto.setName(rs.getString("name"));
+				dto.setGender(rs.getString("gender"));
+				dto.setGrade(rs.getString("grade"));
+				dto.setDel(rs.getString("del"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return list;
+	}
+
+	// 판매자 가입 승인 및 거절
+	public int changeVendor(String vendor, int member_num) {
+		int result = 0;
+		try {
+			conn = getConn();
+			sql="update member set vendor = ? where member_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, vendor);
+			pstmt.setInt(2, member_num);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return result;
 	}
 }

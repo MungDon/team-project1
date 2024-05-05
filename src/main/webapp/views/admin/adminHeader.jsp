@@ -108,7 +108,13 @@ form{
 			<a href="../main/adminMain.jsp"><img src="../images/admin2.png" width="250" height="250"></a>
 		</td>
 		<td>
-			<button  class="dropbtn" type="button" onclick="location.href='../admin/allMemberList.jsp'">전체 회원관리</button>
+			
+			<div class="dropdown">
+				<button  class="dropbtn" type="button" onclick="location.href='../admin/allMemberList.jsp'">전체 회원관리</button>
+			<div class="dropdown-content">
+				<a href="../admin/sellerJoinList.jsp">판매자 가입 승인대기 목록</a>
+			</div>
+			</div>
 		</td>
 		<td>
 			<button  class="dropbtn" type="button" onclick="location.href='../category/categoryInsertForm.jsp'">카테고리등록</button>

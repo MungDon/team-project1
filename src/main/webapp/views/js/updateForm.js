@@ -26,7 +26,6 @@
 			console.log(deleteList);
 		}
 	}
-	
 	// 수정완료 버튼 누를 시 배열을 하나의 덩어리로 만들어 input에 value 로  넣어주고 전송
 	function listJoin(){
 		input.value = deleteList.join(',');

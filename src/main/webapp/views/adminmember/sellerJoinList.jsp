@@ -3,35 +3,13 @@
 <%@ page import="project.bean.admin.AdminDAO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="project.bean.member.MemberDTO" %>
-<style>
-	.main{
-		width :100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;		
-	}
-	.adminTable{
-	  width: 1400px;
-	  height: 700px;
-	  border-collapse: collapse;
-	  border-radius: 10px;
-	  text-align: center;
-	  font-size: 25px;
-	  margin-bottom: 40px;
-	}
-	.adminTable>td,.tr1,.tr2{
-		border-top : 1px solid #ddd;
-	}
-	.adminTable> .1,.2{
-		width : 10%;
-	}
-</style>
-<jsp:include page="../admin/adminHeader.jsp"></jsp:include>
-<%	
+<%@ page import="project.bean.enums.MemberVendor" %>
+<%@ page import="project.bean.enums.MemberStatus" %>
+<%
 	AdminDAO dao = AdminDAO.getInstance();
-	String vendor ="";
 	String del ="";
+	String vendor="";	
+
 	//페이징
 	int pageSize = 10;
 	
@@ -42,12 +20,10 @@
 	int currentPage = Integer.parseInt(pageNum);
 	int startRow = ( currentPage - 1 ) * pageSize + 1;
 	int endRow = currentPage * pageSize;
-	int allMemberCount = dao.AllMemberCount();	
-	
-	List<MemberDTO> list = dao.loadAllMemeber(startRow, endRow);
-	
-%>
+	int allMemberCount = dao.AllMemberCount();
 
+	List<MemberDTO> list = dao.loadWaitingMemeber(startRow, endRow);
+%>
 <div class="main">
 <div style="text-align: left;width: 1400px;">
 <p style="font-size:20px;">전체회원수 <b style="color:skyblue"><%=allMemberCount%></b>명</p>
@@ -63,29 +39,13 @@
 		<th class="7">성별</th>
 		<th class="8">회원등급</th>
 		<th class="9">탈퇴여부</th>
-		<th class="9">회원관리</th>
+		<th class="9">승인/거절</th>
 	</tr>
 	<% for(MemberDTO dto : list){ 
 		
-		switch(dto.getVendor()){
-		case "0":
-			vendor = "판매자 가입 승인대기";
-			break;
-		case "1" : 
-			vendor = "일반회원";
-			break;
-		case "2" : 
-			vendor = "판매자 회원";
-			break;
-	}
-	    switch(dto.getDel()){
-    	case "1" :
-    		del = "가입";
-    		break;
-    	case "2" :
-    		del="탈퇴";
-    		break;
-    }
+		vendor = MemberVendor.getNameByVendor(dto.getVendor());
+		
+		del = MemberStatus.getNameByStatus(dto.getDel()); 
 	
 	%>
 	
@@ -108,7 +68,8 @@
 		<td class="8"><%=dto.getGrade() %></td>
 		<td class="9"><%=del %></td>
 		<td class="9">
-			<button type="button" onclick="location.href='memberDetail.jsp?member_num=<%=dto.getMember_num()%>'">관리</button>
+			<button type="button" onclick="approval(<%=dto.getMember_num()%>)">승인</button>
+			<button type="button" onclick="refuse(<%=dto.getMember_num()%>)">거절</button>
 		</td>
 	</tr>
 	<%} %>
@@ -139,3 +100,18 @@
 	
 %>
 </div>
+
+<script>
+	function approval(member_num){
+		if(!confirm("판매자 가입을 승인하시겠습니까?")){
+			return false;
+		}
+		location.href="sellerApprovalPro.jsp?vendor=2&member_num="+member_num;
+	}
+	function refuse(member_num){
+		if(!confirm("판매자 가입을 거절 하시겠습니까?")){
+			return false;
+		}
+		location.href="sellerRefusePro.jsp?vendor=4&member_num="+member_num;
+	}
+</script>

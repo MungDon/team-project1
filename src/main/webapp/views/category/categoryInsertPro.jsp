@@ -5,7 +5,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="project.bean.category.CategoryDTO" %>
 <% request.setCharacterEncoding("UTF-8"); %>
-
+<jsp:include page="../admin/adminHeader.jsp"/>
 <%
 	int count = Integer.parseInt(request.getParameter("count"));
     CategoryDAO dao = CategoryDAO.getInstance(); 

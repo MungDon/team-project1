@@ -221,7 +221,7 @@ form > .info{
 		<br/>
 		<br/>
 		<input id="submit" type="submit" value="수정 완료" onclick="listJoin()">
-		<button class="cancel" type="button" onclick="location.href='../main/main.jsp'">취소</button>
+		<button class="cancel" type="button" onclick="location.href='../main/main.jsp?sortName=created_date&sort=desc'">취소</button>
 		
 	</form>
 </div>
