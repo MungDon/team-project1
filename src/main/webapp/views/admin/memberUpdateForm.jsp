@@ -1,11 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="project.bean.admin.AdminDAO"%>
 <%@ page import="java.util.List"%>
 <%@ page import="project.bean.member.MemberDTO"%>
 <%@ page import="java.lang.reflect.Field"%>
-<%@ page import="project.bean.enums.MemberVendor" %>
-<%@ page import="project.bean.enums.MemberStatus" %>
 <style>
 	.main{
 		display: flex;
@@ -32,22 +30,10 @@
 </style>
 <jsp:include page="../admin/adminHeader.jsp"></jsp:include>
 <% 
-	AdminDAO dao = AdminDAO.getInstance();
+	int member_num = Integer.parseInt(request.getParameter("member_num"));
 	String vendor="";	
 	String del ="";
-	int member_num = 0;
-	
-	if(request.getParameter("member_num")!=null){
-		member_num = Integer.parseInt(request.getParameter("member_num"));
-	}else{%>
-		<script>
-			alert("회원 시퀀스가 없습니다 코드 확인 요망");
-			location.href="allMemberList.jsp";
-		</script>
-		
-<%	}
-		
-	
+	AdminDAO dao = AdminDAO.getInstance();
 	MemberDTO dto = dao.memberDetail(member_num);
 	
 	Field[] fields = dto.getClass().getDeclaredFields();
@@ -68,29 +54,56 @@
 		}
 	}
     
-	vendor = MemberVendor.getNameByVendor(dto.getVendor());
-	del = MemberStatus.getNameByStatus(dto.getDel());
+    switch(dto.getVendor()){
+		case "0":
+			vendor = "판매자 가입 승인대기";
+			break;
+		case "1" : 
+			vendor = "일반회원";
+			break;
+		case "2" : 
+			vendor = "판매자 회원";
+			break;
+	}
+    
+    switch(dto.getDel()){
+    	case "1" :
+    		del = "가입";
+    		break;
+    	case "2" :
+    		del="탈퇴";
+    		break;
+    }
 	%>
 <div class="main">
 <div class="detailTableBox">
 <table class="detailTable">
 	<tr>
 		<th>회원번호</th>
-		<td><%=dto.getMember_num() %></td>
+			<td><input type="hidden" name="member_num" value="<%=dto.getMember_num() %>"></td>
 		<th>ID</th>
-		<td><%=dto.getId() %></td>
+		<td><input type="text" name="id" value="<%=dto.getId() %>"></td>
 	</tr>
 	<tr>
 		<th>회원권한</th>
-		<td><%=vendor %></td>
+		<td>
+		
+			<select name="vendor">
+				<option value="<%=dto.getVendor()%>" selected><%=dto.getVendor()%></option>	
+				<option value="0">0</option>	
+				<option value="1">1</option>	
+				<option value="2">2</option>	
+		
+			</select>
+		</td>
 		<th>사업자번호</th>
-		<td><%=dto.getBusiness_number() %></td>
+		<td><input type="text" name="business_number" value="<%=dto.getBusiness_number()%>"></td>
 	</tr>
 	<tr>
 		<th>사업장 명</th>
-		<td><%=dto.getBusiness_name() %></td>
+		<td><input type="text" name="business_name" value="<%=dto.getBusiness_name() %>"></td>
 		<th>회원명</th>
-		<td><%=dto.getName() %></td>
+		<td><input type="text" name="name" value="<%=dto.getName() %>"></td>
 	</tr>
 	<tr>
 		<th>이메일</th>
@@ -100,53 +113,42 @@
 	</tr>
 	<tr>
 		<th>전화번호</th>
-		<td><%=dto.getPhone() %></td>
+		<td><%=dto.getPhone()%></td>
 		<th>성별</th>
 		<td><%=dto.getGender()%></td>
 	</tr>
 	<tr>
 		<th>생일</th>
-		<td><%=dto.getBirth() %></td>
+		<td><%=dto.getBirth()%></td>
 		<th>등급</th>
-		<td><%=dto.getGender() %></td>
+		<td>
+			<select name="grade">
+				<option value="<%=dto.getGrade()%>"selected><%=dto.getGrade()%></option>			
+				<option value="BRONZE">BRONZE</option>			
+				<option value="SILVER">SILVER</option>			
+				<option value="GOLD">GOLD</option>			
+			</select>
+		</td>
 	</tr>
 	<tr>
 		<th>가입일자</th>
 		<td><%=dto.getReg() %></td>
 		<th>탈퇴여부</th>
-		<td><%=del%></td>
+		<td>
+			<%=del%>
+			<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
+		</td>
 	</tr>
 </table>
 </div>
-<button type="button" onclick="location.href='memberUpdateForm.jsp?member_num=<%=member_num%>'">수정</button>
-<<<<<<< HEAD:src/main/webapp/views/adminmember/memberDetail.jsp
-<%if(del.equals("가입")){ %>	
-	<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
-<%}else{ %>
-	<button type="button" onclick="restore(<%=member_num%>)">회원복구</button>
-<%} %>
-=======
-<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
->>>>>>> 985aa94e13d847cb082451a7180777d1ca208f91:src/main/webapp/views/admin/memberDetail.jsp
+<button type="button" onclick="location.href='memberUpdateFormPro.jsp'">수정완료</button>
 </div>
 <script>
 	function deleteMember(member_num){
 		if(!confirm("회원을 탈퇴시키겠습니까?")){
 			return false;
 		}
-<<<<<<< HEAD:src/main/webapp/views/adminmember/memberDetail.jsp
-		location.href="memberDeletePro.jsp?del=2&member_num="+member_num;
-	}
-	function restore(member_num){
-		if(!confirm("회원을 복구시키겠습니까?")){
-			return false;			
-		}
-		location.href="memberRestorePro.jsp?del=1&member_num="+member_num";
-		
-	}
-=======
 		location.href="memberDeletePro.jsp";
 	}
 
->>>>>>> 985aa94e13d847cb082451a7180777d1ca208f91:src/main/webapp/views/admin/memberDetail.jsp
 </script>
