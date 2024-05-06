@@ -113,13 +113,13 @@
 			endPage = pageCount;
 		}%>
 	<%	if( startPage > 10 ){ %>
-			<a href="../main/main.jsp?pageNum=<%=startPage-10 %>">[이전]</a>
+			<a href="allMemberList.jsp?pageNum=<%=startPage-10 %>">[이전]</a>
 <% 		}
 		for( int i = startPage; i <= endPage; i++ ){ %>
-			<a href="../main/main.jsp?pageNum=<%=i%>">[<%=i %>]</a>
+			<a href="allMemberList.jsp?pageNum=<%=i%>">[<%=i %>]</a>
 <%		}
 		if( endPage < pageCount){ %>
-			<a href="../main/main.jsp?pageNum=<%=startPage+10 %>">[다음]</a>
+			<a href="allMemberList.jsp?pageNum=<%=startPage+10 %>">[다음]</a>
 <%		}
 	}
 	

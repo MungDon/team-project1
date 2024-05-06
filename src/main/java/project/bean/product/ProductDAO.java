@@ -112,7 +112,7 @@ public class ProductDAO {
 		int product_num = 0;
 		try {
 			conn = getConn();
-			sql = "insert into product values(product_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 'N', systimestamp,systimestamp,?)";
+			sql = "insert into product values(product_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 'N', systimestamp,systimestamp,?,'0')";
 			
 			pstmt = conn.prepareStatement(sql, new String[] { "PRODUCT_NUM" });
 		
@@ -174,7 +174,7 @@ public class ProductDAO {
 		String trimKeyWord = searchDTO.getKeyWord().trim();
 		try {
 			conn = getConn();
-			sql="select * from (select p.*, rownum r from (select P.*, I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and product_name like ? order by P."+searchDTO.getSortName().trim() +" "+ searchDTO.getSort().trim() +" ) p ) where r between ? and ?";
+			sql="select * from (select p.*, rownum r from (select P.*, I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and status = '1' and I.img_type = 'thumbnail' and product_name like ? order by P."+searchDTO.getSortName().trim() +" "+ searchDTO.getSort().trim() +" ) p ) where r between ? and ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, "%" + trimKeyWord + "%");
@@ -211,7 +211,7 @@ public class ProductDAO {
 			List<ProductDTO> list = new ArrayList<ProductDTO>();
 			try {
 				conn = getConn();
-				sql="select * from (select p.*, rownum r from (select P.*,I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and category_num = ? order by P."+ searchDTO.getSortName().trim() + " "+ searchDTO.getSort().trim() + " ) p ) where r between ? and ?";
+				sql="select * from (select p.*, rownum r from (select P.*,I.img_name from product  P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and status = '1' and I.img_type = 'thumbnail' and category_num = ? order by P."+ searchDTO.getSortName().trim() + " "+ searchDTO.getSort().trim() + " ) p ) where r between ? and ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, category_num);
 				pstmt.setInt(2, searchDTO.getStart());
@@ -306,7 +306,7 @@ public class ProductDAO {
 					dto.setHas_delivery_fee(rs.getString("has_delivery_fee"));
 					
 					// 이미지 정보
-					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+				 	List<ImgDTO> imgs = new ArrayList<ImgDTO>();
      		            do {
 		                ImgDTO imgDto = new ImgDTO();
 		                imgDto.setImg_name(rs.getString("img_name"));

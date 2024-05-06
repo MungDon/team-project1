@@ -19,6 +19,7 @@ public enum MemberStatus {
 		return name;
 	}
 	
+	//가져온 권한에 따라 비교하고 일치하는값의 name 을 리턴 = > 사용자에게 보여줌
 	public static String getNameByStatus(String statusCode) {
 		for(MemberStatus enumValue : MemberStatus.values()) {
 			if(enumValue.getCode().equals(statusCode)) {

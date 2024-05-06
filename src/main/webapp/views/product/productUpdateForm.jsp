@@ -181,7 +181,6 @@ form > .info{
 					for(ImgDTO img : data.getImages()){ 
 					%>
 				<div id="imgBox">
-				
 				<img src="../upload/<%=img.getImg_name()%>" width="200" height="200" id="<%=img.getImg_num()%>"/>
 				<input type="button" id="deleteBtn" value="삭제" onclick="deleteImg(<%=img.getImg_num()%>)">
 				<input type="button" id="cancelBtn" value="취소" onclick="deleteCancel(<%=img.getImg_num()%>)"><br/>
