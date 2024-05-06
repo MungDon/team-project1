@@ -109,7 +109,7 @@ form{
 		</td>
 		<td>
 			<div class="dropdown">
-				<button  class="dropbtn" type="button" onclick="location.href='../admin/allMemberList.jsp'">전체 회원관리</button>
+				<button  class="dropbtn" type="button" onclick="location.href='../adminMember/allMemberList.jsp'">전체 회원관리</button>
 				<div class="dropdown-content">
 					<a href="../admin/sellerJoinList.jsp">판매자 가입 승인대기 목록</a>
 				</div>
@@ -117,9 +117,9 @@ form{
 		</td>
 		<td>
 			<div class="dropdown">
-				<button  class="dropbtn" type="button" onclick="location.href='../admin/allMemberList.jsp'">전체 상품관리</button>
+				<button  class="dropbtn" type="button" onclick="location.href='../adminProduct/allProductList.jsp'">전체 상품관리</button>
 				<div class="dropdown-content">
-					<a href="../admin/sellerJoinList.jsp">판매자 상품등록 승인대기 목록</a>
+					<a href="../adminProduct/productAddList.jsp">판매자 상품등록 승인대기 목록</a>
 				</div>
 			</div>
 		</td>

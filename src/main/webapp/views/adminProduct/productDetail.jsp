@@ -49,18 +49,32 @@
 </table>	
 <h2>현재 등록된 이미지</h2>
 <div class="imgBox">
-<%	for(ImgDTO img : dto.getImages()){ %>
-	<div class="img">
-		<img src="../upload/<%=img.getImg_name()%>" width="200" height="200" id="<%=img.getImg_num()%>"/>
-	</div>
-<%	} %>
+<%		for(ImgDTO img : dto.getImages()){ %>
+			<div class="img">
+				<img src="../upload/<%=img.getImg_name()%>" width="200" height="200" id="<%=img.getImg_num()%>"/>
+			</div>
+<%		} %>  
 </div>
-	
-	
-	
+<button type="button" onclick="adminProductUpdateForm.jsp?product_num=<%=product_num%>">수정하기</button>
+<button type="button" onclick="deleteProduct(<%=product_num%>)">삭제하기</button>
+
+<script>
+	function deleteProduct(product_num){
+		if(!confirm("해당 상품을 삭제하시겠습니까?")){
+			return false;
+		}
+		location.href="../product/productDeletePro.jsp?product_num=<%=product_num%>&ad=1";
+	}
+</script>
+
+
 		
 		
-<%	}else{%>
+		
+		
+		
+		
+<%	}else{ %>
 		<script>
 			alert("상품 시퀀스 번호가 없습니다 코드확인 요망");
 			location.href="allProductList.jsp";
