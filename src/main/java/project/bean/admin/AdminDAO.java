@@ -95,9 +95,30 @@ public class AdminDAO {
 			close(conn, pstmt, rs);
 		}
 		return list;
-
+	}
+	
+	// 가입대기자 회원수 가져오기
+	public int sellerJoinCount() {
+		int count = 0;
+		try {
+			conn = getConn();
+			sql = "select count(*) from member where vendor = '0'";
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt("count(*)");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return count;
 	}
 
+	
 	// 전체 회원수 가져오기
 	public int AllMemberCount() {
 		int count = 0;
@@ -169,7 +190,7 @@ public class AdminDAO {
 			pstmt.setString(3, dto.getName());
 			pstmt.setString(4, dto.getGrade());
 			pstmt.setInt(5, dto.getMember_num());
-
+			
 			result = pstmt.executeUpdate();
 
 		} catch (Exception e) {
@@ -206,7 +227,7 @@ public class AdminDAO {
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
 		try {
 			conn = getConn();
-			sql = "select * from (select M.*, rownum r from (select * from member order by member_num desc where vendor = '0') M ) where r between ? and ?";
+			sql = "select * from (select M.*, rownum r from (select * from member where vendor = '0' order by member_num desc) M ) where r between ? and ?";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1, start);
@@ -278,13 +299,14 @@ public class AdminDAO {
 				dto.setProduct_name(rs.getString("product_name"));
 				dto.setPrice(rs.getInt("price"));
 				dto.setCreated_date(rs.getTimestamp("created_date"));
+				dto.setDelete_yn(rs.getString("delete_yn"));
 				imgDto.setImg_name(rs.getString("img_name"));
+				
 				
 				List<ImgDTO> imgs = new ArrayList<ImgDTO>();
 				imgs.add(imgDto);
 				dto.setImages(imgs);
 				list.add(dto);
-				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -333,14 +355,35 @@ public class AdminDAO {
 			close(conn, pstmt, rs);
 		}
 		return business_name; 
-		
+	}
+	// 해당 상품 판매자의 사업자번호
+	public String findBusinessNumber(int member_num) {
+		String business_number = "";
+		try {
+			conn = getConn();
+			sql="select business_number from member where member_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, member_num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				business_number = rs.getString("business_number");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return business_number; 
 	}
 	// 상품 상세보기
 	public ProductDTO productDetail(int product_num) {
 		ProductDTO dto = new ProductDTO();
 		try {
 			conn = getConn();
-			sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ? order by P.product_num desc";
+			sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.product_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, product_num);
 			rs = pstmt.executeQuery();
@@ -358,6 +401,7 @@ public class AdminDAO {
 				dto.setHas_delivery_fee(rs.getString("has_delivery_fee"));
 				dto.setCreated_date(rs.getTimestamp("created_date"));
 				dto.setModified_date(rs.getTimestamp("modified_date"));
+				dto.setDelete_yn(rs.getString("delete_yn"));
 				
 				// 이미지 정보
 			 	List<ImgDTO> imgs = new ArrayList<ImgDTO>();
@@ -375,5 +419,107 @@ public class AdminDAO {
 			close(conn, pstmt, rs);
 		}
 		return dto;
+	}
+	
+	//상품 복구하기
+	public int restoreProduct(int product_num) {
+		int result = 0;
+		try {
+			conn = getConn();
+			sql="update product set delete_yn = 'N' where product_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, product_num);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return result;
+	}
+	// 상품 승인 대기 목록 보기
+	public List<ProductDTO> loadProductwaitList(SearchDTO searchDTO) {
+		List<ProductDTO> list = new ArrayList<ProductDTO>();
+		String trimKeyWord = searchDTO.getKeyWord().trim();
+		try {
+			conn = getConn();
+			sql="select * from (select p.*, rownum r from (select P.*, I.img_name from product  P left outer join img I on P.product_num = I.product_num where I.img_type = 'thumbnail' and P.status = '0' and product_name like ? order by P."+searchDTO.getSortName().trim() +" "+ searchDTO.getSort().trim() +" ) p ) where r between ? and ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, "%" + trimKeyWord + "%");
+			pstmt.setInt(2, searchDTO.getStart());
+			pstmt.setInt(3, searchDTO.getEnd());
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductDTO dto = new ProductDTO();
+				ImgDTO imgDto = new ImgDTO();
+				dto.setProduct_num(rs.getInt("product_num"));
+				dto.setMember_num(rs.getInt("member_num"));
+				dto.setProduct_name(rs.getString("product_name"));
+				dto.setPrice(rs.getInt("price"));
+				dto.setProduct_info(rs.getString("product_info"));
+				dto.setCreated_date(rs.getTimestamp("created_date"));
+				dto.setDelete_yn(rs.getString("delete_yn"));
+				dto.setStatus(rs.getString("status"));
+				imgDto.setImg_name(rs.getString("img_name"));
+				
+				
+				
+				List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+				imgs.add(imgDto);
+				dto.setImages(imgs);
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return list;
+	}
+	
+	//승인 대기 상품 개수 
+	public int productAddCount() {
+		int count = 0;
+		try {
+			conn = getConn();
+			sql="select count(*) from product where status = '0'";
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				count = rs.getInt("count(*)");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return count;
+	}
+	
+	// 상품 승인 거절 메서드
+	public int changeProductStatus(String status ,int product_num) {
+		int result = 0;
+		try {
+			conn = getConn();
+			sql="update product set status = ? where product_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, status);
+			pstmt.setInt(2,product_num);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn, pstmt, rs);
+		}
+		return result;
 	}
 }

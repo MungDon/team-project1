@@ -1,4 +1,3 @@
-<%@page import="java.sql.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="project.bean.product.ProductDAO"%>
@@ -134,6 +133,7 @@ input[type]{
 <div class="main">
 	<form action="<%=request.getContextPath() %>/productUpdate" method="post" enctype="multipart/form-data">
 		<input type="hidden"name="product_num" value="<%=product_num%>"/>	
+		<input type="hidden"name="ad" value="1"/>	
 		
 		<%--이미지삭제 예약 리스트 히든 --%>
 		<input type="hidden"name="deleteList"/>	
@@ -242,7 +242,7 @@ input[type]{
 		<br/>
 		<br/>
 		<input id="submit" type="submit" value="수정 완료" onclick="listJoin()">
-		<button class="cancel" type="button" onclick="location.href='../main/main.jsp?sortName=created_date&sort=desc'">취소</button>
+		<button class="cancel" type="button" onclick="location.href='../adminproduct/allProductList.jsp?sortName=created_date&sort=desc'">취소</button>
 		
 	</form>
 </div>

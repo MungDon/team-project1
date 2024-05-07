@@ -75,10 +75,15 @@
 	}
 	if(request.getParameter("sortName")!=null){
 		sortName = request.getParameter("sortName");
+	}else{
+		sortName = "created_date";
 	}
+	
 	if(request.getParameter("sort")!=null){
 		sort = request.getParameter("sort");
-	}	
+	}else{
+		sort = "desc";
+	}		
 
 	ProductDAO dao = ProductDAO.getInstance();
 	
@@ -101,7 +106,7 @@
 	
 %>
 <div class="count" >
-		<%if(snum!=0 && svendor.equals("2")){ %>
+		<%if(snum!=0 && svendor.equals("2") || snum!=0 && svendor.equals("3")){ %>
 	<button type="button" onclick="goProductForm()">상품등록</button>
 		<%} %>
 	<p>전체 상품 <b style="color:skyblue"><%=productCount %></b>개</p>

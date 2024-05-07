@@ -7,7 +7,7 @@ public enum ProductStatus {
 	
 	private String code;	// 위에 상수에 "1","2" 이런번호 부분이 code
 	private String name;	// 위에 상수에 "상품 등록 승인대기" 등 과같은 부분이 name
-	
+	       
 	public String getCode() { // 단순 get메서드
 		return code;
 	}

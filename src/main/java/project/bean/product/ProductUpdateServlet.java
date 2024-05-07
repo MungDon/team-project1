@@ -27,6 +27,7 @@ public class ProductUpdateServlet extends HttpServlet {
 		int totalStatus = 0; // 이미지 저장 성공 여부 상태 성공 1, 실패 0
 		String fileName = ""; 
 		int resultCount = 0;	// 넘어온 이미지 수 만큼 카운트
+		int ad = 0;
 
 		request.setCharacterEncoding("UTF-8");
 
@@ -37,7 +38,11 @@ public class ProductUpdateServlet extends HttpServlet {
 		if (!filefolder.exists()) {
 			filefolder.mkdirs();
 		}
-
+		// admin 에서 넘어오면 받는 값
+		if(request.getParameter("ad") != null) {
+			ad = Integer.parseInt(request.getParameter("ad"));
+		}
+	
 		// 수정 정보 저장
 		ProductDTO data = dto.setProductAdd(request);
 
@@ -45,8 +50,10 @@ public class ProductUpdateServlet extends HttpServlet {
 
 		// 삭제 할 이미지 처리
 		String totalImgNums = request.getParameter("deleteList");
+		
 		// 삭제할 이미지가 없으면 "" 로넘어옴
 		if (!(Util.isEmpty(totalImgNums))) {
+			
 			String[] imgNums = totalImgNums.split(",");
 
 			Integer[] convertImgNums = new Integer[imgNums.length];
@@ -81,6 +88,7 @@ public class ProductUpdateServlet extends HttpServlet {
 			
 			resultCount++;
 		}
+		
 		int imgAddCount = dao.ImgInsertCount(data.getProduct_num());
 		System.out.println(resultCount);
 		System.out.println(imgAddCount);
@@ -91,9 +99,17 @@ public class ProductUpdateServlet extends HttpServlet {
 		
 		
 		// 모든 처리후 포워드로 이동
-		request.setAttribute("totalStatus", totalStatus);
-		request.setAttribute("result", result);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productUpdatePro.jsp");
-		dispatcher.forward(request, response);
+		if(ad == 0) {
+			request.setAttribute("totalStatus", totalStatus);
+			request.setAttribute("result", result);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product/productUpdatePro.jsp");
+			dispatcher.forward(request, response);
+		}
+		if(ad == 1) {
+			request.setAttribute("totalStatus", totalStatus);
+			request.setAttribute("result", result);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/adminproduct/adminProductPro.jsp");
+			dispatcher.forward(request, response);
+		}
 	}
 }

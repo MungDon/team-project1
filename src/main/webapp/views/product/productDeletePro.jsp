@@ -5,7 +5,7 @@
 	
 	int product_num=0; 
 	int ad = 0;
-	if(request.getParameter("ad")){
+	if(request.getParameter("ad")!=null){
 		ad = Integer.parseInt(request.getParameter("ad"));
 	}
 	
@@ -24,7 +24,7 @@
 	if(result == 1 && ad == 1){%>
 		<script>
 			alert('삭제되었습니다');
-			location.href="../adminProduct/allProductList.jsp";
+			location.href="../adminproduct/allProductList.jsp";
 		</script>	
 <%	} 
 	if(result != 1){	%>

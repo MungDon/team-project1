@@ -11,6 +11,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex-direction: column;
 	}
 	.detailTableBox{
 		border : 1px solid #000;
@@ -118,14 +119,21 @@
 	</tr>
 </table>
 </div>
-<button type="button" onclick="location.href='memberUpdateForm.jsp?member_num=<%=member_num%>'">수정</button>
-	<%if(del.equals("가입")){ %>	
-		<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
-	<%}else{ %>
-		<button type="button" onclick="restore(<%=member_num%>)">회원복구</button>
-	<%} %>
-		<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
+<br>
+<br>
+<br>
+	<div class="btns																								">
+		<button type="button" onclick="location.href='memberUpdateForm.jsp?member_num=<%=member_num%>'">수정</button>
+		<%if(del.equals("가입")){ %>	
+			<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
+		<%}else{ %>
+			<button type="button" onclick="restore(<%=member_num%>)">회원복구</button>
+		<%} %>
+			<button type="button" onclick="location.href='../adminmember/allMemberList.jsp'">목록으로</button>
+	</div>
 </div>
+
+
 <script>
 	function deleteMember(member_num){
 		if(!confirm("회원을 탈퇴시키겠습니까?")){
@@ -137,10 +145,7 @@
 		if(!confirm("회원을 복구시키겠습니까?")){
 			return false;			
 		}
-		location.href="memberRestorePro.jsp?del=1&member_num="+member_num";
-		
-	}
-		location.href="memberDeletePro.jsp";
+		location.href="memberRestorePro.jsp?del=1&member_num="+member_num;
 	}
 
 </script>

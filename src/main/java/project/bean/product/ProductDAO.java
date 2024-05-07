@@ -248,7 +248,7 @@ public class ProductDAO {
 			int result = 0;
 			try {
 				conn = getConn();
-				sql = "select count(*) from product where delete_yn = 'N'";
+				sql = "select count(*) from product where delete_yn = 'N' and status = '1'";
 				pstmt = conn.prepareStatement(sql);
 				rs= pstmt.executeQuery();
 				if(rs.next()) {
@@ -267,7 +267,7 @@ public class ProductDAO {
 			int result = 0;
 			try {
 				conn = getConn();
-				sql = "select count(*) from product where delete_yn = 'N' and category_num = ?";
+				sql = "select count(*) from product where delete_yn = 'N' and status = '1' and category_num = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1,category_num);
 				rs= pstmt.executeQuery();
@@ -283,17 +283,16 @@ public class ProductDAO {
 		}
 		
 		// 상품 수정하기 폼
-		public List<ProductDTO> updateForm(int product_num) {
-			List<ProductDTO> list = new ArrayList<ProductDTO>();
+		public ProductDTO updateForm(int product_num) {
+			ProductDTO dto = new ProductDTO();
 			try {
 				conn = getConn();
-				sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ? order by P.product_num desc";
+				sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and status = '1' and P.product_num = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, product_num);
 				rs = pstmt.executeQuery();
 				
 				if(rs.next()) {
-					ProductDTO dto = new ProductDTO();
 					dto.setProduct_num(rs.getInt("product_num"));
 					dto.setMember_num(rs.getInt("member_num"));
 					dto.setCategory_num(rs.getInt("category_num"));
@@ -314,14 +313,13 @@ public class ProductDAO {
 		                imgs.add(imgDto);
 		            } while (rs.next() && product_num == rs.getInt("product_num")); // 같은 상품 번호인 경우에만 계속해서 이미지 추가
 					dto.setImages(imgs);
-		            list.add(dto);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				close(conn, pstmt, rs);
 			}
-			return list;
+			return dto;
 		}
 		
 		// 상품 수정

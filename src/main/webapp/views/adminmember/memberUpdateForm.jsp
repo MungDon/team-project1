@@ -10,10 +10,9 @@
 	.main{
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: center;    
 	}
 	.detailTableBox{
-		border : 1px solid #000;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -61,78 +60,81 @@
 	%>
 <div class="main">
 <div class="detailTableBox">
-<table class="detailTable">
-	<tr>
-		<th>회원번호</th>
-			<td><input type="hidden" name="member_num" value="<%=dto.getMember_num() %>"></td>
-		<th>ID</th>
-		<td><input type="text" name="id" value="<%=dto.getId() %>"></td>
-	</tr>
-	<tr>
-		<th>회원권한</th>
-		<td>
-		
-			<select name="vendor">
-				<option value="<%=dto.getVendor()%>" selected><%=dto.getVendor()%></option>	
-				<option value="0">0</option>	
-				<option value="1">1</option>	
-				<option value="2">2</option>	
-		
-			</select>
-		</td>
-		<th>사업자번호</th>
-		<td><%=dto.getBusiness_number()%></td>
-	</tr>
-	<tr>
-		<th>사업장 명</th>
-		<td><%=dto.getBusiness_name() %></td>
-		<th>회원명</th>
-		<td><input type="text" name="name" value="<%=dto.getName() %>"></td>
-	</tr>
-	<tr>
-		<th>이메일</th>
-		<td><%=dto.getEmail() %></td>
-		<th>핸드폰</th>
-		<td><%=dto.getCellphone() %></td>
-	</tr>
-	<tr>
-		<th>전화번호</th>
-		<td><%=dto.getPhone()%></td>
-		<th>성별</th>
-		<td><%=dto.getGender()%></td>
-	</tr>
-	<tr>
-		<th>생일</th>
-		<td><%=dto.getBirth()%></td>
-		<th>등급</th>
-		<td>
-			<select name="grade">
-				<option value="<%=dto.getGrade()%>"selected><%=dto.getGrade()%></option>			
-				<option value="BRONZE">BRONZE</option>			
-				<option value="SILVER">SILVER</option>			
-				<option value="GOLD">GOLD</option>			
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<th>가입일자</th>
-		<td><%=dto.getReg() %></td>
-		<th>탈퇴여부</th>
-		<td>
-			<%=del%>
-			<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
-		</td>
-	</tr>
-</table>
+<form action="memberUpdatePro.jsp" method="post">
+	<table class="detailTable">
+		<tr>
+			<th>회원번호</th>
+				<td><input type="hidden" name="member_num" value="<%=dto.getMember_num() %>"></td>
+			<th>ID</th>
+			<td><input type="text" name="id" value="<%=dto.getId() %>"></td>
+		</tr>
+		<tr>
+			<th>회원권한</th>
+			<td>
+			
+				<select name="vendor">
+					<option value="<%=dto.getVendor()%>" selected><%=dto.getVendor()%></option>	
+					<option value="0">판매자 승인대기</option>	
+					<option value="1">일반회원</option>	
+					<option value="2">판매자</option>	
+				</select>
+			</td>
+			<th>사업자번호</th>
+			<td><%=dto.getBusiness_number()%></td>
+		</tr>
+		<tr>
+			<th>사업장 명</th>
+			<td><%=dto.getBusiness_name() %></td>
+			<th>회원명</th>
+			<td><input type="text" name="name" value="<%=dto.getName() %>"></td>
+		</tr>
+		<tr>
+			<th>이메일</th>
+			<td><%=dto.getEmail() %></td>
+			<th>핸드폰</th>
+			<td><%=dto.getCellphone() %></td>
+		</tr>
+		<tr>
+			<th>전화번호</th>
+			<td><%=dto.getPhone()%></td>
+			<th>성별</th>
+			<td><%=dto.getGender()%></td>
+		</tr>
+		<tr>
+			<th>생일</th>
+			<td><%=dto.getBirth()%></td>
+			<th>등급</th>
+			<td>
+				<select name="grade">
+					<option value="<%=dto.getGrade()%>"selected><%=dto.getGrade()%></option>			
+					<option value="BRONZE">BRONZE</option>			
+					<option value="SILVER">SILVER</option>			
+					<option value="GOLD">GOLD</option>			
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>가입일자</th>
+			<td><%=dto.getReg() %></td>
+			<th>탈퇴여부</th>
+			<td>
+				<%=del%>
+				<button type="button" onclick="deleteMember(<%=member_num%>)">강제탈퇴</button>
+			</td>
+		</tr>
+	</table>
+<button type="submit">수정완료</button>
+<button type="button" onclick="location.href='memberDetail.jsp?member_num=<%=member_num%>'">취소</button>
+</form>
 </div>
-<button type="button" onclick="location.href='memberUpdatePro.jsp'">수정완료</button>
+
 </div>
 <script>
 	function deleteMember(member_num){
 		if(!confirm("회원을 탈퇴시키겠습니까?")){
 			return false;
 		}
-		location.href="memberDeletePro.jsp";
+		location.href="memberDeletePro.jsp?member_num="+member_num;
 	}
 
 </script>

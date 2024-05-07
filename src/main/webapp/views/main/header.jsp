@@ -113,8 +113,13 @@ form{
 
 <%
 	int snum = 0;
+	int svendor = 0;
 	if (session.getAttribute("snum") != null) {
 		snum = (int) session.getAttribute("snum");
+	}
+	
+	if (session.getAttribute("svendor") != null) {
+		svendor = (int) session.getAttribute("svendor");
 	}
 	ProductDAO dao = ProductDAO.getInstance();
 	List<CategoryDTO> list = dao.loadCategory();
@@ -143,11 +148,16 @@ form{
 				<a href="../faq/faqList.jsp">자주찾는 질문</a>
 				<a href="../qna/qnaList.jsp">1:1문의</a>
 				<a href="../vendorQna/vendorQnaList.jsp">사업자문의</a>
-				<a href="#">상품문의</a>
+				<a href="../productQna/productQnaList.jsp">상품문의</a>
+				<a href="../review/list.jsp">상품후기</a>
 			</div>
 			</div>
 		</td>
-
+		<%if(svendor == 3){ %>
+		<td>
+			<button class="dropbtn" onclick="location.href='../admin/adminMain.jsp'">관리자 모드</button>
+		</td>
+		<%} %>
 		<td>
 			<form id="searchForm" action="main.jsp" method="get">
 				<div class="search">

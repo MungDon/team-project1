@@ -5,6 +5,30 @@
 <%@ page import="project.bean.member.MemberDTO" %>
 <%@ page import="project.bean.enums.MemberVendor" %>
 <%@ page import="project.bean.enums.MemberStatus" %>
+<style>
+	.main{
+		width :100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;		
+	}
+	.adminTable{
+	  width: 1400px;
+	  height: 700px;
+	  border-collapse: collapse;
+	  text-align: center;
+	  font-size: 25px;
+	  margin-bottom: 40px;
+	}
+	.adminTable>td,.tr1,.tr2{
+		border-top : 1px solid #ddd;
+	}
+	.adminTable> .1,.2{
+		width : 10%;
+	}
+</style>
+<jsp:include page="../admin/adminHeader.jsp"></jsp:include>
 <%
 	AdminDAO dao = AdminDAO.getInstance();
 	String del ="";
@@ -20,13 +44,13 @@
 	int currentPage = Integer.parseInt(pageNum);
 	int startRow = ( currentPage - 1 ) * pageSize + 1;
 	int endRow = currentPage * pageSize;
-	int allMemberCount = dao.AllMemberCount();
+	int sellerJoinCount = dao.sellerJoinCount();
 
 	List<MemberDTO> list = dao.loadWaitingMemeber(startRow, endRow);
 %>
 <div class="main">
 <div style="text-align: left;width: 1400px;">
-<p style="font-size:20px;">전체회원수 <b style="color:skyblue"><%=allMemberCount%></b>명</p>
+<p style="font-size:20px;">전체회원수 <b style="color:skyblue"><%=sellerJoinCount%></b>명</p>
 </div>
 <table class="adminTable">
 	<tr class="tr1" style="border-top:2px solid black;border-bottom:2px solid black;">
@@ -42,7 +66,6 @@
 		<th class="9">승인/거절</th>
 	</tr>
 	<% for(MemberDTO dto : list){ 
-		
 		vendor = MemberVendor.getNameByVendor(dto.getVendor());
 		
 		del = MemberStatus.getNameByStatus(dto.getDel()); 
@@ -78,8 +101,8 @@
 	<%
 
 
-	if( allMemberCount > 0 ){
-		int pageCount = allMemberCount / pageSize +( allMemberCount % pageSize == 0 ? 0 : 1 );
+	if( sellerJoinCount > 0 ){
+		int pageCount = sellerJoinCount / pageSize +( sellerJoinCount % pageSize == 0 ? 0 : 1 );
 		int startPage = (int)((currentPage-1)/10) * 10 +1;
 		int pageBlock = 10;
 		
