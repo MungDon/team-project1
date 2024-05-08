@@ -47,6 +47,8 @@ public class ProductDTO {
 	
 	private int sales_price;			//판매금액
 	
+	private String business_name;	// 제조사		member 테이블에서 제조사 컬럼을 가져오기위해 사용
+	
 	// getter()/setter()//
 	
 	public int getProduct_num() {
@@ -224,6 +226,14 @@ public class ProductDTO {
 		dto.setFirst_stock(Integer.parseInt(request.getParameter("first_stock")));
 		
 		return dto;
+	}
+
+	public String getBusiness_name() {
+		return business_name;
+	}
+
+	public void setBusiness_name(String business_name) {
+		this.business_name = business_name;
 	}
 	
 }

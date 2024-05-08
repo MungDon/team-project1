@@ -2,27 +2,23 @@
     pageEncoding="UTF-8"%>
 <%@ page import="project.bean.delivery.DeliveryDAO" %>
 
-<jsp:include page="../mypage/fixed.jsp" />
-
 <% request.setCharacterEncoding("UTF-8"); %>
 
-<STYLE>
-	TABLE {
-		font-size:16px;
-		border-collapse:collapse;
-	}
-	TD {
-		padding:10px;
-	}
-	INPUT{
-		font-size:16px;
-	}
-</STYLE>
+<jsp:include page="/views/member/memberHeader.jsp" />
+<jsp:include page="../mypage/fixed.jsp" />
+
+<link rel="stylesheet" type="text/css" href="/project/views/css/member.css">
 
 <%
+	String pageNum ="";
 	int snum = (int)session.getAttribute("snum");
 	String svendor = (String)session.getAttribute("svendor");
-	String pageNum = request.getParameter("pageNum");
+	
+	if(request.getParameter("pageNum")==null){
+		pageNum ="1";
+	}else{
+		pageNum = request.getParameter("pageNum");
+	}
 	DeliveryDAO dao = DeliveryDAO.getInstance();
 	boolean result = dao.isDefault_address(snum);	//모든 배송지 중에 기본배송지가 있는지 여부
 %>
@@ -69,7 +65,7 @@
 <INPUT type="hidden" name=member_num value="<%=snum %>" />
 <TABLE border="1">
 	<TR>
-		<TD><UL style="display: inline-block; list-style-type: square;"><LI>배송지 이름</LI></UL></TD>
+		<TD width="150px"><UL style="display: inline-block; list-style-type: square;"><LI>배송지 이름</LI></UL></TD>
 		<TD><INPUT type="text" name="delivery_name" /></TD>
 	</TR>
 	<TR>
@@ -80,7 +76,7 @@
 		<TD><UL style="display: inline-block; list-style-type: square;"><LI>받으실 곳</LI></UL></TD>
 		<TD>
 			<INPUT type="text" name="address1" placeholder="우편번호"/>
-			<INPUT type="button" value="우편번호 조회" onclick="window.open('https://www.epost.go.kr/search.RetrieveIntegrationNewZipCdList.comm')" /> <br />
+			<INPUT type="button" class="emphasis" value="우편번호 조회" onclick="window.open('https://www.epost.go.kr/search.RetrieveIntegrationNewZipCdList.comm')" /> <br />
 			<INPUT type="text" name="address2" placeholder="도로명 주소"/>
 			<INPUT type="text" name="address3" placeholder="상세 주소"/>
 		</TD>
@@ -94,6 +90,7 @@
 		<TD><INPUT type="text" name="cellphone" /></TD>
 	</TR>
 </TABLE>
+<br />
 
 <%	if(result==true) {	//배송지 중에 기본배송지가 있다면 기본배송지 설정 버튼 비활성화
 %>
@@ -103,6 +100,7 @@
 	<INPUT type="checkbox" name="default_address" value="2" />기본배송지로 설정합니다.</br>
 <%	}
 %>	
+	<br />
 	<INPUT type="button" value="취소" onclick="self.close()" />
-	<INPUT type="submit" value="저장" />
+	<INPUT type="submit" class="emphasis" value="저장" />
 </FORM>

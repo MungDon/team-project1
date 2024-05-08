@@ -1,23 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<% request.setCharacterEncoding("UTF-8"); %>
-
 <STYLE>
-	INPUT {
-		font-size:16px;
-		padding:5px;
+	.emphasis {
+		background-color: gray;
+		color: white; 
+		border: 1px solid lightgray;
+		border-radius: 0; 
+		padding: 5px 10px; 
+		font-size: 16px; 
+		cursor: pointer;
+	}
+		
+	INPUT:disabled {
+	    opacity: 0.5;
+	    cursor: not-allowed;
+	}
+	
+	.hr	{
+		margin: 10px 0;
+		border: none;
+		border-top: 1px solid gray; 
+		width: 882px; 
 	}
 </STYLE>
+
+<% request.setCharacterEncoding("UTF-8"); %>
+
+<jsp:include page="/views/member/memberHeader.jsp" />
 
 <DIV style="display: inline; font-size:35px; font-weight: bold;">회원가입</DIV>
 <DIV style="display: inline; font-size:18px; font-weight: bold;">
 	&nbsp;&nbsp;<FONT color	= skyblue>01약관동의</FONT>>02정보입력>03가입완료
 </DIV>
-<HR>
+<HR class="hr">
 <br />
 <DIV style="display: inline; font-size:25px; font-weight: bold;">약관동의 </DIV> <br /><br />
-<INPUT type=checkbox id="masterCheckbox" /> 술마켓의 모든 약관을 확인하고 전체 동의합니다. <br />	<br/>	<%-- 마스터 체크박스 체크시 모든 슬레이브 체크박스 선택--%>
+<INPUT type=checkbox id="masterCheckbox" style="font-size:20px; transform: scale(1.5);">
+	<LABEL for="masterCheckbox" style="font-size: 18px;">술마켓의 모든 약관을 확인하고 전체 동의합니다.</LABEL>
+	<br /><br/>	<%-- 마스터 체크박스 체크시 모든 슬레이브 체크박스 선택--%>
 <INPUT type=checkbox class="slaveCheckbox" /> <FONT color=skyblue>(필수)</FONT> 이용약관 <br /><br />
 <TEXTAREA cols="100" rows="20" style="font-size:16px; padding:10px;">
 제1조(목적) 이 약관은 업체 회사(전자상거래 사업자)가 운영하는 업체 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
@@ -258,7 +279,7 @@
   ② “몰”과 이용자 간에 제기된 전자상거래 소송에는 한국법을 적용합니다.
 
 </TEXTAREA> <br /><br /><br />
-<INPUt type=checkbox class="slaveCheckbox" /> <FONT color=skyblue>(필수)</FONT> 개인정보 수집 및 이용 <br /> <br />
+<INPUT type=checkbox class="slaveCheckbox" /> <FONT color=skyblue>(필수)</FONT> 개인정보 수집 및 이용 <br /> <br />
 <TEXTAREA cols="100" rows="20" style="font-size:16px; padding:10px;">
 개인정보처리방침
 
@@ -397,7 +418,7 @@
 1) 공고일자 : 2018년 05월 01일
 2) 시행일자 : 2018년 05월 01일 
 </TEXTAREA> <br /><br />
-<INPUT type="button" id="submitButton" value="다음단계" onclick="window.location='insertForm.jsp'" disabled />
+<INPUT type="button" id="submitButton" class="emphasis"value="다음단계" onclick="window.location='insertForm.jsp'" disabled />
 	
 
 <SCRIPT>
@@ -410,9 +431,9 @@
     	for (var i = 0; i < slaveCheckboxes.length; i++) {
       	slaveCheckboxes[i].checked = masterCheckbox.checked;
     	}
-    	//마스터 체크박스가 선택되지 않으면 submit 버튼 비활성화
+    	
     	submitButton.disabled = !masterCheckbox.checked;
-	});
+ 	});
 	
 			
 		for (var i = 0; i < slaveCheckboxes.length; i++) {
@@ -425,8 +446,13 @@
 	         		break;
 	       		}
 			}
-			// 모든 체크박스가 선택되었되지 않으면 submit 버튼 비활성화
+			// 모든 체크박스가 선택되지 않으면 submit 버튼 비활성화
 			submitButton.disabled = !allChecked;
+			
+			// 하나라도 체크되지 않았을 때 마스터 체크박스 해제
+			if (!allChecked) {
+				masterCheckbox.checked = false;
+			}
 	    });
 	 }
 </SCRIPT>

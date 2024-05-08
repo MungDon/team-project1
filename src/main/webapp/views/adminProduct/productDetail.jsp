@@ -29,6 +29,22 @@
 </style>
 <jsp:include page="../admin/adminHeader.jsp"/>
 <%
+	String svendor="";	
+	int snum = 0;
+	
+	if(session.getAttribute("svendor")!=null){
+		svendor = (String)session.getAttribute("svendor");
+	}
+	if(session.getAttribute("snum")!=null){
+		snum = (int)session.getAttribute("snum");
+	}
+	if(!(svendor.equals("3")) && snum == 0){%>
+		<script>
+			alert("관리자 권한이 없습니다.");
+			location.href="../member/loginForm.jsp";
+		</script>
+	<%	}
+	
 	AdminDAO dao = AdminDAO.getInstance();
 	if(request.getParameter("product_num")!=null){
 		int product_num = Integer.parseInt(request.getParameter("product_num"));

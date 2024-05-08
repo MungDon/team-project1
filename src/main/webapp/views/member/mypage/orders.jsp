@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<jsp:include page="../memberHeader.jsp" />
 <jsp:include page="fixed.jsp" />
 
 <% request.setCharacterEncoding("UTF-8"); %>
@@ -10,23 +11,17 @@
 	String svendor = (String)session.getAttribute("svendor");
 %>
 
-<STYLE>
-	BUTTON {
-	    background-color: white;
-	    color: gray; 
-	    border: 1px solid lightgray;
-	    border-radius: 0; 
-	    padding: 5px 10px; 
-	    font-size: 16px; 
-	    cursor: pointer;
-	}
-</STYLE>
+<link rel="stylesheet" type="text/css" href="/project/views/css/member.css">
 
 <SCRIPT src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></SCRIPT>
 
 <SCRIPT>
 	var previousButtonId = "button1";
-	
+	window.onload = function() {
+		var button = document.getElementById("button1");
+		button.style.backgroundColor = "gray";
+		button.style.color = "white";
+	}
 	function changeColor(buttonId){		//선택한 버튼만 색이 바뀌도록 함
 		var previousButton = document.getElementById(previousButtonId);
         previousButton.style.backgroundColor = "white";
@@ -76,7 +71,7 @@
 	    document.getElementById('end').value = endDate.format('YYYY-MM-DD');
 	}
 	
-	function loadOrdersTable(startDate, endDate) {	//submit 되더라도 table페이지로 이동하지 않고 table이 해당페이지에 동기화되도록 함
+	function loadOrdersTable(startDate, endDate) {	//submit 되더라도 table페이지로 이동하지 않고 table이 해당페이지에 나타나도록 함
 		var xhttp = new XMLHttpRequest();
         xhttp.open("POST", "ordersTable.jsp", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -86,7 +81,7 @@
 
 
 <DIV style="font-size:25px; font-weight:bold"> 주문목록/배송조회 </DIV> <br />
-	<DIV style="display:inline-block; border:2px solid lightgray; padding:15px; width:750px">
+	<DIV style="display:inline-block; border:2px solid lightgray; padding:15px; width:850px; height:37px;">
 		<FONT color="gray"><B>조회기간</B></FONT>
 		<BUTTON id="button1" onclick="changeColor('button1'); setDate('today')">오늘</BUTTON>
 		<BUTTON id="button2" onclick="changeColor('button2'); setDate('7days')">7일</BUTTON>
@@ -97,7 +92,7 @@
 		<FORM style="display:inline-block" onsubmit="loadOrdersTable(document.getElementById('start').value, document.getElementById('end').value)); return false;">
 			<INPUT type="date" id="start" name="start" />~
 			<INPUT type="date" id="end" name="end" />&nbsp;&nbsp;
-			<INPUT type="submit" value="조회" />
+			<INPUT type="submit" class="emphasis" value="조회" />
 		</FORM>
 	</DIV><br /><br />
 <jsp:include page="ordersTable.jsp" />

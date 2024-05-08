@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="project.bean.mypage.MypageDAO" %>
+<%@ page import="project.bean.member.MemberDTO" %>
 
 <% request.setCharacterEncoding("UTF-8"); %>
 
@@ -20,8 +21,8 @@
 	    display: none;
 		position: fixed; 
 	    z-index: 1000;
-	    left: 5.5%;
-	    top: -13%;
+	    left: 7%;
+	    top: 9.5%;
 	    width: 100%;
 	    height: 100%;
 	}
@@ -55,24 +56,25 @@
 	}
 </SCRIPT>
 
+<%	
+	if(session == null || session.getAttribute("snum") == null || session.getAttribute("svendor") == null){	//session이 null인 경우 
+		response.sendRedirect("/project/views/member/loginSelect.jsp");
+		return;
+	}
+%>
 
 <%
-	int snum = 0;
-	String svendor ="";
-	if(session.getAttribute("snum")!=null){
-		 snum = (int)session.getAttribute("snum");
-	}
-	if(session.getAttribute("svendor")!=null){
-		svendor = (String)session.getAttribute("svendor");
-	}
+	int snum = (int)session.getAttribute("snum");
+	String svendor = (String)session.getAttribute("svendor");
+
 	MypageDAO dao = MypageDAO.getInstance();
 	
-	String grade = dao.grade(snum);
+	MemberDTO dto = dao.grade_name(snum);
 %>
 
 <%	if(svendor.equals("1")) { 
 %>
-	<DIV style="float:left; width:20%; height:100%; margin:30px;">
+	<DIV style="float:left; width:20%; height:100%; margin-left:80px;">
 	<TABLE>
 		<TR>
 			<TD>
@@ -84,16 +86,16 @@
 			<TD>
 				<DIV style="font-size:25px; font-weight: bold;">나의쇼핑</DIV> <br />
 				<A href="/project/views/member/mypage/orders.jsp">주문목록/배송조회</A> <br />
-				<A href="/project/views/member/mypage/cancellation.jsp"">취소/반품/교환 내역</A> <br />
-				<A href="/project/views/member/mypage/interest.jsp">관심상품</A> <br /><br />
+				<A href="/project/views/member/mypage/cancellationRequest.jsp">취소/반품/교환 신청 내역</A> <br />
+				<A href="/project/views/member/mypage/cancellation.jsp">취소/반품/교환 처리 현황</A> <br /><br/>
 			</TD>
 		</TR>
 		<TR>
 			<TD>
 				<DIV style="font-size:25px; font-weight: bold;">나의 활동</DIV> <br />
-				<A href="#">나의 1:1 문의</A> <br />
-				<A href="#">나의 상품 문의</A> <br />
-				<A href="#">나의 상품 후기</A> <br /><br />
+				<A href="/project/views/member/mypage/qna.jsp">나의 1:1문의</A> <br />
+				<A href="/project/views/member/mypage/productQna.jsp">나의 상품문의</A> <br />
+				<A href="/project/views/member/mypage/review.jsp">나의 상품후기</A> <br /><br />
 			</TD>
 		</TR>
 		<TR>
@@ -108,23 +110,34 @@
 	</DIV>
 	
 	<DIV>
-		<DIV style="display:inline-block; border:2px solid lightgray; padding:15px; width:750px; margin-top:30px;">
+		<DIV style="display:inline-block; border:2px solid lightgray; padding:15px; width:850px; margin-top:30px;">
 			<DIV style="font-size:35px; display: flex; align-items:center;">
-	<%	if(grade.equals("BRONZE")) {
-	%>
+<%		if(dto.getGrade().equals("BRONZE")) {
+%>
 				<IMG width="100px" height="120px" style=display:inline-block;margin:0 auto; 
 					src="/project/views/images/bronze.png" />&nbsp;
-	<%	}else if(grade.equals("SILVER")){
-	%>
+<%		}else if(dto.getGrade().equals("SILVER")){
+%>
 				<IMG width="100px" height="120px" style=display:inline-block;margin:0 auto; 
 					src="/project/views/images/silver.png" />&nbsp;
-	<%	}else if(grade.equals("GOLD")) {
-	%>
+<%		}else if(dto.getGrade().equals("GOLD")) {
+%>
 				<IMG width="100px" height="120px" style=display:inline-block;margin:0 auto; 
 					src="/project/views/images/gold.png" />&nbsp;
-	<%}
-	%>			
-				<B>양정모</B>&nbsp;님은&nbsp;<B>브론즈 등급</B>&nbsp;입니다.
+<%		}
+%>			
+				
+<%		if(dto.getGrade().equals("BRONZE")) {
+%>
+				<B><%=dto.getName() %></B>&nbsp;님은&nbsp;<B>브론즈 등급</B>&nbsp;입니다.
+<%		}else if(dto.getGrade().equals("SILVER")){
+%>	
+				<B><%=dto.getName() %></B>&nbsp;님은&nbsp;<B>실버 등급</B>&nbsp;입니다.
+<%		}else if(dto.getGrade().equals("GOLD")) {
+%>			
+				<B><%=dto.getName() %></B>&nbsp;님은&nbsp;<B>골드 등급</B>&nbsp;입니다.
+<%		}
+%>	
 			</DIV>
 			<DIV style="display:inline-block; font-size:20px;">
 				<FONT color="gray"><B>50,000원 추가 구매시 등급 업!&nbsp;</B></FONT>
@@ -139,7 +152,7 @@
 								<TD colspan="2"><b>등급혜택안내</b></TD>
 							</TR>
 							<TR>
-	<%	if(grade.equals("BRONZE")) {
+	<%	if(dto.getGrade().equals("BRONZE")) {
 								
 	%>	
 								<TD><B>회원등급</B></TD>
@@ -148,7 +161,15 @@
 							<TR>
 								<TD><B>추가적립</B></TD>
 								<TD>1원 이상 구매 시 구매 금액 당 0.5% 추가 적립</TD>
-	<%	}else if(grade.equals("SILVER")) {
+	<%	}else if(dto.getGrade().equals("SILVER")) {
+	%>
+								<TD><B>회원등급</B></TD>
+								<TD>실버등급</TD>
+							</TR>
+							<TR>
+								<TD><B>추가적립</B></TD>
+								<TD>1원 이상 구매 시 구매 금액 당 2% 추가 적립</TD>							
+	<%	}else if(dto.getGrade().equals("GOLD")) {
 	%>
 								<TD><B>회원등급</B></TD>
 								<TD>실버등급</TD>
@@ -156,14 +177,6 @@
 							<TR>
 								<TD><B>추가적립</B></TD>
 								<TD>1원 이상 구매 시 구매 금액 당 5% 추가 적립</TD>							
-	<%	}else if(grade.equals("GOLD")) {
-	%>
-								<TD><B>회원등급</B></TD>
-								<TD>실버등급</TD>
-							</TR>
-							<TR>
-								<TD><B>추가적립</B></TD>
-								<TD>1원 이상 구매 시 구매 금액 당 10% 추가 적립</TD>							
 	<%	}
 	%>
 							</TR>
@@ -177,7 +190,7 @@
 	<br />
 <%	}else {
 %>	
-	<DIV style="float:left; width:20%; height:100%; margin:30px;">
+	<DIV style="float:left; width:20%; height:100%; margin-left:80px;">
 	<TABLE>
 		<TR>
 			<TD>
@@ -190,14 +203,16 @@
 				<DIV style="font-size:25px; font-weight: bold;">나의 판매</DIV> <br />
 				<A href="/project/views/member/mypage/registration.jsp">판매물품 등록 현황</A> <br />
 				<A href="/project/views/member/mypage/sales.jsp">판매 매출 조회</A> <br />
-				<A href="/project/views/member/mypage/wholeSales.jsp">전체 판매 주문 현황</A> <br /><br />
+				<A href="/project/views/member/mypage/wholeSales.jsp">전체 판매 현황</A> <br />
+				<A href="/project/views/member/mypage/approval.jsp">취소/반품/교환 처리</A> <br /><br />
 			</TD>
 		</TR>
 		<TR>
 			<TD>
 				<DIV style="font-size:25px; font-weight: bold;">나의 활동</DIV> <br />
-				<A href="#">나의 1:1 문의</A> <br />
-				<A href="#">나의 판매 문의</A> <br /><br />
+				<A href="/project/views/member/mypage/qna.jsp">나의 1:1 문의</A> <br />
+				<A href="/project/views/member/mypage/vendorQna.jsp">나의 사업자문의</A> <br />
+				<A href="/project/views/member/mypage/productQnaV.jsp">나의 상품문의</A> <br /><br />
 			</TD>
 		</TR>
 		<TR>
@@ -211,23 +226,23 @@
 	</DIV>
 	
 	<DIV>
-		<DIV style="display:inline-block; border:2px solid lightgray; padding:15px; width:750px; margin-top:30px;">
+		<DIV style="display:inline-block; border:2px solid lightgray; padding:15px; width:850px; margin-top:30px;">
 			<DIV style="font-size:35px; display: flex; align-items:center;"">
-	<%	if(grade.equals("BRONZE")) {
+	<%	if(dto.getGrade().equals("BRONZE")) {
 	%>
 				<IMG width="100px" height="120px" style=display:inline-block;margin:0 auto; 
 					src="/project/views/images/bronze.png" />&nbsp;
-	<%	}else if(grade.equals("SILVER")){
+	<%	}else if(dto.getGrade().equals("SILVER")){
 	%>
 				<IMG width="100px" height="120px" style=display:inline-block;margin:0 auto; 
 					src="/project/views/images/silver.png" />&nbsp;
-	<%	}else if(grade.equals("GOLD")) {
+	<%	}else if(dto.getGrade().equals("GOLD")) {
 	%>
 				<IMG width="100px" height="120px" style=display:inline-block;margin:0 auto; 
 					src="/project/views/images/gold.png" />&nbsp;
 	<%}
 	%>			
-				<B>양정모</B>&nbsp;님은&nbsp;<B>브론즈 등급</B>&nbsp;입니다.
+				<B><%=dto.getName() %></B>&nbsp;님은&nbsp;<B>브론즈 등급</B>&nbsp;입니다.
 			</DIV>
 			<DIV style="display:inline-block; font-size:20px;">
 				<FONT color="gray"><B>판매물품 10개 등록시 등급업!&nbsp;</B></FONT>
@@ -242,7 +257,7 @@
 								<TD colspan="2"><b>등급혜택안내</b></TD>
 							</TR>
 							<TR>
-	<%	if(grade.equals("BRONZE")) {
+	<%	if(dto.getGrade().equals("BRONZE")) {
 								
 	%>	
 								<TD><B>회원등급</B></TD>
@@ -251,7 +266,7 @@
 							<TR>
 								<TD><B>추가적립</B></TD>
 								<TD>판매 물품 정산시 수수료 0% 감면</TD>
-	<%	}else if(grade.equals("SILVER")) {
+	<%	}else if(dto.getGrade().equals("SILVER")) {
 	%>
 								<TD><B>회원등급</B></TD>
 								<TD>실버등급</TD>
@@ -259,7 +274,7 @@
 							<TR>
 								<TD><B>추가적립</B></TD>
 								<TD>판매 물품 정산시 수수료 5% 감면</TD>							
-	<%	}else if(grade.equals("GOLD")) {
+	<%	}else if(dto.getGrade().equals("GOLD")) {
 	%>
 								<TD><B>회원등급</B></TD>
 								<TD>실버등급</TD>

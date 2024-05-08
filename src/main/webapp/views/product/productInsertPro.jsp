@@ -7,7 +7,7 @@
 	if(totalStatus == 1){%>
 		<script>
 			alert("등록되었습니다");
-			location.href="/project/views/main/main.jsp";
+			location.href="/project/views/member/mypage/registration.jsp";
 		</script>	
 <%	}else{%>
 		<script>

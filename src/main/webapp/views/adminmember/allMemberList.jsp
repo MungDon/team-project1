@@ -34,6 +34,17 @@
 	AdminDAO dao = AdminDAO.getInstance();
 	String del ="";
 	String vendor="";
+	String svendor="";
+	
+	if(session.getAttribute("svendor")!=null){
+		svendor = (String)session.getAttribute("svendor");
+	}
+	if(!(svendor.equals("3"))){%>
+	<script>
+		alert("관리자 권한이 없습니다.");
+		location.href="../member/loginForm.jsp";
+	</script>
+<%	}
 	//페이징
 	int pageSize = 10;
 	

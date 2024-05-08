@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.bean.cart.CartDTO;
 import project.bean.category.CategoryDTO;
 import project.bean.img.ImgDTO;
 import project.bean.search.SearchDTO;
@@ -287,7 +288,7 @@ public class ProductDAO {
 			ProductDTO dto = new ProductDTO();
 			try {
 				conn = getConn();
-				sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and status = '1' and P.product_num = ?";
+				sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, product_num);
 				rs = pstmt.executeQuery();
@@ -478,13 +479,15 @@ public class ProductDAO {
 		public ProductDTO productContent(int product_num) {
 			ProductDTO dto = new ProductDTO();
 			try {
-				conn = getConn();
-				sql = "select * from product where product_num=?";
+				conn = getConn();				// 수정) 04/29 member_num, business_name 을 받기 위함
+				sql = "select P.*, M.member_num, M.business_name from product P left outer join member M on P.member_num = M.member_num where delete_yn = 'N' and P.product_num = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, product_num);
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
 					dto.setProduct_num(rs.getInt("product_num"));
+					dto.setMember_num(rs.getInt("member_num"));
+					dto.setBusiness_name(rs.getString("business_name"));
 					dto.setCategory_num(rs.getInt("category_num"));
 					dto.setProduct_name(rs.getString("product_name"));
 					dto.setProduct_info(rs.getString("product_info"));
@@ -529,32 +532,36 @@ public class ProductDAO {
 			return list;
 		}
 		
-//		썸네일 1장 + 상품정보 + 회원정보 + 주소정보 4개 join		안쓰임
-		public List<ProductDTO> orderList(int product_num) {
-			List<ProductDTO> list = new ArrayList<ProductDTO>();
-			try {
-				conn = getConn();
-				sql = "select b.* from (select P.*, I.img_name from product P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' order by P.product_num desc) b where product_num = ?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setInt(1, product_num);
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					ProductDTO dto = new ProductDTO();
-					ImgDTO imgDto = new ImgDTO();
-					imgDto.setImg_name(rs.getString("img_name"));
-					
-					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
-					imgs.add(imgDto);
-					dto.setImages(imgs);
-					list.add(dto);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				close(conn, pstmt, rs);
-			}
-			return list;
-		}
+	//  썸네일 1장 + 상품정보 + 카테고리 이름
+	  public List<ProductDTO> orderList(int product_num) {
+	     List<ProductDTO> list = new ArrayList<ProductDTO>();
+	     try {
+	        conn = getConn();
+	        sql = "select P.product_name, P.product_info, C.category_name, I.img_name from product P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and P.product_num = ? order by P.product_num desc";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, product_num);
+	        rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	           ProductDTO dto = new ProductDTO();
+	           dto.setProduct_name(rs.getString("product_name"));
+	           dto.setProduct_info(rs.getString("product_info"));
+	           dto.setCategory_name(rs.getString("category_name"));
+	           
+	           ImgDTO imgDto = new ImgDTO();
+	           imgDto.setImg_name(rs.getString("img_name"));
+	           
+	           List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+	           imgs.add(imgDto);
+	           dto.setImages(imgs);
+	           list.add(dto);
+	        }
+	     } catch (Exception e) {
+	        e.printStackTrace();
+	     } finally {
+	        close(conn, pstmt, rs);
+	     }
+	     return list;
+	  }
 
 //		상품이미지 (상품설명 이미지 제외)
 		public List<ProductDTO> productImages(int product_num) {
@@ -643,4 +650,109 @@ public class ProductDAO {
 			}
 			return list;
 		}
+		
+//		장바구니 상품정보 + 썸네일 (장바구니에서 상품 정보 가져오기 위해 사용 + delete_yn 안넣음 - 삭제상품은 따로 표기하기위함)
+		public ArrayList<ProductDTO> productInfo(int product_num) {
+			ArrayList<ProductDTO> list = new ArrayList<ProductDTO>();
+			try {
+				conn = getConn();
+				sql = "select P.*, I.img_num, I.img_name from product P left outer join img I on P.product_num = I.product_num where I.img_type='thumbnail' and P.product_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, product_num);
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					ProductDTO dto = new ProductDTO();
+					dto.setProduct_num(rs.getInt("product_num"));
+//					dto.setMember_num(rs.getInt("member_num"));
+//					dto.setBusiness_name(rs.getString("business_name"));
+					dto.setCategory_num(rs.getInt("category_num"));
+					dto.setProduct_name(rs.getString("product_name"));
+//					dto.setProduct_info(rs.getString("product_info"));
+					dto.setPrice(rs.getInt("price"));
+					dto.setStock(rs.getInt("stock"));
+					dto.setDelivery_price(rs.getInt("delivery_price"));
+					dto.setHas_delivery_fee(rs.getString("has_delivery_fee"));
+					
+					ImgDTO imgDto = new ImgDTO();
+					imgDto.setImg_num(rs.getInt("img_num"));
+					imgDto.setImg_name(rs.getString("img_name"));
+					
+					List<ImgDTO> imgs = new ArrayList<ImgDTO>();
+					imgs.add(imgDto);
+					dto.setImages(imgs);
+					list.add(dto);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return list;
+		}
+		
+//		상품 30,000원 이상 주문 배송비 무료 + 단일 주문시
+		public int productDeliveryOne(int product_num, int count) {
+			int deliveryOne = 0;
+			try {
+				conn = getConn();
+				sql = "select * from product where delete_yn = 'N' and product_num = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, product_num);
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					ProductDTO dto = new ProductDTO();
+					dto.setPrice(rs.getInt("price"));
+					dto.setDelivery_price(rs.getInt("delivery_price"));
+					if (dto.getPrice() * count >= 30000) {
+						deliveryOne = 0;
+					}else {
+						deliveryOne = dto.getDelivery_price();
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return deliveryOne;
+		}
+
+
+//		같은 판매자의 상품 30,000원 이상 주문시 배송비 무료 + 수정) 상품별 총 결제금액 30,000원 이상 주문시 배송비 무료
+		public int productDelivery(int product_num) {
+			ProductDTO dto = new ProductDTO();
+			CartDTO cartDto = new CartDTO();
+			int sumCount = 0;
+			int sumPrice = 0;
+			int deliveryPrice = 0;
+			try {
+				conn = getConn();
+				sql = "select P.*, C.product_count from product P left outer join cart C on P.product_num = C.product_num where delete_yn = 'N' and P.product_num = ? and C.product_count > 0";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, product_num);
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					dto.setPrice(rs.getInt("price"));
+					dto.setDelivery_price(rs.getInt("delivery_price"));
+					cartDto.setProduct_count(rs.getInt("product_count"));
+//					dto.setMember_num(rs.getInt("member_num"));
+					sumCount = cartDto.getProduct_count();
+				}
+				sumPrice = sumCount * dto.getPrice();
+//				System.out.println(sumPrice+"총금액");
+//				System.out.println(sumCount+"총수량");
+				if (sumPrice >= 30000) {
+					deliveryPrice = 0;
+				}else {
+					deliveryPrice = dto.getDelivery_price();
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(conn, pstmt, rs);
+			}
+			return deliveryPrice;
+		}
+
 }

@@ -4,19 +4,22 @@
 <%@ page import="project.bean.category.CategoryDTO" %>
 <%@ page import="java.util.List" %>
     <link rel="stylesheet" href="../css/proInsertForm.css">
-
+<jsp:include page="../main/header.jsp"/>
 	<% 
 		int snum = 0;
 		if(session.getAttribute("snum") != null){
 			snum = (int)session.getAttribute("snum"); // 판매자 세션
 		}
-		String svendor = (String)session.getAttribute("svendor");
-	
-		if(snum == 0||!(svendor.equals("2"))){%>
-		<script>
-			alert("로그인해주세요");
-			location.href="../member/loginFormV.jsp "
-		</script>	
+		String svendor = "";
+		if(session.getAttribute("svendor")!=null){
+			svendor = (String)session.getAttribute("svendor");
+		}
+		System.out.println(snum);
+		if(snum == 0&&!svendor.equals("2")||snum == 0&&!svendor.equals("3")){%>
+			<script>
+				alert("판매자 권한이 없습니다. 로그인해주세요");
+				location.href="../member/loginForm.jsp "
+			</script>	
 	<%	}
 	%>
 

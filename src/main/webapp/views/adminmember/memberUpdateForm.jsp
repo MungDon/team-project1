@@ -34,8 +34,25 @@
 	int member_num = Integer.parseInt(request.getParameter("member_num"));
 	String vendor="";	
 	String del ="";
+	String svendor="";	
+	int snum = 0;
+	
+	if(session.getAttribute("svendor")!=null){
+		svendor = (String)session.getAttribute("svendor");
+	}
+	if(session.getAttribute("snum")!=null){
+		snum = (int)session.getAttribute("snum");
+	}
+	if(!(svendor.equals("3")) && snum == 0){%>
+		<script>
+			alert("관리자 권한이 없습니다.");
+			location.href="../member/loginForm.jsp";
+		</script>
+<%	}
+	
 	AdminDAO dao = AdminDAO.getInstance();
 	MemberDTO dto = dao.memberDetail(member_num);
+	
 	
 	Field[] fields = dto.getClass().getDeclaredFields();
 	for (Field field : fields) {
@@ -73,7 +90,7 @@
 			<td>
 			
 				<select name="vendor">
-					<option value="<%=dto.getVendor()%>" selected><%=dto.getVendor()%></option>	
+					<option value="<%=dto.getVendor()%>" selected><%=vendor%></option>	
 					<option value="0">판매자 승인대기</option>	
 					<option value="1">일반회원</option>	
 					<option value="2">판매자</option>	

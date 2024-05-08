@@ -11,7 +11,6 @@ public class DeliveryDTO {
 	private String cellphone;			//휴대폰 번호 - not null
 	private String phone;				//전화 번호
 	private String default_address;		//기본 배송지 여부 - 일반배송지 1 기본배송지 2
-	private String receiver_name;
 	public int getDelivery_num() {
 		return delivery_num;
 	}
@@ -71,11 +70,5 @@ public class DeliveryDTO {
 	}
 	public void setDefault_address(String default_address) {
 		this.default_address = default_address;
-	}
-	public String getReceiver_name() {
-		return receiver_name;
-	}
-	public void setReceiver_name(String receiver_name) {
-		this.receiver_name = receiver_name;
 	}
 }

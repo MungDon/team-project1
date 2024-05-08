@@ -3,20 +3,11 @@
 <%@ page import="project.bean.delivery.DeliveryDAO" %>
 <%@ page import="project.bean.delivery.DeliveryDTO" %>
 <%@ page import="java.util.ArrayList" %>
+
+<jsp:include page="/views/member/memberHeader.jsp" />
 <jsp:include page="../mypage/fixed.jsp" />
 
-<STYLE>
-	TABLE {
-		font-size:16px;
-		border-collapse:collapse;
-	}
-	TH,TD {
-		padding:10px;
-	}
-	BUTTON {
-		font-size:16px;
-	}
-</STYLE>
+<link rel="stylesheet" type="text/css" href="/project/views/css/member.css">
 
 <%
 	int snum = (int)session.getAttribute("snum");
@@ -38,18 +29,18 @@
 	
 	ArrayList<DeliveryDTO> list = dao.list(snum, startRow, endRow);
 %>
-<TABLE width="780px" style="border-top:none;" >
+<TABLE width="882px" style="border-top:none;" >
 	<TR style="border-left: none; border-right: none;">
 		<TD colspan ="4" style="border-left: none; border-right: none;">
 		<DIV style="font-size:25px; display:inline-block;">
 			<B>배송지 관리</B> 
-		</DIV>
+		</DIV>&nbsp;&nbsp;
 		<DIV style="display:inline-block;">
 		배송지 관리 내역 총 <%=count %>건
 		</DIV>
 		</TD>
 		<TD style="border-left: none; border-right: none; text-align:right"> 
-		<BUTTON onclick="window.open('insertForm.jsp?pageNum=<%=pageNum %>')">+ 새 배송지 추가
+		<BUTTON class="emphasis" onclick="window.location='insertForm.jsp?pageNum=<%=pageNum %>'">+ 새 배송지 추가
 		</BUTTON>
 		</TD>
 	</TR>
@@ -62,12 +53,12 @@
 <%	if(count==0) {	
 %>
 	<TR>
-		<TD colspan ="5"> 입력된 배송지가 없습니다. </TD>
+		<TD colspan ="5" style="border: 1px solid black;"> 입력된 배송지가 없습니다. </TD>
 	</TR>
 <%	}else {
 		for(DeliveryDTO dto : list) {
 %>		<TR >
-			<TD style="border: 1px solid black;">
+			<TD align="center" style="border: 1px solid black;">
 <%			if(dto.getDefault_address().equals("2")) {
 %>
 			(기본배송지) <br /> 
@@ -78,7 +69,7 @@
 <%			}
 %>
 			</TD>
-			<TD style="border: 1px solid black;"> <%=dto.getName() %> </TD>
+			<TD align="center" style="border: 1px solid black;"> <%=dto.getName() %> </TD>
 			<TD style="border: 1px solid black;"> <%=dto.getAddress1() %>, <%=dto.getAddress2() %>, <%=dto.getAddress3() %> </TD>
 			<TD style="border: 1px solid black;"> 
 <%			if(dto.getPhone()!=null){
@@ -91,10 +82,10 @@
 <%			}
 %>
 			</TD>
-			<TD style="border: 1px solid black; text-align:center" >
-				<BUTTON onclick="window.open('updateForm.jsp?delivery_num=<%=dto.getDelivery_num()%>&pageNum=<%=pageNum %>')">수정</BUTTON> &nbsp; &nbsp;
-				<BUTTON onclick="window.open('deletePro.jsp?delivery_num=<%=dto.getDelivery_num()%>&pageNum=<%=pageNum %>')">삭제</BUTTON> <br />
-			</TD style="border: 1px solid black;">
+			<TD width="150px" style="border: 1px solid black; text-align:center" >
+				<BUTTON onclick="window.open('updateForm.jsp?delivery_num=<%=dto.getDelivery_num()%>&pageNum=<%=pageNum %>')">수정</BUTTON> &nbsp;
+				<BUTTON class="emphasis" onclick="window.open('deletePro.jsp?delivery_num=<%=dto.getDelivery_num()%>&pageNum=<%=pageNum %>')">삭제</BUTTON> <br />
+			</TD>
 		</TR>
 <%		} 
 %>
@@ -102,7 +93,7 @@
 %>	
 </TABLE>
 
-<DIV style="margin:auto 850px">
+<DIV style="margin:auto 880px;">
 <%
 	int pageCount = count/pageSize + (count%pageSize==0?0:1);
 	int pageBlock = 5;

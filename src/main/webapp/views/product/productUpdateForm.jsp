@@ -107,7 +107,7 @@ input[type]{
 	border-radius: 5px;
 }
 </style>
-
+<jsp:include page="../main/header.jsp"/>
 <%
 	int snum = 0;
 	String svendor="";
@@ -119,8 +119,11 @@ input[type]{
 		svendor = (String)session.getAttribute("svendor");
 	}
 	
-	if(snum == 0 || svendor == ""){%>
-		
+	if(snum == 0 && !svendor.equals("2") || snum == 0 && !svendor.equals("3")){%>
+		<script>
+			alert("권한이 없습니다.");
+			location.href="../main/main.jsp";
+		</script>
 <%	}
 	
 	int i = 0;
@@ -242,7 +245,7 @@ input[type]{
 		<br/>
 		<br/>
 		<input id="submit" type="submit" value="수정 완료" onclick="listJoin()">
-		<button class="cancel" type="button" onclick="location.href='../main/main.jsp?sortName=created_date&sort=desc'">취소</button>
+		<button class="cancel" type="button" onclick="location.href='/project/views/member/mypage/registration.jsp'">취소</button>
 		
 	</form>
 </div>

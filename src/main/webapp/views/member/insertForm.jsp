@@ -3,23 +3,23 @@
 
 <% request.setCharacterEncoding("UTF-8"); %>
 
+<jsp:include page="/views/member/memberHeader.jsp" />
+
+<link rel="stylesheet" type="text/css" href="/project/views/css/member.css">
+
 <STYLE>
-	TABLE {
-		font-size:16px;
-		border-collapse:collapse;
-	}
-	TD {
-		padding:10px;
-	}
-	INPUT{
-		font-size:16px;
+	.hr	{
+		margin: 10px 0;
+		border: none;
+		border-top: 1px solid gray; 
+		width: 882px; 
 	}
 </STYLE>
 
 <DIV style="display: inline; font-size:35px; font-weight: bold;">회원가입</DIV>
 <DIV style="display: inline; font-size:15px; font-weight: bold;">
 	01약관동의><FONT color	= skyblue>02정보입력</FONT>>03가입완료</DIV>
-<HR>
+<HR class="hr">
 <br />
 <DIV style="display: inline; font-size:25px; font-weight: bold;">기본정보 </DIV>
 <UL style="display: inline-block; list-style-type: square;">
@@ -150,18 +150,17 @@
 		});
 	});
 	
-	
 </SCRIPT>
 
 <FORM action="insertPro.jsp" method="post" name="userInput" onsubmit="return memCheck()">
 <TABLE border="1">
 	<TR>
-		<TD><UL style="display: inline-block; list-style-type: square;"><LI>아이디</LI></UL></TD>
-		<TD style="vertical-align:bottom";>
+		<TD width="200px"><UL style="display: inline-block; list-style-type: square;"><LI>아이디</LI></UL></TD>
+		<TD style="vertical-align:bottom;">
 			<INPUT type="text" name="id" id="id"/>&nbsp;&nbsp;
 			<INPUT type="button" value="중복확인" onclick="idCheck();" />
-			<%--일반회원일때 vendor값 1 판매자회원일때 vendor값 2--%>
-			<INPUT type="checkbox" name="vendor" value="2" id="vendor" /> <B>판매자 회원가입</B><br/> 	
+			<%--일반회원일때 vendor값 null 판매자회원 가입일때 vendor값 0 (관리자 승인 시 2로 변함)--%>
+			<INPUT type="checkbox" name="vendor" value="0" id="vendor" /> <B>판매자 회원가입</B><br/> 	
 			<DIV id="confirmResult" >&nbsp;</DIV>
 		</TD>
 	</TR>	
@@ -171,7 +170,7 @@
 	</TR>
 	<TR>
 		<TD><UL style="display: inline-block; list-style-type: square;"><LI>비밀번호</LI></UL></TD>
-		<TD><INPUT type="password" name="pw" />&nbsp;영어 소문자, 숫자, 특수기호 포함 8자리 이상</TD>
+		<TD><INPUT type="password" name="pw" />&nbsp;영어 대소문자, 숫자, 특수기호 포함 8자리 이상</TD>
 	</TR>
 	<TR>
 		<TD><UL style="display: inline-block; list-style-type: square;"><LI>비밀번호 확인</LI></UL></TD>
@@ -208,11 +207,11 @@
 </TABLE>
 <br /><br />
 
-<DIV style="display: inline; font-size:25px; font-weight: bold;">부가정보 </DIV>
+<DIV style="display: inline; font-size:25px; font-weight: bold;">부가정보 </DIV><br /><br />
 <TABLE border="1">
 	<TR>
-		<TD><UL style="display: inline-block; list-style-type: square;"><LI>성별</LI></UL></TD>
-		<TD><INPUT type="radio" name="gender" value="남자" checked /> 남 &nbsp;&nbsp;
+		<TD width="200px"><UL style="display: inline-block; list-style-type: square;"><LI>성별</LI></UL></TD>
+		<TD width="200px"><INPUT type="radio" name="gender" value="남자" checked /> 남 &nbsp;&nbsp;
 			<INPUT type="radio" name="gender" value="여자" /> 여
 	</TR>
 	<TR>
@@ -222,13 +221,18 @@
 	
 </TABLE><br />
 	<INPUT type="button" value="취소" onclick="window.location='main.jsp'" />
-	<INPUT type="submit" value="회원가입" id="submit"/>
+	<INPUT type="submit" class="emphasis" value="회원가입" id="submit"/>
 </FORM>
 
 <SCRIPT>
 	document.getElementById("email2").addEventListener("change", function() {
 		var selectedOption = this.options[this.selectedIndex];
 		var email = document.getElementById("email");
-		email.value = selectedOption.value; // 선택한 항목의 텍스트값을 텍스트 상자에 표시
+		
+		if(selectedOption.value === "직접입력") {
+			email.value = '';	//직접입력 일때는 email 박스에 빈칸으로 둠
+		}else {
+			email.value = selectedOption.value; // 선택한 항목의 텍스트값을 email 에 표시
+		}
 	});	
 </SCRIPT>

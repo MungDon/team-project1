@@ -73,6 +73,7 @@
 	if(request.getParameter("keyWord")!=null){
 		 keyWord = request.getParameter("keyWord");
 	}
+	
 	if(request.getParameter("sortName")!=null){
 		sortName = request.getParameter("sortName");
 	}else{
@@ -124,7 +125,7 @@
 		<td>
 			<% if(dto.getStock()==0){ %>
 			<div class="thumnail">
-				<img src="../upload/<%=img.getImg_name()%>" width="200" height="200" alt="썸네일" id="soldOut"  />
+				<a href="../product/productContent.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>&category_num=<%=dto.getCategory_num()%>"><img src="../upload/<%=img.getImg_name()%>" width="200" height="200" alt="썸네일" id="soldOut"  /></a>
 			</div>
 			<%}else{ %>
 			<div class="thumnail">
@@ -188,11 +189,6 @@
 %>
 </div>
 <script>
-	const soldOutImg = document.getElementById("soldOut");
-	
-	soldOutImg.addEventListener("click",()=>{
-		alert("품절된 상품입니다");
-	});
 	function goProductForm(){ 
 		location.href="../product/productInsertForm.jsp";
 	}

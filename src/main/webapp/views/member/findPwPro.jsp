@@ -15,7 +15,7 @@
 %>
 	<SCRIPT>
 		alert("비밀번호가 변경되었습니다.")
-		window.location = "loginSelect.jsp";
+		window.location = "loginForm.jsp";
 	</SCRIPT>
 <%	}
 %>

@@ -2,24 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ page import="project.bean.delivery.DeliveryDAO" %>
 
-<jsp:include page="../mypage/fixed.jsp" />
-
 <% request.setCharacterEncoding("UTF-8"); %>
+
+<jsp:include page="/views/member/memberHeader.jsp" />
+<jsp:include page="../mypage/fixed.jsp" />
 
 <jsp:useBean id="dto" class="project.bean.delivery.DeliveryDTO" />
 
-<STYLE>
-	TABLE {
-		font-size:16px;
-		border-collapse:collapse;
-	}
-	TD {
-		padding:10px;
-	}
-	INPUT{
-		font-size:16px;
-	}
-</STYLE>
+<link rel="stylesheet" type="text/css" href="/project/views/css/member.css">
 
 <%
 	int snum = (int)session.getAttribute("snum");
@@ -73,7 +63,7 @@
 <INPUT type="hidden" name="delivery_num" value="<%=delivery_num %>" />
 <TABLE border="1">
 	<TR>
-		<TD><UL style="display: inline-block; list-style-type: square;"><LI>배송지 이름</LI></UL></TD>
+		<TD width="150px"><UL style="display: inline-block; list-style-type: square;"><LI>배송지 이름</LI></UL></TD>
 		<TD><INPUT type="text" name="delivery_name" value="<%=dto.getDelivery_name() %>" /></TD>
 	</TR>
 	<TR>
@@ -84,7 +74,7 @@
 		<TD><UL style="display: inline-block; list-style-type: square;"><LI>받으실 곳</LI></UL></TD>
 		<TD>
 			<INPUT type="text" name="address1" value="<%=dto.getAddress1() %>" />
-			<INPUT type="button" value="우편번호 조회" onclick="window.open('https://www.epost.go.kr/search.RetrieveIntegrationNewZipCdList.comm')" /> <br />
+			<INPUT type="button" class="emphasis" value="우편번호 조회" onclick="window.open('https://www.epost.go.kr/search.RetrieveIntegrationNewZipCdList.comm')" /> <br />
 			<INPUT type="text" name="address2" value="<%=dto.getAddress2() %>" />
 			<INPUT type="text" name="address3" value="<%=dto.getAddress3() %>" />
 		</TD>
@@ -98,9 +88,9 @@
 		<TD><INPUT type="text" name="cellphone" value="<%=dto.getCellphone() %>" /></TD>
 	</TR>
 </TABLE>
-
-	<INPUT type="checkbox" name="default_address" value="2" <% if(dto.getDefault_address().equals("2")){ %> checked <% } %> />기본배송지로 설정합니다.</br>
+	<br />
+	<INPUT type="checkbox" name="default_address" value="2" <% if(dto.getDefault_address().equals("2")){ %> checked <% } %> />기본배송지로 설정합니다.<br /><br />
 	<INPUT type="button" value="취소" onclick="self.close()" />
-	<INPUT type="submit" value="저장" />
+	<INPUT type="submit" class="emphasis" value="저장" />
 
 </FORM>

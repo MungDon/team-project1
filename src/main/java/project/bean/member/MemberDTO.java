@@ -6,7 +6,7 @@ public class MemberDTO {
 	
 	private int member_num;				//멤버 넘버 - primary key
 	private String id;					//아이디
-	private String vendor;				//판매자 여부 - 일반회원 1 판매자회원 2
+	private String vendor;				//판매자/일반회원/관리자 여부 0 판매자가입 승인 대기, 1 일반회원, 2 승인된 판매자회원, 3 관리자
 	private String business_number;		//사업자 등록번호
 	private String business_name;		//사업자명
 	private String pw;					//비밀번호 - not null
@@ -66,7 +66,7 @@ public class MemberDTO {
 		return email;
 	}
 	public void setEmail(String email) {
-		this.email = email; 
+		this.email = email;
 	}
 	public String getCellphone() {
 		return cellphone;

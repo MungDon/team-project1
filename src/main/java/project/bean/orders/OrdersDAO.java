@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.bean.cart.CartDAO;
 import project.bean.img.ImgDTO;
+import project.bean.product.ProductDAO;
 import project.bean.product.ProductDTO;
 
 public class OrdersDAO {
@@ -43,15 +45,15 @@ public class OrdersDAO {
 	}
 	
 //	주문상품. 썸네일 1장 + 상품 목록 2개 join
-	public List<ProductDTO> orderProduct(int product_num) {
-		List<ProductDTO> list = new ArrayList<ProductDTO>();
+	public ArrayList<ProductDTO> orderProduct(int product_num) {
+		ArrayList<ProductDTO> list = new ArrayList<ProductDTO>();
 		try {
 			conn = getConn();
-			sql = "select b.* from (select P.*, I.img_name from product P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' order by P.product_num desc) b where product_num = ?";
+			sql = "select b.* from (select P.*, I.img_name, I.img_num from product P left outer join img I on P.product_num = I.product_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' order by P.product_num desc) b where product_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, product_num);
 			rs = pstmt.executeQuery();
-			while (rs.next()) {
+			if (rs.next()) {
 				ProductDTO dto = new ProductDTO();
 				ImgDTO imgDto = new ImgDTO();
 				dto.setProduct_num(rs.getInt("product_num"));
@@ -63,6 +65,7 @@ public class OrdersDAO {
 				dto.setHas_delivery_fee(rs.getString("has_delivery_fee"));
 				
 				imgDto.setImg_name(rs.getString("img_name"));
+				imgDto.setImg_num(rs.getInt("img_num"));
 				
 				List<ImgDTO> imgs = new ArrayList<ImgDTO>();
 				imgs.add(imgDto);
@@ -79,8 +82,8 @@ public class OrdersDAO {
 	
 	
 //	주문상품 리스트
-	public List<OrdersDTO> orderList(int product_num, int snum) {
-		List<OrdersDTO> list = new ArrayList<OrdersDTO>();
+	public ArrayList<OrdersDTO> orderList(int product_num, int snum) {
+		ArrayList<OrdersDTO> list = new ArrayList<OrdersDTO>();
 		try {
 			conn = getConn();
 			sql = "select * from orders where product_num = ? and member_num = ? order by orders_date desc";
@@ -88,7 +91,7 @@ public class OrdersDAO {
 			pstmt.setInt(1, product_num);
 			pstmt.setInt(2, snum);
 			rs = pstmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				OrdersDTO dto = new OrdersDTO();
 				dto.setCount(rs.getInt("count"));
 				dto.setOrders_date(rs.getTimestamp("orders_date"));
@@ -112,29 +115,36 @@ public class OrdersDAO {
 		return list;
 	}
 	
-//	주문상품 insert
-	public int orderInsert(OrdersDTO dto, int snum) {
+//	단일상품 구매
+	public int orderInsert(OrdersDTO ordersDto, ProductDTO productDto)  {
 		int result = 0;
 		try {
 			conn = getConn();
 			sql = "insert into orders values(orders_seq.NEXTVAL, ?, ?, ?, ?, 1, 1, 1, ?, systimestamp, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, dto.getMember_num());
-			pstmt.setInt(2, dto.getProduct_num());
-			pstmt.setInt(3, dto.getDelivery_num());
-			pstmt.setInt(4, dto.getImg_num());
-			pstmt.setInt(5, dto.getCount());
-			pstmt.setString(6, dto.getOrders_name());
-			pstmt.setString(7, dto.getReceiver_name());
-			pstmt.setString(8, dto.getPhone());
-			pstmt.setString(9, dto.getCellphone());
-			pstmt.setString(10, dto.getEmail());
-			pstmt.setString(11, dto.getAddress1());
-			pstmt.setString(12, dto.getAddress2());
-			pstmt.setString(13, dto.getAddress3());
-			pstmt.setInt(14, dto.getFinal_price());
-			pstmt.setString(15, dto.getPayment_option());
+			pstmt.setInt(1, ordersDto.getMember_num());
+			pstmt.setInt(2, ordersDto.getProduct_num());
+			pstmt.setInt(3, ordersDto.getDelivery_num());
+			pstmt.setInt(4, ordersDto.getImg_num());
+			pstmt.setInt(5, ordersDto.getCount());
+			pstmt.setString(6, ordersDto.getOrders_name());
+			pstmt.setString(7, ordersDto.getReceiver_name());
+			pstmt.setString(8, ordersDto.getPhone());
+			pstmt.setString(9, ordersDto.getCellphone());
+			pstmt.setString(10, ordersDto.getEmail());
+			pstmt.setString(11, ordersDto.getAddress1());
+			pstmt.setString(12, ordersDto.getAddress2());
+			pstmt.setString(13, ordersDto.getAddress3());
+			pstmt.setInt(14, ordersDto.getFinal_price());
+			pstmt.setString(15, ordersDto.getPayment_option());
 			result = pstmt.executeUpdate();
+			if (result > 0) {
+				sql = "update product set stock=? where product_num=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, productDto.getStock() - ordersDto.getCount());
+				pstmt.setInt(2, productDto.getProduct_num());
+				pstmt.executeUpdate();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -142,4 +152,51 @@ public class OrdersDAO {
 		}
 		return result;
 	}
+	
+//	장바구니에서 선택한 상품들 구매
+	public int orderInsertList(ArrayList<OrdersDTO> list)  {
+		int result = 0;
+		try {
+			conn = getConn();
+			sql = "insert into orders values(orders_seq.NEXTVAL, ?, ?, ?, ?, 1, 1, 1, ?, systimestamp, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			for(OrdersDTO ordersDto : list) {
+				pstmt.setInt(1, ordersDto.getMember_num());
+				pstmt.setInt(2, ordersDto.getProduct_num());
+				pstmt.setInt(3, ordersDto.getDelivery_num());
+				pstmt.setInt(4, ordersDto.getImg_num());
+				pstmt.setInt(5, ordersDto.getCount());
+				pstmt.setString(6, ordersDto.getOrders_name());
+				pstmt.setString(7, ordersDto.getReceiver_name());
+				pstmt.setString(8, ordersDto.getPhone());
+				pstmt.setString(9, ordersDto.getCellphone());
+				pstmt.setString(10, ordersDto.getEmail());
+				pstmt.setString(11, ordersDto.getAddress1());
+				pstmt.setString(12, ordersDto.getAddress2());
+				pstmt.setString(13, ordersDto.getAddress3());
+				pstmt.setInt(14, ordersDto.getFinal_price());
+				pstmt.setString(15, ordersDto.getPayment_option());
+				
+				CartDAO cartDao = CartDAO.getInstance();
+				cartDao.deleteCart(ordersDto.getProduct_num());
+				
+				pstmt.addBatch();
+				
+				sql = "update product set stock = stock - ? where product_num=?";
+				
+				PreparedStatement pstmt2 = conn.prepareStatement(sql);
+				pstmt2.setInt(1, ordersDto.getCount());
+				pstmt2.setInt(2, ordersDto.getProduct_num());
+				pstmt2.executeUpdate();
+			}
+			result = pstmt.executeBatch().length;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return result;
+	}
+	
+	
 }

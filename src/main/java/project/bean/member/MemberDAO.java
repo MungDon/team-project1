@@ -47,15 +47,6 @@ public class MemberDAO {
 		}catch(SQLException s) {}
 	}
 	
-	//비밀번호를 표시할때 ·으로 숨겨서 표시
-	public String maskedPw(String pw) {	
-	    StringBuilder masked = new StringBuilder();
-	    for (int i = 0; i < pw.length(); i++) {
-	        masked.append("·");
-	    }
-	    return masked.toString();
-	}
-	
 	//아이디 중복 확인
 	public boolean confirmId(String id) {
 		boolean result = false;
@@ -106,12 +97,73 @@ public class MemberDAO {
 		return result;
 	}
 	
-	//일반회원 로그인 체크 
+	//아이디 찾기
+	public String findId(MemberDTO dto) {
+		String id = "";
+		try {
+			conn = getConn();
+			sql="select id from member where name=? and cellphone=? and del='1'";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getCellphone());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				id = rs.getString("id");
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn, pstmt, rs);
+		}
+		return id;
+	}
+	
+	//비밀번호 바꾸기 - 회원확인
+	public boolean checkMem(MemberDTO dto) { 
+		boolean result = false;
+		try {
+			conn = getConn();
+			sql = "select * from member where id=? and cellphone=? and del='1'";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getId());
+			pstmt.setString(2, dto.getCellphone());
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result = true;
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn, pstmt, rs);
+		}
+		return result;
+	}
+	
+	//비밀번호 바꾸기
+	public int changePw(MemberDTO dto) {
+		int result = 0;
+		try {
+			conn = getConn();
+			sql = "update member set pw=? where id=? and cellphone=? and del='1'";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getPw());
+			pstmt.setString(2, dto.getId());
+			pstmt.setString(3, dto.getCellphone());
+			result = pstmt.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(conn, pstmt, rs);
+		}
+		return result;
+	}	
+	
+	//로그인 체크
 	public boolean loginCheck(MemberDTO dto) {
 		boolean result = false;
 		try {
 			conn = getConn();
-			sql = "select * from member where id=? and pw=? and vendor='1' and del='1'";
+			sql = "select * from member where id=? and pw=? and del='1'";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getId());
 			pstmt.setString(2, dto.getPw());
@@ -129,22 +181,16 @@ public class MemberDAO {
 		return result;
 	}
 	
-	//판매자 회원 로그인 체크
-	public boolean loginCheckV(MemberDTO dto) {
-		boolean result = false;
+	//가입 승인 거절 회원 가입 재신청
+	public int reapply (int member_num) {
+		int result = 0;
 		try {
 			conn = getConn();
-			sql = "select * from member where id=? and pw=? and vendor='2' and del='1'";
+			sql = "update member set vendor='0' where member_num=?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getId());
-			pstmt.setString(2, dto.getPw());
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				dto.setMember_num(rs.getInt("member_num"));
-				dto.setVendor(rs.getString("vendor"));
-				result = true;
-			}
-		}catch(Exception e) {
+			pstmt.setInt(1, member_num);
+			result = pstmt.executeUpdate();
+		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			close(conn, pstmt, rs);
@@ -153,13 +199,14 @@ public class MemberDAO {
 	}
 	
 	//정보조회 전 비밀번호 확인
-	public boolean pwCheck(String pw) {
+	public boolean pwCheck(String pw, int member_num) {
 		boolean result = false;
 		try {
 			conn = getConn();
-			sql = "select * from member where pw=? and del='1'";
+			sql = "select * from member where pw=? and member_num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, pw);
+			pstmt.setInt(2, member_num);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				result = true;
@@ -200,6 +247,16 @@ public class MemberDAO {
 		}
 		return dto;
 	}
+	
+	//비밀번호를 표시할때 ·으로 숨겨서 표시
+	public String maskedPw(String pw) {	
+		StringBuilder masked = new StringBuilder();
+			for (int i = 0; i < pw.length(); i++) {
+				masked.append("*");
+		    }
+		return masked.toString();
+	}
+			
 	
 	//회원 정보 변경
 	public int updatePro(MemberDTO dto) {
@@ -269,69 +326,7 @@ public class MemberDAO {
 		return result;
 	}
 	
-	//아이디 찾기
-	public String findId(MemberDTO dto) {
-		String id = "";
-		try {
-			conn = getConn();
-			sql="select id from member where name=? and cellphone=? and del='1'";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getName());
-			pstmt.setString(2, dto.getCellphone());
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				id = rs.getString("id");
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			close(conn, pstmt, rs);
-		}
-		return id;
-	}
-	
-	//비밀번호 바꾸기 - 회원확인
-	public boolean checkMem(MemberDTO dto) { 
-		boolean result = false;
-		try {
-			conn = getConn();
-			sql = "select * from member where id=? and cellphone=? and del='1'";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getId());
-			pstmt.setString(2, dto.getCellphone());
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				result = true;
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			close(conn, pstmt, rs);
-		}
-		return result;
-	}
-	
-	//비밀번호 바꾸기
-	public int changePw(MemberDTO dto) {
-		int result = 0;
-		try {
-			conn = getConn();
-			sql = "update member set pw=? where id=? and cellphone=? and del='1'";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getPw());
-			pstmt.setString(2, dto.getId());
-			pstmt.setString(3, dto.getCellphone());
-			result = pstmt.executeUpdate();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			close(conn, pstmt, rs);
-		}
-		return result;
-	}
-	
-	
-	
+
 //	---------------- universe's update
 	
 //	회원정보 업데이트 (전화번호/휴대폰번호) orderForm.jsp 회원정보 반영 체크했을때
@@ -341,7 +336,6 @@ public class MemberDAO {
 			sql = "update member set phone=?, cellphone=? where member_num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getPhone());
-			System.out.println(dto.getPhone());
 			pstmt.setString(2, dto.getCellphone());
 			pstmt.setInt(3, member_num);
 			pstmt.executeUpdate();

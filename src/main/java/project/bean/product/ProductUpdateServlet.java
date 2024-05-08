@@ -90,9 +90,10 @@ public class ProductUpdateServlet extends HttpServlet {
 		}
 		
 		int imgAddCount = dao.ImgInsertCount(data.getProduct_num());
-		System.out.println(resultCount);
-		System.out.println(imgAddCount);
-		System.out.println(uploadStatus);
+		
+		if (Util.isEmpty(fileName)) {
+			totalStatus = imgAddCount;
+		}
 		if(resultCount == imgAddCount && resultCount == uploadStatus) {
 			totalStatus = 1;
 		}

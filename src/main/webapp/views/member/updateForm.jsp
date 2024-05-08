@@ -1,23 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="project.bean.member.MemberDAO" %>
-<jsp:include page="mypage/fixed.jsp" />
 
 <% request.setCharacterEncoding("UTF-8"); %>
+
+<jsp:include page="/views/member/memberHeader.jsp" />
+<jsp:include page="mypage/fixed.jsp" />
 
 <jsp:useBean id="dto" class="project.bean.member.MemberDTO" />
 <jsp:setProperty name="dto" property="*" />
 
+<link rel="stylesheet" type="text/css" href="/project/views/css/member.css">
+
 <STYLE>
-	TABLE {
-		font-size:16px;
-		border-collapse:collapse;
-	}
-	TD {
-		padding:10px;
-	}
-	INPUT {
-		font-size:16px;
+	.hr	{
+		margin: 10px 0;
+		border: none;
+		border-top: 1px solid gray; 
+		width: 882px; 
 	}
 </STYLE>
 
@@ -32,7 +32,7 @@
 %>
 
 	<DIV style="font-size:35px; font-weight: bold;">회원정보 변경</DIV> <br />
-	<HR>
+	<HR class="hr">
 	<DIV style="display: inline; font-size:25px; font-weight: bold;">기본정보 </DIV>
 	<UL style="display: inline-block; list-style-type: square;">
         <LI>표시는 반드시 입력하셔야 하는 항목입니다.</LI>
@@ -114,7 +114,7 @@
 		<INPUT type="hidden" name=member_num value=<%=snum %> />
 		<TABLE border="1">
 			<TR>
-				<TD><UL style="display: inline-block; list-style-type: square;"><LI>아이디</LI></UL></TD>
+				<TD width="200px"><UL style="display: inline-block; list-style-type: square;"><LI>아이디</LI></UL></TD>
 				<TD>
 					<%=dto.getId() %>
 					<INPUT type="hidden" name="id" value="<%=dto.getId() %>" />
@@ -132,7 +132,7 @@
 <%	}
 %>
 			<TR>
-				<TD><UL style="display: inline-block; list-style-type: square;"><LI>비밀번호</LI></UL></TD>
+				<TD><UL style="display: inline-block; list-style-type: none;"><LI>비밀번호</LI></UL></TD>
 				<TD>
 				새 비밀번호		<INPUT type="password" name="pw" id="pw" /> <br />
 				새 비밀번호 확인	<INPUT type="password" name="pw2" id="pw2" /> <br />
@@ -169,12 +169,12 @@
 			</TR>
 		</TABLE>
 		<br /><br />
-		
-		<DIV style="display: inline; font-size:25px; font-weight: bold;">부가정보 </DIV>
-		<TABLE border="1">
+		<div class="table">
+		<DIV style="display: inline; font-size:25px; font-weight: bold;">부가정보 </DIV><br /><br />
+		<TABLE border="1" >
 			<TR>
-				<TD><UL style="display: inline-block; list-style-type: square;"><LI>성별</LI></UL></TD>
-				<TD><INPUT type="radio" name="gender" value="남자" <% if("남자".equals(dto.getGender())){%> checked <% } %> /> 남 &nbsp;&nbsp;
+				<TD width="200px"><UL style="display: inline-block; list-style-type: square;"><LI>성별</LI></UL></TD>
+				<TD width="200px"><INPUT type="radio" name="gender" value="남자" <% if("남자".equals(dto.getGender())){%> checked <% } %> /> 남 &nbsp;&nbsp;
 					<INPUT type="radio" name="gender" value="여자" <% if("여자".equals(dto.getGender())){%> checked <% } %> /> 여
 			</TR>
 			<TR>
@@ -183,16 +183,21 @@
 			</TR>
 			
 		</TABLE><br />
+		</div>
 			<DIV style="margin:auto 480px;">
 			<INPUT type="button" value="취소" onclick="window.location='pwCheck.jsp'"/>
-			<INPUT type="submit" value="정보수정" />
+			<INPUT type="submit" class="emphasis" value="정보수정" />
 			</DIV>	
 	</FORM>
 		
 	<SCRIPT>
-		document.getElementById("email2").addEventListener("change", function() {
-			var selectedOption = this.options[this.selectedIndex];
-			var email = document.getElementById("email");
-			email.value = selectedOption.value; <%-- 선택한 항목의 텍스트값을 텍스트 상자에 표시 --%>
-		});	
+	document.getElementById("email2").addEventListener("change", function() {
+		var selectedOption = this.options[this.selectedIndex];
+		var email = document.getElementById("email");
+		
+		if(selectedOption.value === "직접입력") {
+			email.value = '';	//직접입력 일때는 email 박스에 빈칸으로 둠
+		}else {
+			email.value = selectedOption.value; // 선택한 항목의 텍스트값을 email 에 표시
+		}
 	</SCRIPT>

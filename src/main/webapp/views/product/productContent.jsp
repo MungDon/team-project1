@@ -4,12 +4,19 @@
 <%@ page import="project.bean.product.ProductDTO" %>
 <%@ page import="project.bean.member.MemberDAO" %>
 <%@ page import="project.bean.member.MemberDTO" %>
+<%@ page import="project.bean.delivery.DeliveryDAO" %>
+<%@ page import="project.bean.delivery.DeliveryDTO" %>
+<%@ page import="project.bean.contact.ProductQnaDAO" %>
+<%@ page import="project.bean.contact.ProductQnaDTO" %>
+<%@ page import="project.bean.review.ReviewDAO" %>
+<%@ page import="project.bean.review.ReviewDTO" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="project.bean.img.ImgDTO" %>
 <style>
 	.btn_submit{
-	 	background-image: url('../images/구매하기.PNG');
+	 	background-image: url('../images/buyBtn.PNG');
 	    background-position:  0px 0px;
 	    background-repeat: no-repeat;
 	    width: 178px;
@@ -23,35 +30,57 @@
     	text-decoration: none;
 	}
 
-	
+	.star2 {
+		font-size: 24px;
+		cursor: pointer;
+		color: #ffcc00;;
+		transition: color 0.2s;
+	}
 </style>
-
+<jsp:include page="../main/header.jsp"/>
 <%
-	int snum = 0; 
+	
 	int product_num = Integer.parseInt(request.getParameter("product_num"));
 	int category_num = Integer.parseInt(request.getParameter("category_num"));
-	
+	String svendor="";
+	   if (session.getAttribute("svendor") != null) {
+	      svendor = (String)session.getAttribute("svendor");
+	   }
 	ProductDAO productDao = ProductDAO.getInstance();
-	ProductDTO dto = productDao.productContent(product_num);
+	ProductDTO productDto = productDao.productContent(product_num);
 	
 	DecimalFormat formatter = new DecimalFormat("#,###");
-	String fmPrice = formatter.format(dto.getPrice());
+	String fmPrice = formatter.format(productDto.getPrice());
+	String fmStock = formatter.format(productDto.getStock());
 	
 	List<ProductDTO> list = productDao.thumbnail(product_num);
 	
-	if(session.getAttribute("snum")!=null){
+	int snum = 0;
+	if (session.getAttribute("snum") != null) {
 		snum = (int)session.getAttribute("snum");
 	}
+	
+	
 	MemberDAO memberDao = MemberDAO.getInstance();
-	MemberDTO memberDto = memberDao.memberInfo(snum);
-
-	int price = dto.getPrice();
+// 	MemberDTO memberDto = memberDao.memberInfo(snum);
+	
+	int price = productDto.getPrice();
+	
+	
+	
+	DeliveryDAO deliveryDao = DeliveryDAO.getInstance();
+	List<DeliveryDTO> deliveryList = deliveryDao.addressInfo(snum);
+	
+	DeliveryDTO deliveryDto = deliveryDao.deliveryNum(snum);
+		
+		
+	
 %>
 
 
 <TABLE align="center" cellpadding="3" cellspacing="14">
-	<FORM action="../orders/orderForm.jsp?product_num=<%= dto.getProduct_num()%>&category_num=<%= category_num %>" method="post">
-		<TR>
+	<FORM action="../orders/orderForm.jsp?orderPath=1&member_num=<%= snum %>&product_num=<%= productDto.getProduct_num()%>&category_num=<%= category_num %>&delivery_num=<%= deliveryDto.getDelivery_num() %>" method="post">
+		<TR>			<%-- 수정) 단일주문 orderPath 1로 보냄 / 장바구니 2 --%>
 			<TD rowspan="10">
 <%
 	for (ProductDTO productDTO : list) {
@@ -70,7 +99,7 @@
 %>	
 			</TD>
 			<TD colspan="2" width="70"><font size="6">
-				<B><%= dto.getProduct_name() %></B></font>
+				<B><%= productDto.getProduct_name() %></B></font>
 			</TD>
 <!-- 			<TD>QR코드 / 공유</TD> -->
 		</TR>
@@ -81,7 +110,7 @@
 		</TR>
 		<TR>
 			<TD width="120">짧은설명</TD>
-			<TD><%= dto.getProduct_info() %></TD>
+			<TD><%= productDto.getProduct_info() %></TD>
 		</TR>
 		<TR>
 			<TD>판매가</TD>
@@ -90,7 +119,7 @@
 		<TR>
 			<TD>구매제한</TD>
 <%
-	if (dto.getStock() > 0) {			// 팔 수 있는 남은 재고가 있다면
+	if (productDto.getStock() > 0) {			// 팔 수 있는 남은 재고가 있다면
 %>
 			<TD>옵션당 최소 1개</TD>
 <%
@@ -103,15 +132,15 @@
 		</TR>
 		<TR>
 			<TD>배송비</TD>
-			<TD><%= dto.getDelivery_price() %>원 / 주문시결제(선결제)</TD>
+			<TD><%= productDto.getDelivery_price() %>원 / 주문시결제(선결제)</TD>
 		</TR>
 		<TR>
 			<TD>상품코드</TD>
-			<TD><%= dto.getProduct_num() %></TD>
+			<TD><%= productDto.getProduct_num() %></TD>
 		</TR>
 		<TR>
 			<TD>제조사</TD>							<%-- 제조사 -> 브랜드 로 통일 --%>
-			<TD><%= memberDto.getBusiness_name() %></TD>
+			<TD><%= productDto.getBusiness_name() %></TD>
 		</TR>
 		<TR>
 			<TD>원산지</TD>
@@ -119,7 +148,9 @@
 		</TR>
 		<TR>
 			<TD>상품재고</TD>
-			<TD><%= dto.getStock() %>개</TD>
+			<TD>
+				<%= fmStock %>개
+			</TD>
 		</TR>
 		
 		<TR>
@@ -142,15 +173,14 @@
 %>
 			</TD>											<%-- 재고 초과하면 alert --%>
 			<TD colspan="2" bgcolor="EEEEEE" >
-				<span style="float:left; width:55%;"><font size="2"><B><%= dto.getProduct_name() %></B></font></span>
+				<span style="float:left; width:55%;"><font size="2"><B><%= productDto.getProduct_name() %></B></font></span>
 				<span id="total1" style="float:right; "><B><%= fmPrice %>원</B></span>
 				<span style="float:right; width:15%;">
-					<input type="number" id="count" name="count" value="1" min="1" max="<%= dto.getStock() %>" style="width:50px; height:30px;" oninput="updateTotal()"	/>
-					<input type="hidden" name="count" value="count">
+					<input type="number" id="count" name="count" value="1" min="1" max="<%= productDto.getStock() %>" style="width:50px; height:30px;" oninput="updateTotal()"	/>
 				</span>
 				<script>
 					function updateTotal(){
-						let price = <%= dto.getPrice() %>;		 
+						let price = <%= productDto.getPrice() %>;
 						let count = document.getElementById("count").value;
 						let total1 = price * count;
 						let total2 = price * count;
@@ -159,6 +189,10 @@
 						document.getElementById("total1").textContent = fmTotal + "원";
 						document.getElementById("total2").textContent = fmTotal + "원";
 						document.getElementById("total3").textContent = fmTotal + "원";
+						
+						if (count >= <%= productDto.getStock() %>) {
+							alert("상품 수량의 최대 입니다.");
+						}
 					}
 				</script>
 			</TD>
@@ -181,40 +215,143 @@
 		<TR>
 			<TD colspan="3">
 				<span style="float:right;">
-					<input type="submit" value="" class="btn_submit">	<%-- 구매하기 --%>
+<%
+				if (productDto.getStock() == 0) {
+%>
+					<A href="#"><img src="../images/buyBtn.PNG" onclick="stockBtn()"	/></A>
+					<script>
+						function stockBtn(){
+							alert("품절된 상품입니다.");
+// 							history.go(-1);
+						}
+					</script>
+<%
+				}else {
+					if (snum == 0 || deliveryDto.getAddress3() == null) {
+						if (snum > 0 && deliveryDto.getAddress3() == null) {
+%>
+							<A href="#"><img src="../images/buyBtn.PNG" onclick="deliveryBtn()"	/></A>
+						<script>
+						function deliveryBtn(){
+							alert("배송지 등록 창으로 이동합니다.");
+							window.location='../member/delivery/insertForm.jsp';
+						}
+						</script>
+							
+<%
+						}else {
+%>
+							<A href="#"><img src="../images/buyBtn.PNG" onclick="insertBtn()"	/></A>
+						<script>
+						function insertBtn(){
+							alert("로그인 창으로 이동합니다.");
+							window.location='../member/loginForm.jsp';
+						}
+						</script>
+<%
+						}
+					}else {
+%>
+						<input type="submit" value="" id="btn_submit" class="btn_submit">	<%-- 구매하기 --%>
+<%
+					}
+				}
+%>
 				</span>
 				<A href="#">
 					<span style="float:right;">
-						<img src="../images/장바구니.PNG" width="171" onclick="window.location='orderList.jsp'"	/>
+<%
+					if (productDto.getStock() == 0) {
+%>
+						<img src="../images/cartBtn.PNG" width="171" onclick="stockBtn()"	/>
 						&nbsp;
+						<script>
+							function cartSubmit(){
+								alert("품절된 상품입니다.");
+	// 							history.go(-1);
+							}
+						</script>
+						
 					</span>
 				</A>
-				<A href="#">
-					<span style="float:right;">
-						<img src="../images/찜하기.PNG"	width="168"	onclick="window.location='orderList.jsp'"	/>
-						&nbsp;
-					</span>
-				</A>
+<%
+					}else {
+						if (snum == 0 || deliveryDto.getAddress3() == null) {
+							if (snum > 0 && deliveryDto.getAddress3() == null) {
+	%>
+								<A href="#">
+									<span style="float:right;">
+										<img src="../images/cartBtn.PNG" width="171" onclick="deliveryBtn()"	/>
+										&nbsp;
+									</span>
+								</A>
+	<%
+							}else {
+	%>
+								<A href="#">
+									<span style="float:right;">
+										<img src="../images/cartBtn.PNG" width="171" onclick="insertBtn()"	/>
+										&nbsp;
+									</span>
+								</A>
+	<%
+							}
+						}else {
+%>
+						<A href="#">
+							<span style="float:right;">
+								<img src="../images/cartBtn.PNG" width="171" onclick="cartSubmit()"	/>
+								&nbsp;
+							</span>
+						</A>
+<%
+					}
+%>
+				<script>
+					function cartSubmit(){
+// 						alert("장바구니 담기 완료!\n장바구니로 이동합니다.")
+// 							location.reload();
+// 							return;
+// 							event.preventDefault();
+						let h_countVal = document.getElementById('count').value;
+						let p_count = document.getElementById('p_count');
+						p_count.value = h_countVal; 
+						document.getElementById('cartSubmit').submit();
+					}
+				</script>
+<%
+				}
+%>
+<!-- 				<A href="#"> -->
+<!-- 					<span style="float:right;"> -->
+<!-- 						<img src="../images/찜하기.PNG"	width="168"	onclick="window.location='orderList.jsp'"	/> -->
+<!-- 						&nbsp; -->
+<!-- 					</span> -->
+<!-- 				</A> -->
 			</TD>
 		</TR>
 	</FORM>
 </TABLE>
 
 
-<HR width="100%" size="1";	/>
+<HR width="100%" size="1"	/>
 <TABLE align="center">
 	<TR>
 		<TD>
 			<A href="#info">상품상세정보</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#delivery">배송안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#trade">교환 및 반품안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#review">상품후기</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#qna">상품문의</A>
@@ -223,7 +360,7 @@
 </TABLE>
 <HR width="100%" size="1";	/>
 <A name="info"></A>
-<CENTER><B>판매자 상품 내용</B></CENTER>
+<!-- <CENTER><B>판매자 상품 내용</B></CENTER> -->
 <%
 	list = productDao.textImages(product_num);
 	for (ProductDTO productDTO : list) {
@@ -236,7 +373,7 @@
 		}
 	}
 %>
-
+<br /><br />
 <TABLE align="center">
 	<TR>
 		<TD colspan="4">
@@ -292,20 +429,24 @@
 
 </TABLE>
 
-<HR width="100%" size="1";	/>
+<HR width="100%" size="1"	/>
 <TABLE align="center">
 	<TR>
 		<TD>
 			<A href="#info">상품상세정보</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#delivery">배송안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#trade">교환 및 반품안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#review">상품후기</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#qna">상품문의</A>
@@ -346,15 +487,19 @@
 	<TR>
 		<TD>
 			<A href="#info">상품상세정보</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#delivery">배송안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#trade">교환 및 반품안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#review">상품후기</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#qna">상품문의</A>
@@ -438,70 +583,280 @@
 	</TR>
 </TABLE>
 
-<HR width="100%" size="1";	/>
+<HR width="100%" size="1"	/>
 <TABLE align="center">
 	<TR>
 		<TD>
 			<A href="#info">상품상세정보</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#delivery">배송안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#trade">교환 및 반품안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#review">상품후기</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#qna">상품문의</A>
 		</TD>
 	</TR>
 </TABLE>
-<HR width="100%" size="1";	/>
+<HR width="100%" size="1"	/>
 
 <A name="review"></A>
---------------------상품후기--------------------
+<jsp:include page="../review/writeForm.jsp" />
 
 
-<HR width="100%" size="1";	/>
+
+
+
+
+
+<CENTER>
+<TABLE width="1100" style="margin-top:50px; margin-bottom:100px; text-align:center; border: 1px solid gray; border-left:hidden; border-right:hidden;" cellspacing="0" cellpadding="0">
+	<TR bgcolor="#EAEAEA">
+		<TH width="20%" style="border-left:hidden; border-right:hidden; border-bottom:1px solid #BDBDBD;">별점</TH>
+		<TH width="60%" style="border-left:hidden; border-right:hidden; border-bottom:1px solid #BDBDBD;">상품후기</TH>
+		<TH width="20%" style="border-left:hidden; border-bottom:1px solid #BDBDBD;">작성날짜</TH>
+	</TR>
+<%
+	ReviewDAO reviewDao = ReviewDAO.getInstance();
+	List<ReviewDTO> reviewList = reviewDao.reviewList(product_num);
+	
+ 	if (reviewList.size() != 0){
+		for (ReviewDTO reviewDto : reviewList) {
+%>
+	<TR style="border-bottom:1px solid #EAEAEA;">
+		<TD style="border-left:1px solid #EAEAEA; border-right:1px solid #EAEAEA;">
+			<font size="2">
+<%
+			int rating = Integer.parseInt(reviewDto.getRating());
+			for (int i=1; i<=rating; i++) {
+%>
+				<span class="star2">&#9733;</span>
+<%
+			}
+%>
+		</TD>
+		<TD style="text-align:left;">
+			<font size="2">
+				<B><%= reviewDto.getContent() %></B>
+			</font>
+		</TD>
+		<TD style="border-left:1px solid #EAEAEA; border-right:1px solid #EAEAEA;">
+			<font size="2">
+				<B><%= reviewDto.getReg() %></B>
+			</font>
+		</TD>
+	</TR>
+	
+<%		}
+	}else {
+		%>
+		<TR>
+			<TD colspan="6">
+				<br />
+				<FONT size="4"><B>등록된 리뷰가 없습니다.</B></FONT>
+				<br /><br />
+			</TD>
+		</TR>
+	<%
+		}
+	%>
+</TABLE>
+</CENTER>
+
+
+
+
+
+
+
+
+
+	
+	
+
+<HR width="100%" size="1"	/>
 <TABLE align="center">
 	<TR>
 		<TD>
 			<A href="#info">상품상세정보</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#delivery">배송안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#trade">교환 및 반품안내</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#review">상품후기</A>
+			&nbsp; | &nbsp;
 		</TD>
 		<TD>
 			<A href="#qna">상품문의</A>
 		</TD>
 	</TR>
 </TABLE>
-<HR width="100%" size="1";	/>
+<HR width="100%" size="1"	/>
 
 <A name="qna"></A>
--------------------상품문의-------------------
-<%--
+
+<CENTER>
+<TABLE width="1100" style="margin-top:100px; text-align:center; border: 1px solid gray; border-left:hidden; border-right:hidden; border-bottom:hidden; border-bottom:hidden;" cellspacing="0" cellpadding="0">
+	<TR bgcolor="#EAEAEA">
+		<TH width="50" style="border-right:hidden; border-bottom:1px solid #BDBDBD;">분류</TH>
+		<TH colspan="3" width="400" style="border-left:hidden; border-right:hidden; border-bottom:1px solid #BDBDBD;">제목</TH>
+		<TH width="140" style="border-left:hidden; border-right:hidden; border-bottom:1px solid #BDBDBD;">작성자</TH>
+		<TH width="100" style="border-left:hidden; border-bottom:1px solid #BDBDBD;">문의날짜</TH>
+	</TR>
+<%
+	ProductQnaDAO productQnaDao = ProductQnaDAO.getInstance();
+	ArrayList<ProductQnaDTO> qnaList = productQnaDao.productQnaList(product_num);
+	if (qnaList.size() != 0){
+		for (ProductQnaDTO qnaDto : qnaList) {
+		
+%>
 	<TR>
-		<TD align="center">
-			<img src="../images/갓파1.jpg" width="240" height="230"	/>
+		<TD width="50" height="65" style="border-right:hidden; border-left:1px solid #EAEAEA;">
+			<%= qnaDto.getCategory() %>
 		</TD>
-		<TD align="center">
-			<img src="../images/갓파3.jpg" width="240" height="230"	/>
+		<TD colspan="3" style="text-align:left; border-left:1px solid #EAEAEA; border-right:1px solid #EAEAEA;">
+			<font size="2">
+<%
+	if(qnaDto.getSecret_yn().equals("y")) {
+%>
+				<img src="../images/security.png" width="15"	/>
+<%       
+	}
+// 		System.out.println("qna넘"+qnaDto.getProduct_num());
+%>
+				<label class="question-label" onclick="toggleAnswer(this)">
+			        <B><%= qnaDto.getTitle() %></B>
+			    </label>
+			    
+			    
+<%
+		  System.out.println(qnaDto.getMember_num());
+		  System.out.println(snum);
+	  if (qnaDto.getMember_num() == snum || svendor.equals("3")) {
+%>
+	             <div class="answer-row" style="display: none;">
+	                 <!-- 질문에 대한 내용 -->
+	                 <img src="../images/q.png" width="15"   />
+	                 <%= qnaDto.getQuestion() %> <br /><br />
+<%
+	      if (qnaDto.getAnswer() != null) {
+%>
+	                 <img src="../images/a.png" width="15"   />
+	                 <%= qnaDto.getAnswer() %>
+<%
+	      }
+%>
+	             </div>
+	
+<%
+	   }else {
+%>
+	            <div class="answer-rowB" style="display: none;">
+	               <font size="4"><B>비밀글입니다.</B></font>
+	            </div>
+<%
+	   }
+%>
+             <script>
+                function toggleAnswer(label) {
+                    var answerRow = label.nextElementSibling;
+                    var answerRowB = label.nextElementSibling;
+                    if (answerRow.style.display === "none") {
+                        answerRow.style.display = "block";
+                    }else if(answerRowB.style.display === "none") {
+                       answerRowB.style.display = "block";
+                    }else{
+                        answerRow.style.display = "none";
+                    }
+                }
+            </script>
+				
+				
+			    
+			</font>
 		</TD>
-		<TD align="center">
-			<img src="../images/갓파5.jpg" width="240" height="230"	/>
+		<TD style="">
+			<font size="2">
+				<B><%= qnaDto.getMember_name() %></B>
+			</font>
 		</TD>
-		<TD align="center">
-			<img src="../images/ppak.jpg" width="240" height="230"	/>
+		<TD style="border-left:1px solid #EAEAEA; border-right:1px solid #EAEAEA;">
+			<font size="2">
+				<B><%= qnaDto.getReg() %></B>
+			</font>
+			
 		</TD>
 	</TR>
---%>
+	
+<%
+		}
+	}else {
+%>
+	<TR>
+		<TD colspan="6">
+			<br />
+			<FONT size="4"><B>등록된 문의가 없습니다.</B></FONT>
+			<br /><br />
+		</TD>
+	</TR>
+<%
+	}
+%>
+	<TR>
+		<TD colspan="6" align="right" width="50" height="65" style="border-bottom:hidden; border-right:hidden; border-left:hidden; border-top:1px solid #EAEAEA;">
+			<button onclick="location.href='../productQna/productQnaList.jsp?pageNum=1'">전체글보기</button>
+<%
+	if (snum != 0) {
+%>
+			<button onclick="location.href='../productQna/productQnaWriteForm.jsp?product_num=<%=product_num%>'">문의하기</button>
+<%
+	}else {
+%>
+			<button onclick="noSession()">문의하기</button>
+<%
+	}
+%>
+	<script>
+		function noSession(){
+			alert("로그인 후 이용해주세요.");
+			location.href="../member/loginForm.jsp";
+		}
+	</script>
+		</TD>
+	</TR>
+
+
 </TABLE>
+</CENTER>
+<FORM action="../cart/cartInsertPro.jsp" method="post" id="cartSubmit">
+	<input type="hidden" name="member_num" value="<%= snum %>"	/>
+<%-- <% System.out.println(product_num); %> --%>
+	<input type="hidden" name="product_num" value="<%= productDto.getProduct_num() %>"	/>
+	<input type="hidden" name="p_count" id="p_count"	/>
+
+	
+	<input type="submit" value="" class="cartSubmit" style="display:none;"	/>
+	
+	
+</FORM>
+
+<script>
+
+	
+</script>

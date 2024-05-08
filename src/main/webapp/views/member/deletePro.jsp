@@ -27,7 +27,7 @@
 %>	
 	<SCRIPT>
 		alert("정상적으로 탈퇴되었습니다.");
-		window.location = "main.jsp";
+		window.location="../main/introMain.jsp"
 	</SCRIPT>
 <%	}else{
 %>

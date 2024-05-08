@@ -4,6 +4,8 @@
 
 <% request.setCharacterEncoding("UTF-8"); %>
 
+<jsp:include page="/views/member/memberHeader.jsp" />
+
 <%
 	String id = request.getParameter("id");
 	

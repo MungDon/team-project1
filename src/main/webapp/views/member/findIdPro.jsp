@@ -14,10 +14,24 @@
 	TD {
 		padding:10px;
 	}
-	INPUT {
-		font-size:16px;
-		padding:5px;
+	BUTTON, INPUT {
+		background-color: white;
+		color: gray; 
+		border: 1px solid lightgray;
+		border-radius: 0; 
+		padding: 5px 10px; 
+		font-size: 16px; 
+		cursor: pointer;
 	}
+	.emphasis {
+		background-color: gray;
+		color: white; 
+		border: 1px solid lightgray;
+		border-radius: 0; 
+		padding: 5px 10px; 
+		font-size: 16px; 
+		cursor: pointer;
+	}	
 </STYLE>
 
 <jsp:useBean id="dto" class="project.bean.member.MemberDTO" />
@@ -51,7 +65,7 @@
 		<TR align="center">
 			<TD colspan="2">
 			<INPUT type="button" value="비밀번호 찾기" onclick="window.location='findPw.jsp'" />
-			<INPUT type="button" value="로그인하기" onclick="window.location='loginSelect.jsp'" />		
+			<INPUT type="button" class="emphasis" value="로그인하기" onclick="window.location='loginSelect.jsp'" />		
 			</TD>
 		</TR>
 	</TABLE>

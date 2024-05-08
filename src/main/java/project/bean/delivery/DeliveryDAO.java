@@ -258,21 +258,23 @@ public class DeliveryDAO {
 //	---------------- universe's update
 	
 //	기본배송지인 배송지 찾기 (값이 2 로 설정된 정보 찾기) orderForm.jsp
-	public DeliveryDTO defaultVal(int snum) {
+	public DeliveryDTO defaultVal(int member_num) {
 		DeliveryDTO dto = new DeliveryDTO();
 		try {
 			conn = getConn();
-			sql = "select * from delivery where member_num=? and default_address=2";
+			sql = "select * from delivery where member_num=?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, snum);
+			pstmt.setInt(1, member_num);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				dto.setName(rs.getString("name"));
+				dto.setDelivery_num(rs.getInt("delivery_num"));
 				dto.setAddress1(rs.getString("address1"));
 				dto.setAddress2(rs.getString("address2"));
 				dto.setAddress3(rs.getString("address3"));
 				dto.setPhone(rs.getString("phone"));
 				dto.setCellphone(rs.getString("cellphone"));
+				dto.setDefault_address(rs.getString("default_address"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -296,7 +298,6 @@ public class DeliveryDAO {
 			pstmt.setString(6, dto.getAddress3());
 			pstmt.setString(7, dto.getCellphone());
 			pstmt.setString(8, dto.getPhone());
-			
 			pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -305,26 +306,6 @@ public class DeliveryDAO {
 		}
 	}
 	
-//	배송지 업데이트 (주소/전화번호/휴대폰번호) orderForm.jsp 회원정보 반영 체크했을때
-	public void deliveryUpdate(DeliveryDTO dto) {
-		try {
-			conn = getConn();
-			sql = "update delivery set address1 = ?, set address2 = ?, set address3 = ?, phone = ?, cellphone = ? where delivery_num=?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getAddress1());
-			pstmt.setString(2, dto.getAddress2());
-			pstmt.setString(3, dto.getAddress3());
-			pstmt.setString(4, dto.getPhone());
-			pstmt.setString(5, dto.getCellphone());
-			pstmt.setInt(6, dto.getDelivery_num());
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close(conn, pstmt, rs);
-		}
-	}
-
 //	주소 정보 - orderForm 에서 address1,2,3을 받기 위함
 	public List<DeliveryDTO> addressInfo(int member_num) {			// 회원이 주소추가를 한 번 더 하면 2개의 결과값이나옴
 		List<DeliveryDTO> list = new ArrayList<DeliveryDTO>();
@@ -334,7 +315,7 @@ public class DeliveryDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, member_num);
 			rs = pstmt.executeQuery();
-			while (rs.next()) {
+			if (rs.next()) {
 				DeliveryDTO dto = new DeliveryDTO();
 				dto.setDelivery_num(rs.getInt("delivery_num"));
 				dto.setDelivery_name(rs.getString("delivery_name"));
@@ -342,6 +323,9 @@ public class DeliveryDAO {
 				dto.setAddress1(rs.getString("address1"));
 				dto.setAddress2(rs.getString("address2"));
 				dto.setAddress3(rs.getString("address3"));
+				dto.setPhone(rs.getString("phone"));
+				dto.setCellphone(rs.getString("cellphone"));
+				
 				list.add(dto);
 			}
 		} catch (Exception e) {
@@ -350,6 +334,27 @@ public class DeliveryDAO {
 			close(conn, pstmt, rs);
 		}
 		return list;
+	}
+	
+//	배송지 시퀀스 받아오기위해 만듬
+	public DeliveryDTO deliveryNum(int member_num) {
+		DeliveryDTO dto = new DeliveryDTO();
+		try {
+			conn = getConn();
+			sql = "select * from delivery where member_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, member_num);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto.setDelivery_num(rs.getInt("delivery_num"));
+				dto.setAddress3(rs.getString("address3"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		return dto;
 	}
 }
 

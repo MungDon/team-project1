@@ -18,8 +18,10 @@
 %>
 		<SCRIPT>
 			alert("배송지가 등록되었습니다.");
-			window.close();
-			opener.window.location="list.jsp?pageNum=<%=pageNum %>";
+// 			window.close();
+// 			opener.
+			window.location="list.jsp?pageNum=<%=pageNum %>";
+			
 		</SCRIPT>
 <% 	}
 %>

@@ -38,6 +38,5 @@
 			opener.window.location="list.jsp?pageNum=<%=currentPage%>";
 		</SCRIPT>	
 <%		}
-%>
-<%	}
+	}
 %>

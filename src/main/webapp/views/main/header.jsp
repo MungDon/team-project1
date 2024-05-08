@@ -62,7 +62,7 @@
 .h_tr {
 	border-bottom: 1px solid #ddd;
 }
-form{
+.form{
 	display : flex;
 	justify-content :center;
 	align-items : center;
@@ -113,13 +113,13 @@ form{
 
 <%
 	int snum = 0;
-	int svendor = 0;
+	String svendor = "";
 	if (session.getAttribute("snum") != null) {
 		snum = (int) session.getAttribute("snum");
 	}
 	
 	if (session.getAttribute("svendor") != null) {
-		svendor = (int) session.getAttribute("svendor");
+		svendor = (String)session.getAttribute("svendor");
 	}
 	ProductDAO dao = ProductDAO.getInstance();
 	List<CategoryDTO> list = dao.loadCategory();
@@ -131,7 +131,7 @@ form{
 				width="150" height="150"></a></td>
 		<td>
 			<div class="dropdown">
-				<button class="dropbtn" onclick="location.href='main.jsp?sortName=created_date&sort=desc'">전체 상품
+				<button class="dropbtn" onclick="location.href='../main/main.jsp?sortName=created_date&sort=desc'">전체 상품
 				</button>
 				<div class="dropdown-content">
 					<%for (CategoryDTO dto : list) { %> 			
@@ -153,13 +153,13 @@ form{
 			</div>
 			</div>
 		</td>
-		<%if(svendor == 3){ %>
+		<%if(svendor.equals("3")){ %>
 		<td>
 			<button class="dropbtn" onclick="location.href='../admin/adminMain.jsp'">관리자 모드</button>
 		</td>
 		<%} %>
 		<td>
-			<form id="searchForm" action="main.jsp" method="get">
+			<form  class="form" id="searchForm" action="main.jsp" method="get">
 				<div class="search">
 					<input type="text" class="text" name="keyWord" placeholder="상품명을 검색하세요 ex)대대포막걸리">
 					<input type="hidden" name="sortName" value="created_date">
@@ -177,7 +177,7 @@ form{
 			 <%
 			} else {
 				 %> 
-				 <img src="../images/login3.png" width="100" height="80" onclick="location.href='../member/loginSelect.jsp'">
+				 <img src="../images/login3.png" width="100" height="80" onclick="location.href='../member/loginForm.jsp'">
 			
 		<% } %>
 

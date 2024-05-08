@@ -96,16 +96,22 @@ form{
 </style>
 
 <%
-	int snum = 0;
-	if (session.getAttribute("snum") != null) {
-		snum = (int) session.getAttribute("snum");
+	String svendor = "";
+	if (session.getAttribute("svendor") != null) {
+		svendor = (String)session.getAttribute("svendor");
 	}
-%>
+	
+	if(!svendor.equals("3")){%>
+		<script>
+			alert("관리자 권한이 없습니다.");
+			location.href="../member/loginForm.jsp";
+		</script>
+<%	}%>
 
 <table class="headerTable">
 	<tr class="h_tr">
 		<td>
-			<a href="../main/adminMain.jsp"><img src="../images/admin2.png" width="250" height="250"></a>
+			<a href="../admin/adminMain.jsp"><img src="../images/admin2.png" width="250" height="250"></a>
 		</td>
 		<td>
 			<div class="dropdown">
