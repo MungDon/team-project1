@@ -9,7 +9,7 @@
 	if(session.getAttribute("snum") != null ){
 		snum = (int)session.getAttribute("snum");
 	}
-	
+	 
 	int num = Integer.parseInt(request.getParameter("num"));
 	String pageNum = request.getParameter("pageNum");
 	
@@ -20,11 +20,11 @@
 	
 	ProductQnaDAO dao = ProductQnaDAO.getInstance();
 	ProductQnaDTO dto = dao.content(num);
-
-//	 || dto.getVendor().equals("3")
-
-	if(dto.getSecret_yn().equals("y") && snum == dto.getMember_num()
-		|| dto.getSecret_yn().equals("n") || svendor.equals("3")){
+	int product_num = dao.getSellerProductNum(num);
+	boolean result = dao.isReal(snum, product_num);
+	System.out.println(result);
+	if(dto.getSecret_yn().equals("y") && result
+		|| dto.getSecret_yn().equals("n") || svendor.equals("3") || snum == dto.getMember_num()){
 			
 	 %>
 <div id="contents">
@@ -52,7 +52,7 @@
 					<div class="board_view_content">
 						<div class="view_goods_select"></div>
 						<div class="board_view_qa">
-									<img src="../upload/<%=dto.getImg_name()%>" width="50" height="50"/>
+									<a href="../product/productContent.jsp?product_num=<%=dto.getProduct_num()%>&pageNum=<%=pageNum%>&category_num=<%=dto.getCatetgory_num()%>"><img src="../upload/<%=dto.getImg_name()%>" width="50" height="50"/></a>
 									<h3><%=dto.getProduct_name() %></h3>
 							<%-- 질문창 --%>
 							<div class="view_question_box">
@@ -73,7 +73,7 @@
 								<strong class="view_answer_tit">A.</strong>
 									<div class="view_answer_info">
 										<strong>답변입니다.</strong>
-										<span class="view_info_id">관리자</span>
+										<span class="view_info_id"></span>
 										<span class="view_info_day"><%=dto.getReg_answer() %></span>
 									</div>
 									<div class="seem_cont">
@@ -94,9 +94,11 @@
 					<button class="btn_before" onclick="window.location='productQnaList.jsp?pageNum=<%=pageNum%>'">
 						<strong>이전</strong>
 					</button>
+				<% if(!svendor.equals("3")){%>	
 					<button type="submit" class="btn_write_ok" onclick="window.location='productQnaUpdateForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>수정</strong>
 					</button>
+				<%} %>	
 				<% if(svendor.equals("3")){%>
 					<button class="btn_comment" onclick="window.location='productQnaAnswerForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>답글</strong>

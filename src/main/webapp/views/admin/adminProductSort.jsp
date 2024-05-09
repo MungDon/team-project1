@@ -2,8 +2,9 @@
     pageEncoding="UTF-8"%>
 <style>
 .sortTable {
-	width: 1000px;
+	width: 1800px;
 	text-align: center;
+	font-size: 20px;
 }
 
 #active {

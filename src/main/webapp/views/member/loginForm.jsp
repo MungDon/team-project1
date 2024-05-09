@@ -4,13 +4,13 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 
 <STYLE>
-	TABLE {
+	.table {
 		border:1px solid lightgray; 
 		width:300px; 
 		height:300px; 
 		padding:30px
 	}
-	TD {
+	.table TD {
 		padding:10px;
 	}
 	BUTTON, INPUT {
@@ -62,7 +62,7 @@
 %>
 
 <FORM action="loginPro.jsp" method="post">
-<TABLE align="center">
+<TABLE class="table" align="center">
 	<TR>
 		<TD colspan="3" style="font-size:25px;">로그인</TD>
 	</TR>

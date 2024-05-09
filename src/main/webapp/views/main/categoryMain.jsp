@@ -192,6 +192,7 @@
 				endPage = pageCount;
 			} %>
 </div>
+<div>
 <% 			if( startPage > 10 ){ %>
 			<a href="../main/categoryMain.jsp?category_num=<%=category_num %>&pageNum=<%=startPage-10 %>&sortName=<%=sortName %>&sort=<%=sort%>">[이전]</a>
 <% 		}
@@ -205,6 +206,8 @@
 	
 %>
 </div>
+</div>
+<jsp:include page="footer.jsp"/>
 <script>
 	function goProductForm(){
 		location.href="../product/productInsertForm.jsp";

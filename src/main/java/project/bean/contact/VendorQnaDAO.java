@@ -22,7 +22,7 @@ public class VendorQnaDAO {
 	private Connection getConn() throws Exception{
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+			String url = "jdbc:oracle:thin:@192.168.0.10:1521:orcl";
 			String pass = "tiger";
 			String user = "project1";
 			conn = DriverManager.getConnection(url, user, pass);

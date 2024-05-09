@@ -17,6 +17,10 @@
 	if(request.getParameter("pageNum")!=null){
 		pageNum = request.getParameter("pageNum");
 	}
+	String svendor="";
+	if (session.getAttribute("svendor") != null) {
+		svendor = (String)session.getAttribute("svendor");
+	}
 	
 	VendorQnaDAO dao = VendorQnaDAO.getInstance();
 	VendorQnaDTO dto = dao.vendorQnaUpdateForm(num);
@@ -36,11 +40,17 @@
 
 			<tr>
 				<th scope="row">비밀번호</th>
-				<td><input type="password" name="password"/></td>
+<%				if(svendor.equals("3")){%>
+				<td><input type="password" name="password" value="<%=dto.getPassword()%>"/></td>
+<%				}else{ %>
+				<td><input type="password" name="password"/></td>	
+<%				} %>
+
+	
 			</tr>			
 		</table>
 				<div class="btn_center_box">
-					<button class="btn_before" onclick="window.location='vendorQnaList.jsp?pageNum=<%=pageNum%>'">
+					<button type="button" class="btn_before" onclick="history.back()">
 						<strong>이전</strong>
 					</button>
 					<button type="submit" class="btn_update">
@@ -53,4 +63,3 @@
 		</div>
 	</div>
 </div>
-<button onclick="window.location='qnaList.jsp?pageNum=<%=pageNum%>'">목록으로</button>

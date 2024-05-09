@@ -95,7 +95,7 @@
 			</tr>
 		</table>
 				<div class="btn_center_box">
-					<button type="button" class="btn_before" onclick="window.location='vendorQnaList.jsp?pageNum=<%=pageNum%>'">
+					<button type="button" class="btn_before" onclick="history.back()">
 						<strong>이전</strong>
 					</button>
 					<button type="submit" class="btn_write_ok">

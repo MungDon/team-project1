@@ -51,7 +51,7 @@
 	<FORM action="updateForm.jsp" method="post">
 		<INPUT type="hidden" name="member_num" value="<%=snum %>" />
 		<INPUT type="hidden" name="pw" value="<%=pw %>" />
-		<TABLE border="1">
+		<TABLE class="maintable" border="1">
 			<TR>
 				<TD width="200px"><UL style="display: inline-block; list-style-type: square;"><LI>아이디</LI></UL></TD>
 				<TD width="200px">
@@ -93,9 +93,9 @@
 
 		</TABLE>
 		<br /><br />
-		<div class="table">
+		<div class="subtable">
 		<DIV style="display: inline; font-size:25px; font-weight: bold;">부가정보 </DIV><br /><br />
-		<TABLE border="1">
+		<TABLE class="maintable" border="1">
 			<TR>
 				<TD width="200px"><UL style="display: inline-block; list-style-type: square;"><LI>성별</LI></UL></TD>
 				<TD width="200px"><%=dto.getGender() %> 
@@ -107,7 +107,7 @@
 			
 		</TABLE><br />
 		</div>
-			<DIV style="margin:auto 480px;">
+			<DIV style="margin:auto 650px;">
 			<INPUT type="button" value="취소" onclick="window.location='pwCheck.jsp'" />
 			<INPUT type="submit" class="emphasis" value="수정하기" />
 			</DIV>

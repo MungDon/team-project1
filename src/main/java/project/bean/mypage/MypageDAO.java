@@ -206,7 +206,7 @@ public class MypageDAO {
 		int result = 0;
 		try {
 			conn = getConn();
-			sql = "select count(*) from product where delete_yn='N' and status!='2' and member_num=? and trunc(modified_date) between to_date(?, 'YYYY-MM-DD') and to_date(?, 'YYYY-MM-DD')";
+			sql = "select count(*) from product where delete_yn='N' and status = '1' and member_num=? and trunc(modified_date) between to_date(?, 'YYYY-MM-DD') and to_date(?, 'YYYY-MM-DD')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, member_num);
 			pstmt.setString(2, start);
@@ -228,7 +228,7 @@ public class MypageDAO {
 		ArrayList<MypageWrapper>list = new ArrayList<MypageWrapper>();
 		try {
 			conn = getConn();
-			sql = "select P.*, I.img_name from product P left outer join img I on P.product_num = I.product_num where I.img_type='thumbnail' and P.status!='2' and P.member_num=? and trunc(P.modified_date) between to_date(?, 'YYYY-MM-DD') and to_date(?, 'YYYY-MM-DD') order by P.modified_date desc";
+			sql = "select P.*, I.img_name from product P left outer join img I on P.product_num = I.product_num where I.img_type='thumbnail' and P.status = '1' and P.member_num=? and trunc(P.modified_date) between to_date(?, 'YYYY-MM-DD') and to_date(?, 'YYYY-MM-DD') order by P.modified_date desc";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, member_num);
 			pstmt.setString(2, start);

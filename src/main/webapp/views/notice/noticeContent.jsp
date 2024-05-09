@@ -60,7 +60,7 @@
 </div>
 			
 	<div class="btn_center_box">
-		<button class="btn_before" onclick="window.location='noticeList.jsp?pageNum=<%=pageNum%>'">
+		<button class="btn_before" onclick="history.back()">
 			<strong>이전</strong>
 		</button>
 		<%if(svendor.equals("3")){ %>

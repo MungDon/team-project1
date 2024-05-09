@@ -36,7 +36,7 @@
 %>
 <link rel="stylesheet" href="/project/views/css/c_style.css">
 <style>
-    td {
+    #tlist {
         display: table-cell;
         vertical-align: inherit;
         border-top: 1px solid #A9A9A9;
@@ -102,9 +102,9 @@
     %>
     <%-- 질문창 --%>
     <tr align="center" class="faq-row" style="height:10px">
-        <td height="50" class="number-cell"><%=dto.getNum() %></td>
-        <td height="50" class="category-cell"><%=dto.getCategory() %></td>
-        <td height="50" align="left">
+        <td id="tlist" height="50" class="number-cell"><%=dto.getNum() %></td>
+        <td id="tlist" height="50" class="category-cell"><%=dto.getCategory() %></td>
+        <td id="tlist" height="50" align="left">
             <label class="question-label" onclick="toggleAnswer('<%=dto.getNum()%>')">
                 <img src="../images/q.png" width="20"/>
                 <%=dto.getQuestion() %>
@@ -113,12 +113,12 @@
     </tr>
     <%-- 답변창 --%>
     <tr id="answerRow<%=dto.getNum() %>" class="answer-row" style="display: none;">
-        <td colspan="3" align="left" bgcolor="#F2F2F2" style="padding: 50; padding-left: 380;">
+        <td id="tlist" colspan="3" align="left" bgcolor="#F2F2F2" style="padding: 50; padding-left: 380;">
             <p><%=dto.getQuestion() %></p><br/>
             <img src="../images/a.png" width="20"/><%=dto.getAnswer() %>
             <%if(svendor.equals("3")){%>
-            <button onclick="deleteFaq(<%=dto.getNum() %>)">
-                삭제
+            <button onclick="window.location='faqQuestion.jsp?faq_num=<%=dto.getNum()%>&pageNum=<%=pageNum%>'">
+                수정 / 삭제
             </button>	
             <%} %>
         </td>
@@ -216,9 +216,7 @@
     }
 
     // 삭제 버튼을 클릭하면 deleteForm으로 이동하며 글번호를 매개변수로 전달하는 함수입니다.
-    function deleteFaq(faqNum) {
-        window.location = "faqDeleteForm.jsp?faq_num=" + faqNum;
-    }
+
 
     // 선택된 카테고리를 볼드체로 표시하는 함수
     var categoryLinks = document.querySelectorAll('.category-link');

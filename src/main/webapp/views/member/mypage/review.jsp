@@ -51,7 +51,7 @@
 	
 <DIV style="font-size:25px; font-weight:bold"> 나의 상품 후기</DIV> <br />
 
-<TABLE border="1" width="882px" style="border-collapse:collapse; border:none;">
+<TABLE class="maintable" border="1" width="882px" style="border-collapse:collapse; border:none;">
 
 <%	if(count==0) {
 %>
@@ -83,7 +83,7 @@
 					<B><%=productDTO.getProduct_name() %></B>
 				</TD>
 				<TD width="150px" align="center">
-					<INPUT type="button" value="수정" onclick="window.open('/project/views/review/updateForm.jsp?review_num=<%=reviewDTO.getReview_num() %>')" />
+					<INPUT type="button" value="수정" onclick="window.location='/project/views/review/updateForm.jsp?review_num=<%=reviewDTO.getReview_num() %>'" />
 					<INPUT type="button" value="삭제" class="emphasis" onclick="deleteBtn(<%=reviewDTO.getReview_num() %>, <%=pageNum %>)" />
 				</TD>
 			</TR>

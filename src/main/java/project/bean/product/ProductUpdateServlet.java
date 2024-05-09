@@ -94,10 +94,10 @@ public class ProductUpdateServlet extends HttpServlet {
 		if (Util.isEmpty(fileName)) {
 			totalStatus = imgAddCount;
 		}
-		if(resultCount == imgAddCount && resultCount == uploadStatus) {
+		if( resultCount == uploadStatus) {
 			totalStatus = 1;
 		}
-		
+
 		
 		// 모든 처리후 포워드로 이동
 		if(ad == 0) {

@@ -2,13 +2,13 @@
     pageEncoding="UTF-8"%>
 
 <STYLE>
-	TABLE {
+	.table {
 	border:1px solid lightgray; 
 	width:300px; 
 	height:300px; 
 	padding:30px
 	}
-	TD {
+	.table TD {
 		padding:10px;
 	}
 	BUTTON, INPUT {
@@ -52,7 +52,7 @@
 
 <FORM action="findPw2.jsp" method="post">
 
-<TABLE align="center">
+<TABLE class="table" align="center">
 	<TR>
 		<TD colspan="2" style="font-size:25px;" >회원 비밀번호</TD>
 	</TR>

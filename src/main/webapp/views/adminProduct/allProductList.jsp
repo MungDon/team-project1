@@ -20,7 +20,7 @@
 		justify-content: center;		
 	}
 	.adminTable{
-	  width: 1400px;
+	  width: 1800px;
 	  height: 700px;
 	  border-collapse: collapse;
 	  text-align: center;
@@ -82,7 +82,7 @@
 %>
 
 <div class="main">
-<div style="text-align: left;width: 1400px;">
+<div style="text-align: left;width: 1800px;">
 <p style="font-size:20px;">전체상품수 <b style="color:skyblue"><%=AllProductCount%></b>명</p>
 </div>
 <jsp:include page="../admin/adminProductSort.jsp"></jsp:include>

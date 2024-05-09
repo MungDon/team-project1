@@ -417,10 +417,11 @@
 	if (memberDto.getPhone() != null){
 %>
 			<input type="text" name="m_phone" value="<%= memberDto.getPhone() %>"	/>
+			
 <%
 	}else {
 %>
-			<input type="text" name="m_phone" id="o_phone" />
+			<input type="text" name="m_phone" id="o_phone" value="none" />
 <%
 	}
 %>
@@ -537,9 +538,11 @@
 <%-- <% --%>
 <!-- 	} -->
 <%
+	System.out.println(defaultValDto.getDefault_address());
+	System.out.println(snum);
+
 	if (defaultValDto.getDefault_address().equals("2")) {
 %>
-
 			<input type="radio" name="default_address" id="default" value="2" onclick="getDelivery(event)"			/><font size="2">기본 배송지</font>			<%-- value 보내야함 --%>
 			&nbsp;&nbsp;&nbsp;
 <%	}else{ %>
@@ -627,7 +630,7 @@
 				}
 				if (<%= memberDto.getPhone() == null %>){
 					if (selectedValue === "0") {
-						document.getElementById("phone").value = document.getElementById('o_phone');
+						document.getElementById("phone").value = document.getElementById('o_phone').value;
 					}
 				}else {
 					if (selectedValue === "0") {

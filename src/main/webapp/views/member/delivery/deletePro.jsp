@@ -27,15 +27,13 @@
 %>
 		<SCRIPT>
 			alert("배송지가 삭제되었습니다.");
-			window.close();
-			opener.window.location="list.jsp?pageNum=<%=currentPage-1%>";
+			window.location="list.jsp?pageNum=<%=currentPage-1%>";
 		</SCRIPT>
 <%		}else {
 %>
 		<SCRIPT>
 			alert("배송지가 삭제되었습니다.");
-			window.close();
-			opener.window.location="list.jsp?pageNum=<%=currentPage%>";
+			window.location="list.jsp?pageNum=<%=currentPage%>";
 		</SCRIPT>	
 <%		}
 	}

@@ -112,6 +112,11 @@
 </style>
 
 <%
+	String svendor = "";
+	if (session.getAttribute("svendor") != null) {
+		svendor = (String)session.getAttribute("svendor");
+	}
+
 	int snum = 0;
 	if (session.getAttribute("snum") != null) {
 		snum = (int) session.getAttribute("snum");
@@ -143,13 +148,18 @@
 				<a href="/project/views/faq/faqList.jsp">자주찾는 질문</a>
 				<a href="/project/views/qna/qnaList.jsp">1:1문의</a>
 				<a href="/project/views/vendorQna/vendorQnaList.jsp">사업자문의</a>
-				<a href="#">상품문의</a>
+				<a href="/project/views/productQna/productQnaList.jsp">상품문의</a>
+				<a href="/project/views/review/list.jsp">상품후기</a>
 			</div>
 			</div>
 		</td>
-
+		<%if(svendor.equals("3")){ %>
 		<td>
-			<form id="searchForm" class="form" action="main.jsp" method="get">
+			<button class="dropbtn" onclick="location.href='/project/views/admin/adminMain.jsp'">관리자 모드</button>
+		</td>
+		<%} %>
+		<td>
+			<form class="form" id="searchForm"  action="main.jsp" method="get">
 				<div class="search">
 					<input type="text" class="text" name="keyWord" placeholder="상품명을 검색하세요 ex)대대포막걸리">
 					<div>	

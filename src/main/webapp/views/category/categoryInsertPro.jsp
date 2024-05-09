@@ -25,7 +25,7 @@
 	if(result == 1){%>
 		<script>
 			alert("카테고리 등록완");
-			location.href="../main/adminMain.jsp";
+			location.href="../admin/adminMain.jsp";
 		</script>	
 <%	}else{%>
 		<script>

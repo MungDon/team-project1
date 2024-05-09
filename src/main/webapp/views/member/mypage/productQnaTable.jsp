@@ -46,7 +46,7 @@
 	ArrayList<MypageWrapper> list = dao.product_qna(snum, start, end);
 %>
 
-<TABLE border="1" width="882px">
+<TABLE class="maintable" border="1" width="882px">
 	<TR>
 		<TD colspan="4"> 상품문의 내역 총 <%=product_qna_count %>건 </TD>
 	</TR>

@@ -57,16 +57,16 @@
 								<div class="seem_cont">
 									<div style="margin: 10px 0 10px 0">
 										<form action="vendorQnaAnswerPro.jsp?num=<%=num %>&pageNum=<%=pageNum %>" method="post">
-											<textarea name="answer"></textarea>
-											<div class="btn_center_box">
-											<button type="submit" class="btn_write_ok">
-											<strong>작성 / 수정</strong>
-											</button>
+											<textarea name="answer" cols="75" rows="10"></textarea>
+												<div class="btn_center_box">
+												<button type="button" class="btn_before" onclick="history.back()">
+													<strong>이전</strong>
+												</button>
+												<button type="submit" class="btn_write_ok">
+													<strong>작성 / 수정</strong>
+												</button>
 											</div>			
 										</form>
-											<button class="btn_before" onclick="window.location='vendoQnaList.jsp?pageNum=<%=pageNum%>'">
-											<strong>목록</strong>
-											</button>
 									</div>
 								</div>
 							</div>

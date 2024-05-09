@@ -42,7 +42,7 @@
 	ArrayList<QnaDTO> list = dao.qna(snum, start, end);
 %>
 
-<TABLE border="1" width="882px">
+<TABLE class="maintable" border="1" width="882px">
 	<TR>
 		<TD colspan="4"> 1:1문의 내역 총 <%=qna_count %>건 </TD>
 	</TR>

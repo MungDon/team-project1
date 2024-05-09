@@ -56,7 +56,7 @@
 	ArrayList<MypageWrapper> list = dao.approval(snum, start, end);
 %>
 
-<TABLE border="1" width="882px">
+<TABLE class="maintable" border="1" width="882px">
 	<TR>
 		<TD colspan="5">  취소/반품/교환 내역 총 <%=orders_count %> 건 </TD>
 	</TR>

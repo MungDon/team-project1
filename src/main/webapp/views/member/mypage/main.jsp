@@ -12,6 +12,7 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 
 <jsp:include page="/views/member/memberHeader.jsp" />
+
 <jsp:include page="fixed.jsp" />
 
 
@@ -57,7 +58,7 @@
 
 <%	if(svendor.equals("1")) {	//30일간의 주문/배송현황
 %>
-		<TABLE width=882px style="border-top:none;">
+		<TABLE class="maintable" width=882px style="border-top:none;">
 			<TR style="border-left: none; border-right: none;">
 			<TD colspan ="3" style="border-left: none; border-right: none;">
 				<DIV style="font-size:25px; display:inline-block;">
@@ -105,11 +106,11 @@
 					</TD>
 					<TD style="border: 1px solid black;">	
 						<DIV style="display:flex; align-items:center;">
-							<A href="/project/views/product/productContent?product_num=<%=productDTO.getProduct_num() %>&pageNum=<%=pageNum %>&category_num=<%=productDTO.getCategory_num() %>">
+							<A href="/project/views/product/productContent.jsp?product_num=<%=productDTO.getProduct_num() %>&pageNum=<%=pageNum %>&category_num=<%=productDTO.getCategory_num() %>">
 								<IMG width="50px" height="50px" style="display:inline-block;margin:0 auto;" 
 											src="/project/views/upload/<%=imgDTO.getImg_name()%>" />
 							</A>&nbsp;&nbsp;
-							<A href="/project/views/product/productContent?product_num=<%=productDTO.getProduct_num() %>&pageNum=<%=pageNum %>&category_num=<%=productDTO.getCategory_num() %>">
+							<A href="/project/views/product/productContent.jsp?product_num=<%=productDTO.getProduct_num() %>&pageNum=<%=pageNum %>&category_num=<%=productDTO.getCategory_num() %>">
 								<%=productDTO.getProduct_name() %>
 							</A>
 						</DIV>
@@ -136,7 +137,7 @@
 			</TABLE>
 <% 	}else {	//30일 간의 판매등록 현황
 %>
-		<TABLE width="882px" style="border-top:none;">
+		<TABLE class="maintable" width="882px" style="border-top:none;">
 			<TR style="border-left: none; border-right: none;">	
 				<TD colspan ="3" style="border-left: none; border-right: none;">
 					<DIV style="font-size:25px; display:inline-block;">
@@ -203,7 +204,7 @@
 <%	}		
 %>		
 	
-<center style="margin-top : 20px;">
+<DIV style="margin-left:43%; margin-top : 20px;">
 <%
 	int pageCount = 0;
 	if(svendor.equals("1"))	{
@@ -231,4 +232,4 @@
 	<A href = "main.jsp?pageNum=<%=startPage + pageBlock %>">[다음]</A>
 <%	}
 %>
-</center>
+</DIV>

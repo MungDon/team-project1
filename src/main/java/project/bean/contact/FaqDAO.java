@@ -22,7 +22,7 @@ public class FaqDAO {
 	private Connection getConn() throws Exception{
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+			String url = "jdbc:oracle:thin:@192.168.0.10:1521:orcl";
 			String user = "project1";
 			String pass = "tiger";			
 			conn = DriverManager.getConnection(url, user, pass);
@@ -120,6 +120,7 @@ public class FaqDAO {
 				dto.setAnswer(rs.getString("answer"));
 				dto.setCategory(rs.getString("category"));
 				dto.setQuestion(rs.getString("question"));
+				dto.setAnswer(rs.getString("answer"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -131,7 +132,7 @@ public class FaqDAO {
 	
 	// 글수정 Pro
 	
-	public int faqUpdatePro(QnaDTO dto, int num) {
+	public int faqUpdatePro(FaqDTO dto, int faq_num) {
 	    int result = 0;
 	    try {
 	        conn = getConn();
@@ -140,6 +141,7 @@ public class FaqDAO {
 	        pstmt.setString(1, dto.getQuestion());
 	        pstmt.setString(2, dto.getAnswer());
 	        pstmt.setString(3, dto.getCategory());
+	        pstmt.setInt(4, faq_num);
 	        result = pstmt.executeUpdate();
 	    } catch (Exception e) {
 	        e.printStackTrace();

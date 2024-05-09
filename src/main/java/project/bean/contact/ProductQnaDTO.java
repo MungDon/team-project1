@@ -19,6 +19,7 @@ public class ProductQnaDTO {
 	private String secret_yn;			// 비밀여부
 	private String delete_yn;			// 삭제여부
 	
+	private int catetgory_num;			// 카테고리넘버
 	private String img_name;			// 이미지이름
 	private String category_name;		// 상품카테고리
 	private String product_name;		// 상품이름
@@ -134,6 +135,12 @@ public class ProductQnaDTO {
 	}
 	public void setReadCount(int readCount) {
 		this.readCount = readCount;
+	}
+	public int getCatetgory_num() {
+		return catetgory_num;
+	}
+	public void setCatetgory_num(int catetgory_num) {
+		this.catetgory_num = catetgory_num;
 	}
 	
 	

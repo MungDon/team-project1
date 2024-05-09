@@ -41,7 +41,7 @@
 
 <DIV style="font-size:25px; font-weight:bold"> 전체 판매 현황</DIV> <br />
 
-<TABLE border="1" width="882px">
+<TABLE class="maintable" border="1" width="882px">
 	<TR>
 		<TD colspan="5"> 판매물품 등록현황 내역 총 <%=wholeSales_count %> 건 </TD>
 	</TR>
@@ -79,11 +79,11 @@
 			<TR>
 				<TD>
 					<DIV style="display:flex; align-items:center;">
-						<A href="/project/views/product/productContent?product_num.jsp=<%=productDTO.getProduct_num() %>&pageNum=<%=pageNum %>&category_num=<%=productDTO.getCategory_num() %>">
+						<A href="/project/views/product/productContent.jsp?product_num=<%=productDTO.getProduct_num() %>&pageNum=<%=pageNum %>&category_num=<%=productDTO.getCategory_num() %>">
 							<IMG width="50px" height="50px" style="display:inline-block;margin:0 auto;" 
 									src="/project/views/upload/<%=imgDTO.getImg_name()%>" />
 						</A>&nbsp;&nbsp;
-						<A href="/project/views/product/productContent?product_num.jsp=<%=productDTO.getProduct_num() %>&pageNum=<%=pageNum %>&category_num=<%=productDTO.getCategory_num() %>">
+						<A href="/project/views/product/productContent.jsp?product_num=<%=productDTO.getProduct_num() %>&pageNum=<%=pageNum %>&category_num=<%=productDTO.getCategory_num() %>">
 							<%=productDTO.getProduct_name() %>
 						</A>
 					</DIV>

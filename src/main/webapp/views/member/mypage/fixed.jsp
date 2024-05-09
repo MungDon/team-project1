@@ -6,11 +6,11 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 
 <STYLE>
-	TABLE {
+	.table {
 		font-size:16px;
 		border-collapse:collapse;
 	}
-	TD,TH {
+	.table TD,TH {
 		padding:10px;
 	}	
 	A {
@@ -75,7 +75,7 @@
 <%	if(svendor.equals("1")) { 
 %>
 	<DIV style="float:left; width:20%; height:100%; margin-left:80px;">
-	<TABLE>
+	<TABLE class="table">
 		<TR>
 			<TD>
 				<DIV style="font-size:35px; font-weight: bold;">마이페이지</DIV> <br />
@@ -147,7 +147,7 @@
 				<DIV id="benefitsModal" class="modal">
 					<DIV class="modal-content">
 						<SPAN class="close" onclick="closeModal()">&times;</SPAN>
-						<TABLE border="1">
+						<TABLE class="table" border="1">
 							<TR>
 								<TD colspan="2"><b>등급혜택안내</b></TD>
 							</TR>
@@ -191,7 +191,7 @@
 <%	}else {
 %>	
 	<DIV style="float:left; width:20%; height:100%; margin-left:80px;">
-	<TABLE>
+	<TABLE class="table">
 		<TR>
 			<TD>
 				<DIV style="font-size:35px; font-weight: bold;">마이페이지</DIV> <br />
@@ -227,7 +227,7 @@
 	
 	<DIV>
 		<DIV style="display:inline-block; border:2px solid lightgray; padding:15px; width:850px; margin-top:30px;">
-			<DIV style="font-size:35px; display: flex; align-items:center;"">
+			<DIV style="font-size:35px; display: flex; align-items:center;">
 	<%	if(dto.getGrade().equals("BRONZE")) {
 	%>
 				<IMG width="100px" height="120px" style=display:inline-block;margin:0 auto; 
@@ -252,7 +252,7 @@
 				<DIV id="benefitsModal" class="modal">
 					<DIV class="modal-content">
 						<SPAN class="close" onclick="closeModal()">&times;</SPAN>
-						<TABLE border="1">
+						<TABLE class="table" border="1">
 							<TR>
 								<TD colspan="2"><b>등급혜택안내</b></TD>
 							</TR>

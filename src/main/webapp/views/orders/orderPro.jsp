@@ -224,5 +224,19 @@
 	}
 %>
 --%>
+<script>
+//5초 후에 다른 페이지로 이동하는 함수
+function redirectToNextPage() {
+    // 이동할 페이지의 URL
+    var nextPageUrl = "/project/views/main/main.jsp";
 
+    // 5초 후에 nextPageUrl로 이동
+    setTimeout(function() {
+        window.location.href = nextPageUrl;
+    }, 5000); // 5000 밀리초 = 5초
+}
+
+// 페이지 로드 시에 redirectToNextPage 함수 호출
+window.onload = redirectToNextPage;
+</script>
 

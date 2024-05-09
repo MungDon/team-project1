@@ -17,10 +17,6 @@
 	
 <SCRIPT>
 	var previousButtonId = "button1";
-	window.onload = function() {
-		var button = document.getElementById("button1");
-		button.style.backgroundColor = "gray";
-		button.style.color = "white";
 	}
 	function changeColor(buttonId){		//선택한 버튼만 색이 바뀌도록 함
 		var previousButton = document.getElementById(previousButtonId);

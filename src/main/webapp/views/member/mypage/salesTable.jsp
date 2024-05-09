@@ -44,7 +44,7 @@
 	ArrayList<MypageWrapper> listV =dao.sales(snum,start, end);
 %>
 
-<TABLE border="1" width="882px">
+<TABLE class="maintable" border="1" width="882px">
 	<TR>
 		<TD colspan="5"> 판매물품 등록현황 내역 총 <%=sales_count %> 건 </TD>
 	</TR>

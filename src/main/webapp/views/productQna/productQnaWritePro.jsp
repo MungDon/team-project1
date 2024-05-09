@@ -54,12 +54,12 @@
 	
 	if(result == 1){%>
 		<script>
-			alert("성공");
+			alert("상품문의가 정상적으로 등록되었습니다");
 			window.location="productQnaList.jsp?pageNum=<%=pageNum%>"
 		</script>
 <%	}else{%>
 		<script>
-			alert("실패");
+			alert("상품 문의 등록 실패");
 			history.go(-1);
 		</script>
 <%	}%>

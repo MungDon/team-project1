@@ -22,7 +22,7 @@
 %>
 		<SCRIPT>
 			alert("반품 신청이 완료되었습니다.");
-			history.go(-1);
+			window.location="orders.jsp";
 		</SCRIPT>	
 <%	}
 %>

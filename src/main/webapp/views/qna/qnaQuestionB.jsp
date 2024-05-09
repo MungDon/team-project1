@@ -90,9 +90,11 @@
 					<button class="btn_before" onclick="window.location='qnaList.jsp?pageNum=<%=pageNum%>'">
 						<strong>이전</strong>
 					</button>
+					<%if(!svendor.equals("3")){%>
 					<button type="submit" class="btn_write_ok" onclick="window.location='qnaUpdateForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>수정</strong>
 					</button>
+					<%} %>
 					<%if(svendor.equals("3")){%>
 					<button class="btn_comment" onclick="window.location='qnaAnswerForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>답글</strong>

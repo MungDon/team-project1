@@ -112,7 +112,7 @@
 	
 	<FORM action="updatePro.jsp" method="post" name="userInput" onsubmit="return memCheck()">
 		<INPUT type="hidden" name=member_num value=<%=snum %> />
-		<TABLE border="1">
+		<TABLE class="maintable" border="1">
 			<TR>
 				<TD width="200px"><UL style="display: inline-block; list-style-type: square;"><LI>아이디</LI></UL></TD>
 				<TD>
@@ -169,9 +169,9 @@
 			</TR>
 		</TABLE>
 		<br /><br />
-		<div class="table">
+		<div class="subtable">
 		<DIV style="display: inline; font-size:25px; font-weight: bold;">부가정보 </DIV><br /><br />
-		<TABLE border="1" >
+		<TABLE class="maintable" border="1" >
 			<TR>
 				<TD width="200px"><UL style="display: inline-block; list-style-type: square;"><LI>성별</LI></UL></TD>
 				<TD width="200px"><INPUT type="radio" name="gender" value="남자" <% if("남자".equals(dto.getGender())){%> checked <% } %> /> 남 &nbsp;&nbsp;
@@ -184,7 +184,7 @@
 			
 		</TABLE><br />
 		</div>
-			<DIV style="margin:auto 480px;">
+			<DIV style="margin:auto 650px;">
 			<INPUT type="button" value="취소" onclick="window.location='pwCheck.jsp'"/>
 			<INPUT type="submit" class="emphasis" value="정보수정" />
 			</DIV>	

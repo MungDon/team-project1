@@ -135,7 +135,7 @@
 				</button>
 				<div class="dropdown-content">
 					<%for (CategoryDTO dto : list) { %> 			
-							<a href="categoryMain.jsp?sortName=created_date&sort=desc&category_num=<%=dto.getCategory_num()%>"><%=dto.getCategory_name()%></a>
+							<a href="../main/categoryMain.jsp?sortName=created_date&sort=desc&category_num=<%=dto.getCategory_num()%>"><%=dto.getCategory_name()%></a>
 					<%}%>
 				</div>
 			</div> 
@@ -159,7 +159,7 @@
 		</td>
 		<%} %>
 		<td>
-			<form  class="form" id="searchForm" action="main.jsp" method="get">
+			<form  class="form" id="searchForm" action="/project/views/main/main.jsp" method="get">
 				<div class="search">
 					<input type="text" class="text" name="keyWord" placeholder="상품명을 검색하세요 ex)대대포막걸리">
 					<input type="hidden" name="sortName" value="created_date">

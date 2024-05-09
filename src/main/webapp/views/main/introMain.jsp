@@ -7,15 +7,14 @@
 		justify-content: center;
 	}
 	.gif{
-		width: 1000px;
-		height: 700px;
+		width: 700px;
+		height: 600px;
 	}
 	.gifBox{
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		width :100%;
-		border-bottom: 3px solid darkgray;
 	}
 </style>
 <jsp:include page="header.jsp"></jsp:include>

@@ -51,7 +51,7 @@
 %>
 		<SCRIPT>
 			alert("후기가 수정되었습니다.");
-			self.close();
+			window.location="/project/views/member/mypage/review.jsp";
 		</SCRIPT>
 <%	}
-%>
+%>	

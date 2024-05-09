@@ -19,5 +19,6 @@
 			location.href="../member/loginForm.jsp";
 		</script>
 <%	}%>
-
-
+<center>
+	<img src="../images/adwel.gif" width="500" height="500">
+</center>

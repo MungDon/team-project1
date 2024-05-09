@@ -46,7 +46,7 @@
 		<input type="hidden" name="count" id="count" value="0"/>
 		<div id="pulsCategory">
 			<div class="category">
-				<h1>카테코리 명</h1> <input type="text" name="category_name[0]" id="category_name[0]"/>
+				<h1>카테고리 명</h1> <input type="text" name="category_name[0]" id="category_name[0]"/>
 				<button type="button" onclick="inputAdd()">카테고리 추가</button>
 			</div>
 		</div>

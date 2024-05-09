@@ -53,7 +53,7 @@
 	ArrayList<VendorQnaDTO> list = dao.vendor_qna(snum, start, end);
 %>
 
-<TABLE border="1" width="882px">
+<TABLE class="maintable" border="1" width="882px">
 	<TR>
 		<TD colspan="4"> 1:1문의 내역 총 <%=vendor_qna_count %>건 </TD>
 	</TR>

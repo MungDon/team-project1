@@ -107,17 +107,15 @@
 			
 		</table>
 				<div class="btn_center_box">
+					<button type="button" class="btn_before" onclick="history.back()">
+						<strong>이전</strong>
+					</button>
 					<button type="submit" class="btn_write_ok">
 						<strong>수정</strong>
 					</button>
 				</div>
 	</div>	 
 </form>
-			<div class="btn_right_box">
-				<button type="button" class="btn_write" onclick="history.back()">
-					<strong>이전</strong>
-				</button>
-			</div>
 			</div>
 		</div>
 	</div>

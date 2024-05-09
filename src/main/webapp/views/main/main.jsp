@@ -25,12 +25,12 @@
 	}
 	.mainTable{
 		margin-top : 50px;
-		margin-left : 110px;
+		margin-left : 80px;
 		margin-bottom : 110px;
 		display: flex;
 		flex-direction : row;
 		justify-content: flex-start;
-		flex-wrap: wrap;
+		flex-wrap : wrap;
 		width:1000px;
 	}
 	.count{
@@ -89,7 +89,7 @@
 	ProductDAO dao = ProductDAO.getInstance();
 	
 	// 페이징
-	int pageSize = 10;
+	int pageSize = 9;
 	
 	String pageNum = request.getParameter("pageNum");
 	if( pageNum == null ){
@@ -116,9 +116,10 @@
 <jsp:include page="sort.jsp"></jsp:include>
 <div class="main">		
 <%if(productCount!=0){ %>
+
 <div class="mainTable">
 	<%for (ProductDTO dto : list){ %>
-<table style="margin: 50px;">
+<table style="margin: 50px; height: 50px;">
 	
 	<tr>
 		<% for(ImgDTO img : dto.getImages()){ %>
@@ -137,12 +138,12 @@
 	</tr>
 	<tr>
 		<% if(dto.getStock()==0){ %>
-			<td >
+			<td width="150px">
 				<b style="text-decoration: line-through;"><%=dto.getProduct_name() %></b>
 				<b style="color:red">품절</b>
 			</td>
 		<%}else{ %>
-		<td>
+		<td  width="150px">
 			<%=dto.getProduct_name() %>
 		</td>
 		<%} %>
@@ -157,7 +158,6 @@
 		<%} %>
 	</tr>
 </table>
-
 	<%}%>
 	</div>
 	<%}else{%>
@@ -175,6 +175,7 @@
 			endPage = pageCount;
 		}%>
 </div>	
+<div>
 	<%	if( startPage > 10 ){ %>
 			<a href="../main/main.jsp?pageNum=<%=startPage-10 %>&sortName=<%=sortName %>&sort=<%=sort%>">[이전]</a>
 <% 		}
@@ -188,6 +189,8 @@
 	
 %>
 </div>
+</div>
+<jsp:include page="footer.jsp"/>
 <script>
 	function goProductForm(){ 
 		location.href="../product/productInsertForm.jsp";

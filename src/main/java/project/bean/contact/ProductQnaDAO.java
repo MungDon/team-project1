@@ -24,7 +24,7 @@ public class ProductQnaDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String pass = "tiger";
 			String user = "project1";
-			String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+			String url = "jdbc:oracle:thin:@192.168.0.10:1521:orcl";
 			conn = DriverManager.getConnection(url, user, pass);
 			
 		}catch(Exception e) {
@@ -151,8 +151,10 @@ public class ProductQnaDAO {
 						dto.setMember_num(rs.getInt("member_num"));
 						dto.setMember_name(rs.getString("member_name"));
 						//상품
+						dto.setProduct_num(rs.getInt("product_num"));
 						dto.setProduct_name(rs.getString("product_name"));
 						dto.setCategory_name(rs.getString("category_name"));
+						dto.setCatetgory_num(rs.getInt("category_num"));
 						dto.setImg_name(rs.getString("img_name"));
 						
 					
@@ -299,5 +301,47 @@ public class ProductQnaDAO {
 					         close(conn, pstmt, rs);
 					      }
 					      return list;
-					   }					
+					   }		
+					   //-------------------------------------------
+					   public int getSellerProductNum(int num) {
+						   int product_num = 0;
+						   try {
+							conn = getConn();
+							sql = "select product_num from product_qna where product_qna_num = ?";
+							pstmt = conn.prepareStatement(sql);
+							
+							pstmt.setInt(1,num);
+							
+							rs = pstmt.executeQuery();
+							if(rs.next()) {
+								product_num = rs.getInt("product_num");
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}finally {
+							close(conn, pstmt, rs);
+						}
+						   return product_num;
+					   }
+					   
+					   public boolean isReal(int snum, int product_num){
+						   boolean result = false;
+						   try {
+							conn = getConn();
+							sql="select * from product where member_num = ? and product_num = ?";
+							pstmt = conn.prepareStatement(sql);
+							pstmt.setInt(1,snum);
+							pstmt.setInt(2,product_num);
+							
+							rs = pstmt.executeQuery();
+							if(rs.next()) {
+								result = true;
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}finally {
+							close(conn, pstmt, rs);
+						}
+						   return result;
+					   }
 }

@@ -47,7 +47,7 @@
 	ArrayList<MypageWrapper> listV = dao.registration(snum,start, end);
 %>
 
-<TABLE border="1" width="882px">
+<TABLE class="maintable" border="1" width="882px">
 	<TR>
 		<TD colspan="6"> 판매물품 등록현황 내역 총 <%=reg_count %> 건 </TD>
 	</TR>

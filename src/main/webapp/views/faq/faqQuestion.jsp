@@ -21,7 +21,7 @@
 	<div class="sub_content">
 		<div class="board_zone_sec">
 			<div class="board_zone_tit">
-				<h2>자주 찾는 질문 삭제</h2>
+				<h2>자주 찾는 질문</h2>
 			</div>
 			<div class=board_zone_cont>
 				<div class="board_zone_view">
@@ -29,11 +29,6 @@
 						<strong>[<%=dto.getCategory() %>]</strong>					
 					</div>
 					<div class="board_view_info">
-						<span class="view_info_day">
-						</span>
-						<span class="view_info_hits">
-							조회수 : <%=dto.getReadCount() %>
-						</span>
 					</div>
 					<div class="board_view_content">
 						<div class="view_goods_select"></div>
@@ -67,15 +62,13 @@
 	</div>
 </div>
 				<div class="btn_center_box">
-					<form action="faqDeletePro.jsp?faq_num=<%=num%>">
-						<input type="hidden" name="faq_num" value="<%=num %>"/>
-						<button type="submit" class="btn_update">
+						<button type="button" class="btn_before" onclick="history.back()">
+							<strong>이전</strong>
+						</button>
+						<button type="button" class="btn_write_ok" onclick="window.location='faqUpdateForm.jsp?faq_num=<%=num%>&pageNum=<%=pageNum%>'">
+							<strong>수정</strong>
+						</button>
+						<button type="button" class="btn_update" onclick="window.location='faqDeletePro.jsp?faq_num=<%=num%>&pageNum=<%=pageNum%>'">
 							<strong>삭제</strong>
 						</button>
-					</form>
 				</div>
-				<div class="btn_right_box">
-				<button type="submit" class="btn_write" onclick="history.back()">
-					<strong>이전</strong>
-				</button>
-			</div>

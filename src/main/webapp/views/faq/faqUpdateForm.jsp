@@ -1,19 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="project.bean.product.ProductDAO" %>
+<%@ page import="project.bean.contact.FaqDAO"%>
+<%@ page import="project.bean.contact.FaqDTO"%>
+<link rel="stylesheet" href="/project/views/css/c_style.css">
 <jsp:include page="../main/header.jsp"/>
 <%
-	int snum=0;
-	if(session.getAttribute("snum") != null) {
-   	snum = (int) session.getAttribute("snum");
 
-	}
+	int num = Integer.parseInt(request.getParameter("faq_num"));
 	String pageNum = request.getParameter("pageNum");
-%>
-<link rel="stylesheet" href="/project/views/css/c_style.css">
-<%
 	
-%>
+	FaqDAO dao = FaqDAO.getInstance();
+	FaqDTO dto = dao.faqUpdateForm(num);
+	
+	int snum=0;
+	if(session.getAttribute("snum") != null ){
+		snum = (int)session.getAttribute("snum");
+	}%>
 <div id="contents">
 	<div class="sub_content">
 		<div class="content">
@@ -23,7 +25,7 @@
 				</div>
 				<div class="board_view_tit">
 				</div>
-<form action="faqWritePro.jsp" method="post">
+<form action="faqUpdatePro.jsp?faq_num=<%=num %>&pageNum=<%=pageNum %>" method="post">
 	<div class="board_write_box">	
 		<table class="board_write_table">
 			<colgroup>
@@ -44,11 +46,11 @@
 			</tr>
 			<tr>
 				<th>질문</th>
-				<td><textarea cols="100" rows="10" name="question"></textarea></td>
+				<td><textarea cols="100" rows="10" name="question"><%=dto.getQuestion() %></textarea></td>
 			</tr>
 			<tr>
 				<th>답변</th>
-				<td><textarea cols="100" rows="10" name="answer"></textarea></td>
+				<td><textarea cols="100" rows="10" name="answer"><%=dto.getAnswer() %></textarea></td>
 			</tr>
 		</table>
 		<div class="btn_center_box">

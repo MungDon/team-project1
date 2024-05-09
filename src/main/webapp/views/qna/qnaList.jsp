@@ -35,7 +35,7 @@ a {
 	cursor : pointer;
 	color: #333;
 }
-td {
+.tlist {
     display: table-cell;
     vertical-align: inherit;
     border-top: 1px solid #A9A9A9;
@@ -86,15 +86,15 @@ td {
 	for( QnaDTO dto : list){
 %>
 			<tr style="height:10px" >
-				<td height="50"><%=dto.getQna_num() %></td>
-				<td height="50">[<%=dto.getCategory() %>]</td>
-				<td height="50" align="left" style=" padding-left: 100;">
+				<td height="50" class="tlist"><%=dto.getQna_num() %></td>
+				<td height="50" class="tlist">[<%=dto.getCategory() %>]</td>
+				<td height="50" class="tlist" align="left" style=" padding-left: 100;">
 					<a href="qnaQuestion.jsp?num=<%=dto.getQna_num()%>&pageNum=<%=pageNum%>">
 					<img src="../images/security.png" width="15"/>
 					<%=dto.getTitle() %>
 					</a>
 				</td>
-				<td height="50">
+				<td height="50" class="tlist">
 <%
 				if(dto.getMember_num() == 0){%>
 				<%=dto.getWriter() %>	
@@ -102,8 +102,8 @@ td {
 				<%=dto.getName() %>
 <%				} %>
 				</td>
-				<td><%=dto.getReg() %></td>
-				<td height="50"><%if(dto.getAnswer() == null){%>
+				<td height="50" class="tlist"><%=dto.getReg() %></td>
+				<td height="50" class="tlist"><%if(dto.getAnswer() == null){%>
 					접수
 <% 					}else{%>
 					답변완료

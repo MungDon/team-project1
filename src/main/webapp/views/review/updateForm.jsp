@@ -11,6 +11,8 @@
 
 <% request.setCharacterEncoding("UTF-8"); %>
 
+<jsp:include page="/views/member/memberHeader.jsp" />
+<jsp:include page="/views/member/mypage/fixed.jsp" />
 <link rel="stylesheet" type="text/css" href="/project/views/css/member.css">
 
 <STYLE>
@@ -68,11 +70,11 @@
 	
 %> 
     
-<DIV style="font-size:25px; font-weight:bold; margin-left:620px;"> 상품 후기 수정</DIV> <br />
+<DIV style="font-size:25px; font-weight:bold;" > 상품 후기 수정</DIV> <br />
 <FORM name="reviewInput" action="../review/updatePro.jsp" method="POST" enctype="multipart/form-data" onsubmit="return reviewCheck();">
 	<INPUT type="hidden" name="review_num" value=<%=review_num %> />
 	
-<TABLE border="1" width="882px" align="center" style="border-collapse:collapse; border:none;">
+<TABLE border="1" width="882px" style="border-collapse:collapse; border:none;">
 <%	for(ReviewWrapper wrapper : list) {
 	
 	ReviewDTO reviewDTO = wrapper.getReviewDTO();

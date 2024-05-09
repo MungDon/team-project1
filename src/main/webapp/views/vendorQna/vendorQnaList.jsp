@@ -37,7 +37,7 @@ a {
 	cursor : pointer;
 	color: #333;
 }
-td {
+.tlist {
     display: table-cell;
     vertical-align: inherit;
     border-top: 1px solid #A9A9A9;
@@ -88,9 +88,9 @@ td {
 	for( VendorQnaDTO dto : list){
 %>
 			<tr style="height:10px" >
-				<td height="50"><%=dto.getVendor_qna_num() %></td>
-				<td height="50">사업자 문의</td>
-				<td height="50" align="left" style=" padding-left: 100;">
+				<td height="50" class="tlist"><%=dto.getVendor_qna_num() %></td>
+				<td height="50" class="tlist">사업자 문의</td>
+				<td height="50" class="tlist" align="left" style=" padding-left: 100;">
 <%					if(dto.getSecret_yn().equals("y")){%>
 					<img src="../images/security.png" width="15"/>
 <%					}%>
@@ -98,11 +98,11 @@ td {
 					<%=dto.getTitle() %>
 					</a>
 				</td>
-				<td height="50">
+				<td height="50" class="tlist">
 				<%=dto.getBusiness_name()%>
 				</td>
-				<td><%=dto.getReg() %></td>
-				<td height="50"><%if(dto.getAnswer() == null){%>
+				<td height="50" class="tlist"><%=dto.getReg() %></td>
+				<td height="50" class="tlist"><%if(dto.getAnswer() == null){%>
 					접수
 <% 					}else{%>
 					답변완료

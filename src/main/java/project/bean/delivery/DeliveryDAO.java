@@ -71,7 +71,7 @@ public class DeliveryDAO {
 		ArrayList<DeliveryDTO> list = new ArrayList<DeliveryDTO>();
 		try {
 			conn = getConn();
-			sql = "select * from (select b.*, rownum r from (select * from delivery where member_num=? order by delivery_num desc)b) where r>=? and r<=?";
+			sql = "select * from (select b.*, rownum r from (select * from delivery where member_num=? and delete_yn = 'N' order by delivery_num desc)b) where r>=? and r<=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, memberNum);
 			pstmt.setInt(2, start);
@@ -129,7 +129,7 @@ public class DeliveryDAO {
 		}
 		try {
 			conn = getConn();
-			sql = "insert into delivery values(delivery_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			sql = "insert into delivery values(delivery_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?,'N')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, dto.getMember_num());
 			pstmt.setString(2, dto.getDelivery_name());
@@ -221,7 +221,7 @@ public class DeliveryDAO {
 		int result = 0;
 		try {
 			conn = getConn();
-			sql = "delete from delivery where delivery_num=?";
+			sql = "update delivery set delete_yn = 'Y' where delivery_num=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, delivery_num);
 			result = pstmt.executeUpdate();
@@ -262,7 +262,7 @@ public class DeliveryDAO {
 		DeliveryDTO dto = new DeliveryDTO();
 		try {
 			conn = getConn();
-			sql = "select * from delivery where member_num=?";
+			sql = "select * from delivery where member_num = ? and delete_yn = 'N' and default_address = '2'";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, member_num);
 			rs = pstmt.executeQuery();

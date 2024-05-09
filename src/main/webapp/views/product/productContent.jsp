@@ -105,12 +105,12 @@
 		</TR>
 		<TR>
 			<TD colspan="2">
-				<HR width="600" size="2" color="black"	/>
+				<HR width="900" size="2" color="black"	/>
 			</TD>
 		</TR>
 		<TR>
-			<TD width="120">짧은설명</TD>
-			<TD><%= productDto.getProduct_info() %></TD>
+			<TD width="100">짧은설명</TD>
+			<TD width="750" align="left"><%= productDto.getProduct_info() %></TD>
 		</TR>
 		<TR>
 			<TD>판매가</TD>
@@ -746,8 +746,6 @@
 			    
 			    
 <%
-		  System.out.println(qnaDto.getMember_num());
-		  System.out.println(snum);
 	  if (qnaDto.getMember_num() == snum || svendor.equals("3")) {
 %>
 	             <div class="answer-row" style="display: none;">

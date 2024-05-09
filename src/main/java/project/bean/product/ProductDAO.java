@@ -186,6 +186,7 @@ public class ProductDAO {
 			while(rs.next()) {
 				ProductDTO dto = new ProductDTO();
 				ImgDTO imgDto = new ImgDTO();
+				dto.setCategory_num(rs.getInt("category_num"));
 				dto.setProduct_num(rs.getInt("product_num"));
 				dto.setProduct_name(rs.getString("product_name"));
 				dto.setProduct_info(rs.getString("product_info"));
@@ -222,6 +223,7 @@ public class ProductDAO {
 				while(rs.next()) {
 					ProductDTO dto = new ProductDTO();
 					ImgDTO imgDto = new ImgDTO();
+					dto.setCategory_num(rs.getInt("category_num"));
 					dto.setProduct_num(rs.getInt("product_num")); 
 					dto.setProduct_name(rs.getString("product_name"));
 					dto.setProduct_info(rs.getString("product_info"));
@@ -624,7 +626,7 @@ public class ProductDAO {
 			List<ProductDTO> list = new ArrayList<ProductDTO>();
 			try {
 				conn = getConn();
-				sql = "select * from (select b.*, rownum r from (select P.*, I.img_name, C.category_name from product P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and C.category_num = ? order by P.product_num desc) b where product_num != ?) where r <= 4";
+				sql = "select * from (select b.*, rownum r from (select P.*, I.img_name, C.category_name from product P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.status = '1' and P.delete_yn = 'N' and I.img_type = 'thumbnail' and C.category_num = ? order by P.product_num desc) b where product_num != ?) where r <= 4";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, category_num);
 				pstmt.setInt(2, product_num);

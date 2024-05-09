@@ -29,7 +29,7 @@
 %>
 <div class="main">
 	<form action="<%=request.getContextPath() %>/productAdd" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-		<input type="hidden" name="member_num" value="6"/>
+		<input type="hidden" name="member_num" value="<%=snum%>"/>
 		<input type="hidden" name="first_stock" value="0"/>
 		
 		

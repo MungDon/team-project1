@@ -33,7 +33,7 @@
 
 %>
 <style>
-td {
+.tlist {
     display: table-cell;
     vertical-align: inherit;
     border-top: 1px solid #A9A9A9;
@@ -96,9 +96,9 @@ a {
         String fix = (dto.getFix_yn().equals("y")) ? "fixed_row" : "";
     %>
     <tr align="center" style="height:10px" class="<%=fix%>">
-        <td height="50"><%=dto.getNotice_num() %></td>
-        <td height="50">공지사항</td>    
-        <td height="50" align="left" style=" padding-left: 100;">
+        <td height="50" class="tlist"><%=dto.getNotice_num() %></td>
+        <td height="50" class="tlist">공지사항</td>    
+        <td height="50" class="tlist" align="left" style=" padding-left: 100;">
             <%if(dto.getFix_yn().equals("y")){%>
                 📌      <% } %>
             <a href="noticeContent.jsp?num=<%=dto.getNotice_num()%>&pageNum=<%=pageNum%>">
@@ -107,9 +107,9 @@ a {
 			<img src="../images/image_file_icon.png" width="15"/>	            	
             <%} %>
         </td>
-        <td height="50">관리자</td>
-        <td height="50"><%=dto.getReg() %></td>
-        <td height="50">
+        <td height="50" class="tlist">관리자</td>
+        <td height="50" class="tlist"><%=dto.getReg() %></td>
+        <td height="50" class="tlist">
             <%=dto.getReadCount() %>
             <%if(dto.getReadCount() >= 30){ %>
             			💥

@@ -8,13 +8,13 @@
 <jsp:setProperty name="dto" property="*" />
 
 <STYLE>
-	TABLE {
+	.table {
 	border:1px solid lightgray; 
 	width:450px; 
 	height:300px; 
 	padding:30px
 	}
-	TD{
+	.table TD{
 		padding:10px;
 	}
 	BUTTON, INPUT {
@@ -64,7 +64,7 @@
 	<INPUT type="hidden" name="id" value="<%=dto.getId() %>" />
 	<INPUT type="hidden" name="cellphone" value="<%=dto.getCellphone() %>" />
 	
-	<TABLE align="center" style="border:1px solid lightgray;">
+	<TABLE class="table" align="center" style="border:1px solid lightgray;">
 		<TR>
 			<TD align="center" colspan="2" style="font-size:25px;" >비밀번호 변경</TD>
 		</TR>

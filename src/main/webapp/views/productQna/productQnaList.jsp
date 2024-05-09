@@ -35,7 +35,7 @@ a {
 	cursor : pointer;
 	color: #333;
 }
-td {
+.tlist {
     display: table-cell;
     vertical-align: inherit;
     border-top: 1px solid #A9A9A9;
@@ -87,29 +87,24 @@ td {
 	for( ProductQnaDTO dto : list){
 %>
 		<tr style="height:10px">
-			<td height="50"><%=dto.getProduct_qna_num() %></td>
-			<td height="50">[<%=dto.getCategory() %>]</td>
-			<%--
-			<td height="50" align="left" style=" padding-left: 0;">
-				<img src="../upload/<%=dto.getImg_name()%>" width="50" height="50"/>
-				<%=dto.getProduct_name() %>
+			<td height="50" class="tlist"><%=dto.getProduct_qna_num() %></td>
+			<td height="50" class="tlist">[<%=dto.getCategory() %>]</td>
+			<td height="50" class="tlist" align="left" style="padding-left: 100;">
+			<% if(dto.getSecret_yn().equals("y")){ %>
+			    <img src="../images/security.png" width="15"/>
+			<% } %>
+			    <a href="productQnaQuestion.jsp?num=<%=dto.getProduct_qna_num()%>&pageNum=<%=pageNum%>">
+			    <%=dto.getTitle() %>
+			    </a>
 			</td>
-			 --%>
-			<td height="50" align="left" style=" padding-left: 100;">
-<%				if(dto.getSecret_yn().equals("y")){%>
-				<img src="../images/security.png" width="15"/>
-<%				}%>
-				<a href="productQnaQuestion.jsp?num=<%=dto.getProduct_qna_num()%>&pageNum=<%=pageNum%>">
-				<%=dto.getTitle() %>
-				</a>
-			</td>
-			<td height="50"><%=dto.getMember_name() %></td>
-			<td height="50"><%=dto.getReg() %></td>
-			<td height="50"><%if(dto.getAnswer() == null){%>
-				접수
-<% 				}else{%>
-				답변완료
-<% 				}%>
+			<td height="50" class="tlist"><%=dto.getMember_name() %></td>
+			<td height="50" class="tlist"><%=dto.getReg() %></td>
+			<td height="50" class="tlist">
+			<% if(dto.getAnswer() == null){ %>
+			    접수
+			<% } else { %>
+			    답변완료
+			<% } %>
 			</td>
 		</tr>
 <%	} %>

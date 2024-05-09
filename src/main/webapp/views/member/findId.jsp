@@ -2,13 +2,13 @@
     pageEncoding="UTF-8"%>
 
 <STYLE>
-	TABLE {
+	.table {
 		border:1px solid lightgray; 
 		width:300px; 
 		height:300px; 
 		padding:30px
 	}
-	TD {
+	.table TD {
 		padding:10px;
 	}
 	BUTTON, INPUT {
@@ -52,7 +52,7 @@
 
 <FORM action="findIdPro.jsp" method="post">
 
-<TABLE align="center">
+<TABLE class="table" align="center">
 	<TR>
 		<TD colspan="2" style="font-size:25px;" >회원 아이디찾기</TD>
 	</TR>

@@ -3,6 +3,7 @@
 <%@ page import="project.bean.contact.VendorQnaDAO" %>
 <%@ page import="project.bean.contact.VendorQnaDTO" %>
 <link rel="stylesheet" href="/project/views/css/c_style.css">
+<jsp:include page="../main/header.jsp"/>
 <%
 	int snum=0;
 	if(session.getAttribute("snum") != null ){
@@ -14,7 +15,6 @@
 	
 	VendorQnaDAO dao = VendorQnaDAO.getInstance();
 	VendorQnaDTO dto = dao.content(num);
-//	 || dto.getVendor().equals("3")
 
 	String svendor="";
 	if (session.getAttribute("svendor") != null) {
@@ -88,17 +88,21 @@
 					<button class="btn_before" onclick="window.location='vendorQnaList.jsp?pageNum=<%=pageNum%>'">
 						<strong>이전</strong>
 					</button>
+					<%if(!svendor.equals("3") && snum == dto.getMember_num()){%>
 					<button type="submit" class="btn_write_ok" onclick="window.location='vendorQnaUpdateForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>수정</strong>
 					</button>
+					<%} %>
 					<%if(svendor.equals("3")){%>
 					<button class="btn_comment" onclick="window.location='vendorQnaAnswerForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>답글</strong>
 					</button>
 					<%} %>
+					<%if(svendor.equals("3") || snum == dto.getMember_num()){%>
 					<button class="btn_update" onclick="window.location='vendorQnaDeleteForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>삭제</strong>
 					</button >
+					<%} %>
 				</div>
 				
 <%		}else{ %>

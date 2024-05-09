@@ -28,6 +28,17 @@
 		border : 1px solid #000;
 		text-align: center;
 	}
+	.Btns{
+		display: flex;
+		flex-direction: row;
+		margin-left : 20px;
+	
+	}
+	.Btns > button{
+		width  : 80px;
+		height: 50px;
+		margin-left : 10px;
+	}
 </style>
 <jsp:include page="../admin/adminHeader.jsp"></jsp:include>
 <% 
@@ -140,8 +151,10 @@
 			</td>
 		</tr>
 	</table>
-<button type="submit">수정완료</button>
-<button type="button" onclick="location.href='memberDetail.jsp?member_num=<%=member_num%>'">취소</button>
+	<div class="Btns">
+		<button type="submit">수정완료</button>
+		<button type="button" onclick="location.href='memberDetail.jsp?member_num=<%=member_num%>'">취소</button>
+	</div>
 </form>
 </div>
 

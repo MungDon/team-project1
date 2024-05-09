@@ -9,7 +9,7 @@ BUTTON, INPUT	{
 	cursor: pointer;
 }
 
-.emphasis	 {
+.emphasis	{
 	background-color: gray;
 	color: white; 
 	border: 1px solid lightgray;
@@ -19,11 +19,12 @@ BUTTON, INPUT	{
 	cursor: pointer;
 }	
 
-TABLE 	{
+.maintable	{
+	
 	font-size:16px;
 	border-collapse:collapse;
 }
-TD,TH 	{
+.maintable TD,TH	{
 	padding:10px;
 }
 
@@ -38,6 +39,6 @@ A	{
 	border-top: 1px solid gray; 
 	width: 882px; 
 }
-.table{
-	margin-left : 324px;
+.subtable{
+	margin-left : 500px;
 }

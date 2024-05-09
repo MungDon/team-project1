@@ -23,9 +23,15 @@
 </STYLE>
 
 <%
-	int snum = (int)session.getAttribute("snum");
-	String svendor = (String)session.getAttribute("svendor");
-	
+
+	int snum = 0;
+	if(session.getAttribute("snum")!=null){
+		snum = (int)session.getAttribute("snum");
+	}
+	String svendor = "";
+	if(session.getAttribute("svendor")!=null){
+		svendor = (String)session.getAttribute("svendor");
+	}
 	ReviewDAO dao = ReviewDAO.getInstance();
 	
 	int pageSize = 5;
@@ -51,7 +57,7 @@ a {
 	cursor : pointer;
 	color: #333;
 }
-td {
+.tlist {
     display: table-cell;
     vertical-align: inherit;
     border-top: 1px solid #A9A9A9;
@@ -81,7 +87,7 @@ td {
 
 <DIV style="font-size:35px; font-weight: bold; margin-left:620px">상품후기보기</DIV> <br />
 	
-<TABLE border="1" align="center" width="882px" style="border-collapse:collapse; border:none">
+<TABLE class="maintable" border="1" align="center" width="882px" style="border-collapse:collapse; border:none">
 
 <%	if(count==0) {
 %>
@@ -104,19 +110,19 @@ td {
 		    String rating = reviewDTO.getRating();
 %>
 			<TR style="border-top:1px solid black">
-				<TD rowspan="2" width="250px" align="center">
+				<TD class="tlist" rowspan="2" width="250px" align="center">
 					<A href="/project/views/product/productContent.jsp?product_num=<%=productDTO.getProduct_num() %>&pageNum=<%=pageNum %>&category_num=<%=productDTO.getCategory_num() %>">
 						<IMG width="200px" height="200px" src="/project/views/upload/<%=imgDTO.getImg_name()%>" />
 					</A>
 				</TD>
-				<TD><B><%=productDTO.getProduct_name() %></B>
+				<TD class="tlist"><B><%=productDTO.getProduct_name() %></B>
 				<%if(svendor.equals("3")){ %>
 					<INPUT type="button" value="삭제" class="emphasis" onclick="deleteBtn(<%=reviewDTO.getReview_num() %>, <%=pageNum %>)" />
 				<%} %>
 				</TD>
 			</TR>
 			<TR>
-				<TD rowspan="3" >
+				<TD class="tlist" rowspan="3" >
 					<%=reviewDTO.getContent() %><br />
 <%  		if(reviewDTO.getImg() == null) {		//이미지가 없을 때
 %>	
@@ -128,7 +134,7 @@ td {
 				</TD>
 			</TR>
 			<TR>
-				<TD align="center">
+				<TD class="tlist" align="center">
 <%			if(rating.equals("1")) {
 %>
 				<span class="star">&#9733;</span>
@@ -159,10 +165,10 @@ td {
 				</TD>
 			</TR>
 			<TR style="border-bottom:1px solid #A9A9A9">
-				<TD align="center"><%=formattedDate %></TD> 
+				<TD class="tlist" align="center"><%=formattedDate %></TD> 
 			</TR>
 			<TR >
-				<TD style="border-style : none;"></TD>
+				<TD class="tlist" style="border-style : none;"></TD>
 			</TR>
 <%		}
 	}

@@ -63,7 +63,7 @@
 
 <FORM action="insertPro.jsp?pageNum=<%=pageNum %>" method="post" name="deliveryInput" onsubmit="return deliveryCheck()">
 <INPUT type="hidden" name=member_num value="<%=snum %>" />
-<TABLE border="1">
+<TABLE class="maintable" border="1">
 	<TR>
 		<TD width="150px"><UL style="display: inline-block; list-style-type: square;"><LI>배송지 이름</LI></UL></TD>
 		<TD><INPUT type="text" name="delivery_name" /></TD>
@@ -101,6 +101,6 @@
 <%	}
 %>	
 	<br />
-	<INPUT type="button" value="취소" onclick="self.close()" />
+	<INPUT type="button" value="취소" onclick="history.go(-1)" />
 	<INPUT type="submit" class="emphasis" value="저장" />
 </FORM>

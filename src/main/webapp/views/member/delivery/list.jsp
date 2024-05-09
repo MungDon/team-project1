@@ -29,7 +29,7 @@
 	
 	ArrayList<DeliveryDTO> list = dao.list(snum, startRow, endRow);
 %>
-<TABLE width="882px" style="border-top:none;" >
+<TABLE class="maintable" width="882px" style="border-top:none;" >
 	<TR style="border-left: none; border-right: none;">
 		<TD colspan ="4" style="border-left: none; border-right: none;">
 		<DIV style="font-size:25px; display:inline-block;">
@@ -84,7 +84,7 @@
 			</TD>
 			<TD width="150px" style="border: 1px solid black; text-align:center" >
 				<BUTTON onclick="window.open('updateForm.jsp?delivery_num=<%=dto.getDelivery_num()%>&pageNum=<%=pageNum %>')">수정</BUTTON> &nbsp;
-				<BUTTON class="emphasis" onclick="window.open('deletePro.jsp?delivery_num=<%=dto.getDelivery_num()%>&pageNum=<%=pageNum %>')">삭제</BUTTON> <br />
+				<BUTTON class="emphasis" onclick="window.location='deletePro.jsp?delivery_num=<%=dto.getDelivery_num()%>&pageNum=<%=pageNum %>'">삭제</BUTTON> <br />
 			</TD>
 		</TR>
 <%		} 

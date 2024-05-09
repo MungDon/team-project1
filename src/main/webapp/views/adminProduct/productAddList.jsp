@@ -20,7 +20,7 @@
 		justify-content: center;		
 	}
 	.adminTable{
-	  width: 1400px;
+	  width: 1800px;
 	  height: 700px;
 	  border-collapse: collapse;
 	  text-align: center;
@@ -31,9 +31,7 @@
 	.adminTable>td,.tr1,.tr2{
 		border-top : 1px solid #ddd;
 	}
-	.adminTable> .1,.2{
-		width : 10%;
-	}
+	
 	#pageActive{
 		color: skyblue; /* 선택된 링크의 색상 */
 		font-weight: bold; /* 선택된 링크의 텍스트를 굵게 표시 */
@@ -95,7 +93,7 @@
 	List<ProductDTO> list = dao.loadProductwaitList(searchDto);
 %>
 <div class="main">
-<div style="text-align: left;width: 1400px;">
+<div style="text-align: left;width: 1800px;">
 <p style="font-size:20px;">전체회원수 <b style="color:skyblue"><%=productAddCount%></b>명</p>
 </div>
 <table class="adminTable">

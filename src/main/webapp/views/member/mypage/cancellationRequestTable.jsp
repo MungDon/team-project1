@@ -48,7 +48,7 @@
 	ArrayList<MypageWrapper> list = dao.cancellation_request(snum, start, end);
 %>
 
-<TABLE border="1" width="882px">
+<TABLE class="maintable" border="1" width="882px">
 	<TR>
 		<TD colspan="4"> 취소/반품/교환 내역 총 <%=request_count %> 건 </TD>
 	</TR>

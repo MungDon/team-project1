@@ -61,7 +61,7 @@
 
 <FORM action="updatePro.jsp?delivery_num=<%=delivery_num %>&pageNum=<%=pageNum %>" method="post" name="deliveryInput" onsubmit="return deliveryCheck()">
 <INPUT type="hidden" name="delivery_num" value="<%=delivery_num %>" />
-<TABLE border="1">
+<TABLE class="maintable" border="1">
 	<TR>
 		<TD width="150px"><UL style="display: inline-block; list-style-type: square;"><LI>배송지 이름</LI></UL></TD>
 		<TD><INPUT type="text" name="delivery_name" value="<%=dto.getDelivery_name() %>" /></TD>

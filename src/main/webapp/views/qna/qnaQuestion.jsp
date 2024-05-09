@@ -33,35 +33,26 @@
 					<div class="board_view_tit">
 						<strong>[<%=dto.getCategory() %>]&nbsp; <%=dto.getTitle() %></strong>					
 					</div>
-					<div class="board_view_info">
-						<span class="view_info_id">
-						비밀번호를 입력해주세요				
-						</span>
-						<span class="view_info_day">
-						</span>
-						<span class="view_info_hits">
-						</span>
-					</div>
-					<div class="board_view_content">
-						<form method="post" action="qnaQuestionb.jsp?num=<%=num%>&pageNum=<%=pageNum%>">
+						<form method="post" action="qnaQuestionB.jsp?num=<%=num%>&pageNum=<%=pageNum%>">
 				            <input type="hidden" name="num" value="<%=num%>">
 				            <input type="hidden" name="pageNum" value="<%=pageNum%>">
-				            <input type="password" id="password" name="password" >
-				            <div class="btn_center_box">
-					            <button type="submit" class="btn_write_ok" value="확인">
-								<strong>확인</strong>
-								</button>
+				            <div class="board_write_box">
+							<table class="board_write_table">
+								<tr>
+									<th scope="row">비밀번호</th>
+									<td><input type="password" name="password"/></td>
+								</tr>			
+							</table>
+					            <div class="btn_center_box">
+									<button type="button" class="btn_before" onclick="history.back()">
+									<strong>이전</strong>
+									</button>
+						            <button type="submit" class="btn_write_ok" value="확인">
+									<strong>확인</strong>
+									</button>
+								</div>
 							</div>
 				        </form>
-						<div class="view_goods_select"></div>
-						<div class="board_view_qa">
-						</div>
-						<div class="btn_center_box">
-							<button class="btn_write" onclick="window.location='qnaList.jsp?pageNum=<%=pageNum%>'">
-								<strong>이전</strong>
-							</button>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -136,17 +127,19 @@
 	</div>
 </div>
 				<div class="btn_center_box">
-					<button class="btn_before" onclick="window.location='qnaList.jsp?pageNum=<%=pageNum%>'">
+					<button type="button"class="btn_before" onclick="window.location='qnaList.jsp?pageNum=<%=pageNum%>'">
 						<strong>이전</strong>
 					</button>
+					<%if(!svendor.equals("3")){%>
 					<button type="submit" class="btn_write_ok" onclick="window.location='qnaUpdateForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>수정</strong>
 					</button>
+<%					} %>
 <%					if(svendor.equals("3")){%>
 					<button class="btn_comment" onclick="window.location='qnaAnswerForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>답글</strong>
 					</button>
-<%} %>
+<%					} %>
 					<button class="btn_update" onclick="window.location='qnaDeleteForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
 						<strong>삭제</strong>
 					</button >

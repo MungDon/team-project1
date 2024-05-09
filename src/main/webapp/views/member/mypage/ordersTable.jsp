@@ -54,7 +54,7 @@
 	ArrayList<MypageWrapper> list = dao.orders(snum, start, end);
 %>
 
-<TABLE border="1" width="882px">
+<TABLE class="maintable" border="1" width="882px">
 	<TR>
 		<TD colspan="5"> 주문목록/배송조회 내역 총 <%=orders_count %> 건 </TD>
 	</TR>

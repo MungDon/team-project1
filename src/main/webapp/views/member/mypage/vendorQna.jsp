@@ -18,11 +18,6 @@
 
 <SCRIPT>
 	var previousButtonId = "button1";
-	window.onload = function() {
-		var button = document.getElementById("button1");
-		button.style.backgroundColor = "gray";
-		button.style.color = "white";
-	}
 	function changeColor(buttonId){		//선택한 버튼만 색이 바뀌도록 함
 		var previousButton = document.getElementById(previousButtonId);
         previousButton.style.backgroundColor = "white";
@@ -82,8 +77,8 @@
 
 
 <DIV style="display:inline-block;font-size:25px; font-weight:bold"> 사업자문의 </DIV> 
-<DIV style="display:inline-block;margin-left:690px;">
-	<BUTTON class="emphasis" onclick="window.opne('/project/views/vendorQnaWriteForm.jsp?pageNum=<%=pageNum %>')"> 문의하기 </BUTTON>
+<DIV style="display:inline-block;margin-left:665px;">
+	<BUTTON class="emphasis" onclick="window.location='/project/views/vendorQna/vendorQnaWriteForm.jsp?pageNum=<%=pageNum %>'"> 문의하기 </BUTTON>
 </DIV>
 <br /><br />
 	<DIV style="display:inline-block; border:2px solid lightgray; padding:15px; width:850px; height:37px;">
