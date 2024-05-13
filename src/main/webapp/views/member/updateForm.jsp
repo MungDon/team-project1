@@ -169,7 +169,7 @@
 			</TR>
 		</TABLE>
 		<br /><br />
-		<div class="subtable">
+		<div class="subtable2">
 		<DIV style="display: inline; font-size:25px; font-weight: bold;">부가정보 </DIV><br /><br />
 		<TABLE class="maintable" border="1" >
 			<TR>

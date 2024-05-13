@@ -90,24 +90,25 @@
 		</div>
 	</div>
 </div>
-				<div class="btn_center_box">
-					<button class="btn_before" onclick="window.location='productQnaList.jsp?pageNum=<%=pageNum%>'">
-						<strong>이전</strong>
-					</button>
-				<% if(!svendor.equals("3")){%>	
-					<button type="submit" class="btn_write_ok" onclick="window.location='productQnaUpdateForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
-						<strong>수정</strong>
-					</button>
-				<%} %>	
-				<% if(svendor.equals("3")){%>
-					<button class="btn_comment" onclick="window.location='productQnaAnswerForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
-						<strong>답글</strong>
-					</button>
-				<%} %>
-					<button class="btn_update" onclick="window.location='productQnaDeleteForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
-						<strong>삭제</strong>
-					</button >
-				</div>
+			<div class="btn_center_box">
+               <button class="btn_before" onclick="history.back()">
+                  <strong>이전</strong>
+               </button>
+            <% if(svendor.equals("1")){%>   
+               <button type="submit" class="btn_write_ok" onclick="window.location='productQnaUpdateForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
+                  <strong>수정</strong>
+               </button>
+            <%} %>   
+            <% if(svendor.equals("2")){%>
+               <button class="btn_comment" onclick="window.location='productQnaAnswerForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
+                  <strong>답글</strong>
+               </button>
+            <%} %>
+               <button class="btn_update" onclick="window.location='productQnaDeleteForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
+                  <strong>삭제</strong>
+               </button >
+            </div>
+
 				
 <%		}else{ %>
 		<script>

@@ -59,11 +59,11 @@
 		<TD colspan="5"> 주문목록/배송조회 내역 총 <%=orders_count %> 건 </TD>
 	</TR>
 	<TR>
-		<TH>날짜/주문번호</TH>
+		<TH width="120px">날짜/주문번호</TH>
 		<TH>상품명</TH>
-		<TH>상품금액/수량</TH>
-		<TH>배송상태</TH>
-		<TH>취소/반품/교환신청</TH>
+		<TH width="80px">상품금액/수량</TH>
+		<TH width="100px">배송상태</TH>
+		<TH width="80px">취소/반품/교환신청</TH>
 	</TR>
 	
 <%	if(orders_count==0) {

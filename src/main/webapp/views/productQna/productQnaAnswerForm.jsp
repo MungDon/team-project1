@@ -71,7 +71,7 @@
 								<div class="seem_cont">
 									<div style="margin: 10px 0 10px 0">
 										<form action="productQnaAnswerPro.jsp?num=<%=num %>&pageNum=<%=pageNum %>" method="post">
-											<textarea name="answer"></textarea>
+											<textarea name="answer" cols="75" rows="10"></textarea>
 											<div class="btn_center_box">
 												<button type="button" class="btn_before" onclick="history.back()">
 													<strong>이전</strong>

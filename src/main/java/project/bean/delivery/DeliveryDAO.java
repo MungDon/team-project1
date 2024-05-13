@@ -51,7 +51,7 @@ public class DeliveryDAO {
 		int result = 0;
 		try {
 			conn = getConn();
-			sql = "select count(*) from delivery where member_num=?";
+			sql = "select count(*) from delivery where member_num=? and delete_yn = 'N'";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, memberNum);
 			rs = pstmt.executeQuery();
@@ -104,7 +104,7 @@ public class DeliveryDAO {
 		boolean result = false;
 		try {
 			conn = getConn();
-			sql = "select default_address from delivery where member_num=?";
+			sql = "select default_address from delivery where member_num=? and delete_yn = 'N'";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, snum);
 			rs = pstmt.executeQuery();
@@ -238,7 +238,7 @@ public class DeliveryDAO {
 		int result = 0;
 		try {
 			conn = getConn();
-			sql = "select count(*) from (select b.*, rownum r from (select * from delivery where member_num=?)b) where r>=? and r<=?";;
+			sql = "select count(*) from (select b.*, rownum r from (select * from delivery where member_num=? and delete_yn = 'N')b) where r>=? and r<=?";;
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, member_num);
 			pstmt.setInt(2, start);
@@ -288,7 +288,7 @@ public class DeliveryDAO {
 	public void deliveryInsert(DeliveryDTO dto, int member_num) {
 		try {
 			conn = getConn();
-			sql = "insert into delivery values(delivery_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+			sql = "insert into delivery values(delivery_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 1,'N')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, dto.getMember_num());
 			pstmt.setString(2, dto.getDelivery_name());
@@ -341,7 +341,7 @@ public class DeliveryDAO {
 		DeliveryDTO dto = new DeliveryDTO();
 		try {
 			conn = getConn();
-			sql = "select * from delivery where member_num=?";
+			sql = "select * from delivery where member_num=? and delete_yn = 'N'";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, member_num);
 			rs = pstmt.executeQuery();

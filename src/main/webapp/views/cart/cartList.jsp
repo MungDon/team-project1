@@ -235,8 +235,8 @@
 </div>	
 <div align="right" style="width:1195">
 <%-- 	<input type="button" value="선택 상품 주문" onclick="submitSelectedProducts()"	/>	--%>
-	<button onclick="submitSelectedProducts()">선택 상품 주문</button>
-	<button onclick="submitAllProducts()">전체 상품 주문</button>
+	<button type="button" onclick="submitSelectedProducts()">선택 상품 주문</button>
+	<button type="button" onclick="submitAllProducts()">전체 상품 주문</button>
 <!-- 	<input type="submit" value="전체 상품 주문"	/> -->
 </div>
 </form>
@@ -248,7 +248,14 @@ function submitAllProducts() {
     checkboxes.forEach(function(checkbox) {
         checkbox.checked = true; // 모든 체크박스를 선택합니다.
     });
-    document.getElementById('cartForm').submit(); // 폼을 제출합니다.
+    let chk = document.getElementById("chk");
+    if(chk === null){
+    	alert("장바구니에 상품이 없습니다.");
+    	return;
+    }else{
+    	document.getElementById('cartForm').submit(); // 폼을 제출합니다.
+    }
+    
 }
 </script>
 
@@ -257,6 +264,23 @@ function submitAllProducts() {
 </form>
 
 <script>
+	function submitSelectedProducts(){
+		let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+	    let chk = document.getElementById("chk");
+	    if(chk === null){
+	    	alert("장바구니에 상품이 없습니다.");
+	    	return;
+	    }
+	    if(checkboxes.length === 0){
+	    	alert("선택한 상품이 없습니다.");
+	    	return;
+	    }else{
+	    	document.getElementById('cartForm').submit(); // 폼을 제출합니다.
+	    }
+	}
+
+
+
 	function submitCheckedProducts() {
 	    var checkedValues = []; // 체크된 체크박스 값들을 저장할 배열
 	

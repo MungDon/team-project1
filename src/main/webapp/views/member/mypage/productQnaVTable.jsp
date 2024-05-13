@@ -59,7 +59,7 @@
 	</TR>
 	<TR>
 		<TH width="100px">문의날짜</TH>
-	 	<TH width="100px">카테고리</TH>
+	 	<TH width="80px">카테고리</TH>
 	 	<TH>상품명/제목</TH>
 	 	<TH width="100px">문의상태</TH>
 	 	<TH width="100px">답변하기</TH>
@@ -94,7 +94,7 @@
 								src="/project/views/images/security.png"/>&nbsp; 
 <%			}
 %>												
-						<A >	
+						<A href = "/project/views/productQna/productQnaQuestion.jsp?num=<%=productQnaDTO.getProduct_qna_num()%>&pageNum=<%= pageNum%>">	
 							<%=productQnaDTO.getTitle() %> &nbsp;
 						</A>
 <%			if(productQnaDTO.getImg()!=null){

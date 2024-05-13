@@ -25,7 +25,7 @@
 	}
 	.mainTable{
 		margin-top : 50px;
-		margin-left : 110px;
+		margin-left : 80px;
 		margin-bottom : 110px;
 		display: flex;
 		flex-direction : row;
@@ -137,7 +137,7 @@
 	<%if(categoryProductCnt!=0){ %>
 <div class="mainTable">
 		<%for (ProductDTO dto : list){ %>
-<table style=" margin: 50px;">
+<table style=" margin: 50px; height: 50px;">
 	<tr>
 		<% for(ImgDTO img : dto.getImages()){ %>
 		<td>
@@ -155,12 +155,12 @@
 	</tr>
 	<tr>
 		<% if(dto.getStock()==0){ %>
-			<td >
+			<td width="150px">
 				<b style="text-decoration: line-through;"><%=dto.getProduct_name() %></b>
 				<b style="color:red">품절</b>
 			</td>
 		<%}else{ %>
-		<td>
+		<td width="150px">
 			<%=dto.getProduct_name() %>
 		</td>
 		<%} %>

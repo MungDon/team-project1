@@ -93,7 +93,7 @@
 
 		</TABLE>
 		<br /><br />
-		<div class="subtable">
+		<div class="subtable" style="margin:auto 458px;">
 		<DIV style="display: inline; font-size:25px; font-weight: bold;">부가정보 </DIV><br /><br />
 		<TABLE class="maintable" border="1">
 			<TR>
@@ -108,7 +108,6 @@
 		</TABLE><br />
 		</div>
 			<DIV style="margin:auto 650px;">
-			<INPUT type="button" value="취소" onclick="window.location='pwCheck.jsp'" />
 			<INPUT type="submit" class="emphasis" value="수정하기" />
 			</DIV>
 	</FORM>

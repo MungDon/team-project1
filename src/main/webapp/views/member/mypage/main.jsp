@@ -73,10 +73,10 @@
 			</TD>
 			</TR>
 			<TR>
-				<TH style="border: 1px solid black;">날짜/주문번호</TH>
+				<TH width="120px" style="border: 1px solid black;">날짜/주문번호</TH>
 				<TH style="border: 1px solid black;">상품명</TH>
-				<TH style="border: 1px solid black;">상품금액/수량</TH>
-				<TH style="border: 1px solid black;">배송상태</TH>
+				<TH width="80px" style="border: 1px solid black;">상품금액/수량</TH>
+				<TH width="100px" style="border: 1px solid black;">배송상태</TH>
 			</TR>
 <%		if(orders_count==0) {
 %>
@@ -152,10 +152,10 @@
 				</TD>
 			</TR>
 			<TR>
-				<TH width="150px" style="border: 1px solid black;">등록날짜/등록번호</TH>
+				<TH width="140px" style="border: 1px solid black;">등록날짜/등록번호</TH>
 				<TH style="	border: 1px solid black;">상품명</TH>
-				<TH style="border: 1px solid black;">상품금액</TH>
-				<TH style="border: 1px solid black;">재고현황</TH>
+				<TH width="80px"style="border: 1px solid black;">상품금액</TH>
+				<TH width="80px"style="border: 1px solid black;">재고현황</TH>
 			</TR>
 <%		if(reg_count==0) {
 %>

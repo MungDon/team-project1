@@ -7,7 +7,10 @@
 <jsp:include page="fixed.jsp" />
 
 <%
-	int snum = (int)session.getAttribute("snum");
+	int snum = 0;
+	if(session.getAttribute("snum")!=null){
+		snum = (int)session.getAttribute("snum");
+	}
 	String svendor = (String)session.getAttribute("svendor");
 	String pageNum = "1";
 %>

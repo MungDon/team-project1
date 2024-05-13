@@ -47,10 +47,10 @@
 	</TR>
 	<TR>
 		<TH>상품명</TH>
-		<TH>상품금액</TH>
-		<TH>주문수량</TH>
-		<TH>판매금액</TH>
-		<TH>구매자</TH>
+		<TH width="80x">상품금액</TH>
+		<TH width="80x">주문수량</TH>
+		<TH width="80x">판매금액</TH>
+		<TH width="80x">구매자</TH>
 	</TR>
 	
 <%	if(wholeSales_count==0) {

@@ -75,7 +75,7 @@
 	}
 </SCRIPT>
 	
-<DIV style="font-size:25px; font-weight:bold"> 취소/반품/교환 신청 내역 </DIV> <br />
+<DIV style="font-size:25px; font-weight:bold"> 취소/반품/교환 처리 </DIV> <br />
 	<DIV style="display:inline-block; border:2px solid lightgray; padding:15px; width:850px; height:37px;">
 		<FONT color="gray"><B>조회기간</B></FONT>
 		<BUTTON id="button1" onclick="changeColor('button1'); setDate('today')">오늘</BUTTON>

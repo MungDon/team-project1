@@ -277,7 +277,7 @@ public class ProductQnaDAO {
 					      ArrayList<ProductQnaDTO> list = new ArrayList<ProductQnaDTO>();
 					      try {
 					         conn = getConn();
-					         sql = "select * from (select b.*, rownum r from(select PQ.*, M.name AS member_name, P.product_name from product_qna PQ left outer join product P on PQ.product_num = P.product_num left outer join member M on PQ.member_num = M.member_num where PQ.product_num = ? order by PQ.reg desc) b) where r <= 5";
+					         sql = "select * from (select b.*, rownum r from(select PQ.*, M.name AS member_name, P.product_name from product_qna PQ left outer join product P on PQ.product_num = P.product_num left outer join member M on PQ.member_num = M.member_num where PQ.delete_yn='n' and PQ.product_num = ? order by PQ.reg desc) b) where r <= 5";
 					         pstmt = conn.prepareStatement(sql);
 					         pstmt.setInt(1, product_num);
 					         rs = pstmt.executeQuery();

@@ -24,13 +24,13 @@ form{
 	display: flex;
 	flex-direction: row;
 }
-table > tr,td,th{
+.inserTable > tr,.insertTd,th{
 	border-top : 1px solid darkgray;
 }
-th{
+.inserTable > th{
 	width:30%;
 }
-table{
+.inserTable{
 	height : 500px;
 	width : 1000px;	
 	text-align: center;

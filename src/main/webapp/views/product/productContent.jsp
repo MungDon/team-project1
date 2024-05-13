@@ -737,7 +737,7 @@
 %>
 				<img src="../images/security.png" width="15"	/>
 <%       
-	}
+	
 // 		System.out.println("qna넘"+qnaDto.getProduct_num());
 %>
 				<label class="question-label" onclick="toggleAnswer(this)">
@@ -746,7 +746,7 @@
 			    
 			    
 <%
-	  if (qnaDto.getMember_num() == snum || svendor.equals("3")) {
+	  if (qnaDto.getMember_num() == snum || svendor.equals("3")||svendor.equals("2")) {
 %>
 	             <div class="answer-row" style="display: none;">
 	                 <!-- 질문에 대한 내용 -->
@@ -763,7 +763,8 @@
 	             </div>
 	
 <%
-	   }else {
+	   }
+	}else {
 %>
 	            <div class="answer-rowB" style="display: none;">
 	               <font size="4"><B>비밀글입니다.</B></font>

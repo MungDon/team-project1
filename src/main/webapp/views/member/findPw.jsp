@@ -48,7 +48,7 @@
 <jsp:include page="/views/member/memberHeader.jsp" />
 
 
-<DIV style="font-size:35px; font-weight: bold; margin-left:838px">비밀번호 찾기</DIV> <br />
+<DIV  style="font-size:35px; font-weight: bold; text-align:right; width:930px;">비밀번호 찾기</DIV> <br />
 
 <FORM action="findPw2.jsp" method="post">
 

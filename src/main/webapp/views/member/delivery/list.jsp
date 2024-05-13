@@ -92,7 +92,7 @@
 <%	}
 %>	
 </TABLE>
-
+<br />
 <DIV style="margin:auto 880px;">
 <%
 	int pageCount = count/pageSize + (count%pageSize==0?0:1);

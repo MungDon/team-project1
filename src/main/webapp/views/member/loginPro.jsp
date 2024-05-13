@@ -14,11 +14,11 @@
 	boolean result = dao.loginCheck(dto);
 	int memberNum = dto.getMember_num();
 	
+	
 	if(dto.getSave_id()!=null && dto.getSave_id().equals("1")) {
 		Cookie coo = new Cookie ("cid", dto.getId());
-		
 		coo.setMaxAge(60*60*24*2);
-		
+		coo.setPath("/");
 		response.addCookie(coo);
 	}
 	

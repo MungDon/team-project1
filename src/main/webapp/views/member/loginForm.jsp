@@ -46,7 +46,7 @@
 
 <jsp:include page="/views/member/memberHeader.jsp" />
 
-<DIV style="font-size:35px; font-weight: bold; margin-left:835px">로그인</DIV> <br />
+<DIV style="font-size:35px; font-weight: bold; text-align:right; width:840px;">로그인</DIV> <br />
 
 <%
 	String cid = null;
@@ -68,9 +68,10 @@
 	</TR>
 	<TR>
 <%	if(cid==null){
+	
 %>
 		<TD colspan="2"><INPUT type="text" name="id" placeholder="아이디" />
-<%  }else {
+<%  }else { 
 %>
 		<TD colspan="2"><INPUT type="text" name="id" value="<%=cid %>" />	
 <% 	}
@@ -81,7 +82,7 @@
 		<TD colspan="2"><INPUT type="password" name="pw" placeholder="비밀번호" />
 	</TR>
 	<TR>
-		<TD colspan="3"><INPUT type="checkbox" name="save_id" value="1" /> 아이디 저장
+		<TD colspan="3"><INPUT type="checkbox" name="save_id" value="1" id="save_id"/> <label for="save_id">아이디 저장</label>
 	</TR>
 	<TR>
 		<TD><INPUT type="button" class="emphasis" value="회원가입" onclick="window.location='agreement.jsp'" />

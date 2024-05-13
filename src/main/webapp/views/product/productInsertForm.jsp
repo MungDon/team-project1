@@ -35,10 +35,10 @@
 		
 		<div class="productAdd">
 		<h2>상품 정보입력</h2>
-			<table>
+			<table class="inserTable">
 				<tr style="border-top:2px solid black">
 					<th>카테고리</th>
-					<td>
+					<td class="insertTd">
 						<select class="insert" name="category_num">
 							<% for(CategoryDTO dto : list){ %>
 							<option value="<%=dto.getCategory_num()%>"><%=dto.getCategory_name() %></option>
@@ -48,21 +48,21 @@
 				</tr>
 				<tr>
 					<th>상품명</th>
-					<td>
+					<td class="insertTd">
 						<input class="input" type="text" name="product_name">
 					</td>
 				</tr>	
 				<tr>
 					<th>상품 설명</th>
-					<td><textarea name="product_info"></textarea></td>
+					<td class="insertTd"><textarea name="product_info"></textarea></td>
 				</tr>
 				<tr>
 					<th>상품 가격</th>
-					<td><input class="insert" type="number" name="price">원</td>
+					<td class="insertTd"><input class="insert" type="number" name="price">원</td>
 				</tr>
 				<tr>
 					<th>배송비 유무 </th>
-					<td>
+					<td class="insertTd">
 						<input type="radio" name="has_delivery_fee" onclick="showInputBox()" value="있음">있음
 						<input type="radio" name="has_delivery_fee" onclick="closeInputBox()" value="없음">없음
 						<div id="d_price" style="display : none">
@@ -72,7 +72,7 @@
 				</tr>
 				<tr style="border-bottom:2px solid black">
 					<th>상품 재고</th>
-					<td><input class="insert" type="number" name="stock">개</td>
+					<td class="insertTd"><input class="insert" type="number" name="stock">개</td>
 				</tr>
 			</table>
 		</div>

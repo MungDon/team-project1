@@ -421,7 +421,8 @@
 <%
 	}else {
 %>
-			<input type="text" name="m_phone" id="o_phone" value="none" />
+			<input type="text" name="m_phone" id="o_phone"  value="" />
+			
 <%
 	}
 %>
@@ -697,7 +698,11 @@
 		<script>
 			document.getElementById('phone').addEventListener('input', function() {
 				let phone_value = document.getElementById('phone').value;
-				document.getElementById('h_phone').value = phone_value;
+				if(phone_value !== ""){
+					document.getElementById('h_phone').value = phone_value;
+				}else{
+					document.getElementById('h_phone').value = "none";
+				}		
 			});
 		</script>
 		</TD>

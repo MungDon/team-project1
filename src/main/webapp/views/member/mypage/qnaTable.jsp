@@ -47,10 +47,10 @@
 		<TD colspan="4"> 1:1문의 내역 총 <%=qna_count %>건 </TD>
 	</TR>
 	<TR>
-		<TH width="150px">문의날짜</TH>
-	 	<TH width="150px">카테고리</TH>
+		<TH width="100px">문의날짜</TH>
+	 	<TH width="100px">카테고리</TH>
 	 	<TH>제목</TH>
-	 	<TH width="150px">문의상태</TH>
+	 	<TH width="100px">문의상태</TH>
 	</TR>
 <%	if(qna_count==0) {
 %>	

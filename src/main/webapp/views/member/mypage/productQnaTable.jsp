@@ -51,10 +51,10 @@
 		<TD colspan="4"> 상품문의 내역 총 <%=product_qna_count %>건 </TD>
 	</TR>
 	<TR>
-		<TH width="150px">문의날짜</TH>
-	 	<TH width="150px">카테고리</TH>
+		<TH width="100px">문의날짜</TH>
+	 	<TH width="100px">카테고리</TH>
 	 	<TH>상품명/제목</TH>
-	 	<TH width="150px">문의상태</TH>
+	 	<TH width="100px">문의상태</TH>
 	</TR>
 <%	if(product_qna_count==0) {
 %>	
