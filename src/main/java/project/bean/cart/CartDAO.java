@@ -27,9 +27,9 @@ public class CartDAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";
-			String user = "project1";
-			String pw = "tiger";
-			conn = DriverManager.getConnection(dburl, user, pw);
+			String user = "system";
+			String password = "10220809";
+			conn = DriverManager.getConnection(dburl, user, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

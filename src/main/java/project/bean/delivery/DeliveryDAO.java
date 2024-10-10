@@ -23,8 +23,8 @@ public class DeliveryDAO {
 	private Connection getConn() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "project1";
-		String password = "tiger";
+		String user = "system";
+		String password = "10220809";	
 		conn = DriverManager.getConnection(url, user, password);
 		return conn;
 	}

@@ -25,10 +25,10 @@ public class CategoryDAO {
 	private Connection getConn() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "project1";
-		String pw = "tiger";
+		String user = "system";
+		String password = "10220809";
 
-		Connection conn = DriverManager.getConnection(dburl, user, pw);
+		Connection conn = DriverManager.getConnection(dburl, user, password);
 		return conn;
 	}
 
@@ -60,7 +60,7 @@ public class CategoryDAO {
 		int result = 0;
 		try {
 			conn = getConn();
-			sql = "insert into category values(category_seq.nextval, ?, systimestamp,systimestamp)";
+			sql = "insert into categorys values(category_seq.nextval, ?, systimestamp,systimestamp)";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, dto.getCategory_name());

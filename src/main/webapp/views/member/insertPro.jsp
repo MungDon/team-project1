@@ -25,6 +25,10 @@
 
 <%
 	MemberDAO dao = MemberDAO.getInstance();
+	if(dto.getVendor().equals("1")){
+		dto.setBusiness_name("none");
+		dto.setBusiness_number("none");
+	}
 	int result = dao.insertPro(dto);
 	if(result==1){
 %>

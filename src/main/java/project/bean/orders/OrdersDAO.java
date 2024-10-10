@@ -28,10 +28,10 @@ public class OrdersDAO {
 	private Connection getConn() throws Exception {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";
-			String user = "project1";
-			String pw = "tiger";
-			conn = DriverManager.getConnection(dburl, user, pw);
+			String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+			String user = "system";
+			String password = "10220809";	
+			conn = DriverManager.getConnection(url, user, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

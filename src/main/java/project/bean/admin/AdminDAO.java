@@ -32,10 +32,10 @@ public class AdminDAO {
 	private Connection getConn() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "project1";
-		String pw = "tiger";
+		String user = "system";
+		String password = "10220809";
 
-		Connection conn = DriverManager.getConnection(dburl, user, pw);
+		Connection conn = DriverManager.getConnection(dburl, user, password);
 		return conn;
 	}
 
@@ -383,7 +383,7 @@ public class AdminDAO {
 		ProductDTO dto = new ProductDTO();
 		try {
 			conn = getConn();
-			sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.product_num = ?";
+			sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join categorys C on P.category_num = C.category_num where P.product_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, product_num);
 			rs = pstmt.executeQuery();

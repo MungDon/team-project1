@@ -22,10 +22,10 @@ public class ProductQnaDAO {
 	private Connection getConn() throws Exception{
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String pass = "tiger";
-			String user = "project1";
-			String url = "jdbc:oracle:thin:@192.168.0.10:1521:orcl";
-			conn = DriverManager.getConnection(url, user, pass);
+			String user = "system";
+			String password = "10220809";	
+			String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+			conn = DriverManager.getConnection(url, user, password);
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -71,7 +71,7 @@ public class ProductQnaDAO {
 			ArrayList<ProductQnaDTO> list = new ArrayList<ProductQnaDTO>();
 			try {
 				conn = getConn();
-				sql = "SELECT * FROM (SELECT PQ.*, P.product_name, P.category_num, I.img_name, C.category_name, M.name AS member_name, ROWNUM AS r FROM PRODUCT_QNA PQ LEFT OUTER JOIN PRODUCT P ON PQ.product_num = P.product_num LEFT OUTER JOIN IMG I ON P.product_num = I.product_num LEFT OUTER JOIN CATEGORY C ON P.category_num = C.category_num LEFT OUTER JOIN MEMBER M ON PQ.member_num = M.member_num WHERE PQ.delete_yn = 'n' and I.img_type = 'thumbnail' ORDER BY PQ.reg DESC) WHERE r >= ? AND r <= ?";
+				sql = "SELECT * FROM (SELECT PQ.*, P.product_name, P.category_num, I.img_name, C.category_name, M.name AS member_name, ROWNUM AS r FROM PRODUCT_QNA PQ LEFT OUTER JOIN PRODUCT P ON PQ.product_num = P.product_num LEFT OUTER JOIN IMG I ON P.product_num = I.product_num LEFT OUTER JOIN categorys C ON P.category_num = C.category_num LEFT OUTER JOIN MEMBER M ON PQ.member_num = M.member_num WHERE PQ.delete_yn = 'n' and I.img_type = 'thumbnail' ORDER BY PQ.reg DESC) WHERE r >= ? AND r <= ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, start);
 				pstmt.setInt(2, end);
@@ -133,7 +133,7 @@ public class ProductQnaDAO {
 					pstmt.setInt(1, num);
 					pstmt.executeUpdate();
 						
-					sql = "SELECT * FROM (SELECT PQ.*, P.product_name, P.category_num, I.img_name, C.category_name, M.name AS member_name FROM PRODUCT_QNA PQ LEFT OUTER JOIN PRODUCT P ON PQ.product_num = P.product_num LEFT OUTER JOIN IMG I ON P.product_num = I.product_num LEFT OUTER JOIN CATEGORY C ON P.category_num = C.category_num LEFT OUTER JOIN MEMBER M ON PQ.member_num = M.member_num WHERE PQ.delete_yn = 'n' and I.img_type = 'thumbnail' and PQ.product_qna_num = ?)";
+					sql = "SELECT * FROM (SELECT PQ.*, P.product_name, P.category_num, I.img_name, C.category_name, M.name AS member_name FROM PRODUCT_QNA PQ LEFT OUTER JOIN PRODUCT P ON PQ.product_num = P.product_num LEFT OUTER JOIN IMG I ON P.product_num = I.product_num LEFT OUTER JOIN categorys C ON P.category_num = C.category_num LEFT OUTER JOIN MEMBER M ON PQ.member_num = M.member_num WHERE PQ.delete_yn = 'n' and I.img_type = 'thumbnail' and PQ.product_qna_num = ?)";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setInt(1, num);
 					rs = pstmt.executeQuery();

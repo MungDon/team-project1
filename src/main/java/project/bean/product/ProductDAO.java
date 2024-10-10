@@ -31,11 +31,11 @@ public class ProductDAO {
 
 	private Connection getConn() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
-		String dburl = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "project1";
-		String pw = "tiger";
+		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+		String user = "system";
+		String password = "10220809";	
 
-		Connection conn = DriverManager.getConnection(dburl, user, pw);
+		Connection conn = DriverManager.getConnection(url, user, password);
 		return conn;
 	}
 
@@ -69,7 +69,7 @@ public class ProductDAO {
 		List<CategoryDTO> list = new ArrayList<CategoryDTO>();
 		try {
 			conn = getConn();
-			sql="select category_name,category_num from category ";
+			sql="select category_name,category_num from categorys ";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -92,7 +92,7 @@ public class ProductDAO {
 		int count = 0;
 		try {
 			conn = getConn();
-			sql="select count(*) from category";
+			sql="select count(*) from categorys";
 			pstmt = conn.prepareStatement(sql);
 			
 			rs = pstmt.executeQuery();
@@ -290,7 +290,7 @@ public class ProductDAO {
 			ProductDTO dto = new ProductDTO();
 			try {
 				conn = getConn();
-				sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ?";
+				sql="select P.*,I.img_name, I.img_num, c.category_name from product  P left outer join img I on P.product_num = I.product_num left outer join categorys C on P.category_num = C.category_num where P.delete_yn = 'N' and P.product_num = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, product_num);
 				rs = pstmt.executeQuery();
@@ -539,7 +539,7 @@ public class ProductDAO {
 	     List<ProductDTO> list = new ArrayList<ProductDTO>();
 	     try {
 	        conn = getConn();
-	        sql = "select P.product_name, P.product_info, C.category_name, I.img_name from product P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and P.product_num = ? order by P.product_num desc";
+	        sql = "select P.product_name, P.product_info, C.category_name, I.img_name from product P left outer join img I on P.product_num = I.product_num left outer join categorys C on P.category_num = C.category_num where P.delete_yn = 'N' and I.img_type = 'thumbnail' and P.product_num = ? order by P.product_num desc";
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setInt(1, product_num);
 	        rs = pstmt.executeQuery();
@@ -626,7 +626,7 @@ public class ProductDAO {
 			List<ProductDTO> list = new ArrayList<ProductDTO>();
 			try {
 				conn = getConn();
-				sql = "select * from (select b.*, rownum r from (select P.*, I.img_name, C.category_name from product P left outer join img I on P.product_num = I.product_num left outer join category C on P.category_num = C.category_num where P.status = '1' and P.delete_yn = 'N' and I.img_type = 'thumbnail' and C.category_num = ? order by P.product_num desc) b where product_num != ?) where r <= 4";
+				sql = "select * from (select b.*, rownum r from (select P.*, I.img_name, C.category_name from product P left outer join img I on P.product_num = I.product_num left outer join categorys C on P.category_num = C.category_num where P.status = '1' and P.delete_yn = 'N' and I.img_type = 'thumbnail' and C.category_num = ? order by P.product_num desc) b where product_num != ?) where r <= 4";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, category_num);
 				pstmt.setInt(2, product_num);

@@ -93,7 +93,14 @@
 			alert("생일을 입력해주세요.");
 			return false;
 		}
-				
+        var vendorCheckbox = document.getElementById("vendor");
+        var vendorValue = document.getElementById("vendor_val");
+        // 체크박스가 체크되어 있지 않으면 hidden input의 값을 1로 설정
+        if (!vendorCheckbox.checked) {
+        	vendorValue.value = "1"; // vendor 값을 1로 설정
+        } else {
+        	vendorValue.value = "0"; // 체크된 경우에는 0
+        }
 		//유효성 검사 - 성인인증
 		var birthdateInput = document.getElementById("birth").value;
 		var birthdate = new Date(birthdateInput);
@@ -160,7 +167,8 @@
 			<INPUT type="text" name="id" id="id"/>&nbsp;&nbsp;
 			<INPUT type="button" value="중복확인" onclick="idCheck();" />
 			<%--일반회원일때 vendor값 null 판매자회원 가입일때 vendor값 0 (관리자 승인 시 2로 변함)--%>
-			<INPUT type="checkbox" name="vendor" value="0" id="vendor" /> <B>판매자 회원가입</B><br/> 	
+			<INPUT type="checkbox" value="0" id="vendor" /> <B>판매자 회원가입</B><br/> 	
+			<input type="hidden" name="vendor" id="vendor_val" />
 			<DIV id="confirmResult" >&nbsp;</DIV>
 		</TD>
 	</TR>	
