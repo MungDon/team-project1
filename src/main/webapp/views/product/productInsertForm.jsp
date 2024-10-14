@@ -1,20 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="project.bean.product.ProductDAO"%>
+<%@ page import="project.bean.member.MemberDAO"%>
 <%@ page import="project.bean.category.CategoryDTO" %>
+<%@ page import="project.bean.member.MemberDTO" %>
 <%@ page import="java.util.List" %>
     <link rel="stylesheet" href="../css/proInsertForm.css">
 <jsp:include page="../main/header.jsp"/>
 	<% 
 		int snum = 0;
 		if(session.getAttribute("snum") != null){
-			snum = (int)session.getAttribute("snum"); // 판매자 세션
+			snum = (int)session.getAttribute("snum"); // 회원 시퀀스
 		}
 		String svendor = "";
-		if(session.getAttribute("svendor")!=null){
+		if(session.getAttribute("svendor")!=null){		// 회원 등급 
 			svendor = (String)session.getAttribute("svendor");
 		}
-		System.out.println(snum);
 		if(snum == 0&&!svendor.equals("2")||snum == 0&&!svendor.equals("3")){%>
 			<script>
 				alert("판매자 권한이 없습니다. 로그인해주세요");
@@ -25,12 +26,15 @@
 
 <% 
 	ProductDAO dao = ProductDAO.getInstance();	
-	List<CategoryDTO> list = dao.loadCategory();   
+	List<CategoryDTO> list = dao.loadCategory();  
+	MemberDAO member = MemberDAO.getInstance();
+	MemberDTO memberDTO = member.memberInfo(snum);
 %>
 <div class="main">
 	<form action="<%=request.getContextPath() %>/productAdd" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 		<input type="hidden" name="member_num" value="<%=snum%>"/>
 		<input type="hidden" name="first_stock" value="0"/>
+		<input type="hidden" name="business_name" value="<%=memberDTO.getBusiness_name()%>"/>
 		
 		
 		<div class="productAdd">
@@ -58,7 +62,11 @@
 				</tr>
 				<tr>
 					<th>상품 가격</th>
-					<td class="insertTd"><input class="insert" type="number" name="price">원</td>
+					<td class="insertTd"><input class="insert" type="number" id="price" name="price"value="0">원</td>
+				</tr>
+				<tr>
+					<th>인당 구매 제한</th>
+					<td class="insertTd"><input class="insert" type="number" id="buy_limit" name="buy_limit" value="0">개</td>
 				</tr>
 				<tr>
 					<th>배송비 유무 </th>
@@ -66,7 +74,7 @@
 						<input type="radio" name="has_delivery_fee" onclick="showInputBox()" value="있음">있음
 						<input type="radio" name="has_delivery_fee" onclick="closeInputBox()" value="없음">없음
 						<div id="d_price" style="display : none">
-							배송비 <input class="insert" type="number" name="delivery_price" value="0">원
+							배송비 <input class="insert" type="number" id="delivery_price" name="delivery_price" value="0">원
 						</div>
 					</td>
 				</tr>
@@ -109,6 +117,13 @@
 <script type="text/javascript" src="/project/views/js/dragAndDrop.js"></script>
 <script type="text/javascript" src="/project/views/js/dragAndDrop2.js"></script>
 <script>
+	const priceInput = document.getElementById('price');
+	priceInput.addEventListener('change', (event) => {
+		if(priceInput.value < 0){
+			alert('가격은 0원 이상이여야합니다.');
+			priceInput.value = 0;
+		}
+	});
 	
 	function validateForm(){
 		let thumbnailInput = document.querySelector('input[name="thumbnail"]');
@@ -125,5 +140,6 @@
 	}
 	function closeInputBox(){
 		document.getElementById("d_price").style.display="none";
+		document.getElementById("delivery_price").value=0;
 	}
 </script>	

@@ -123,9 +123,9 @@ form{
 		</td>
 		<td>
 			<div class="dropdown">
-				<button  class="dropbtn" type="button" onclick="location.href='/project/views/adminproduct/allProductList.jsp?sortName=created_date&sort=desc'">전체 상품관리</button>
+				<button  class="dropbtn" type="button" onclick="location.href='/project/views/adminProduct/allProductList.jsp?sortName=created_date&sort=desc'">전체 상품관리</button>
 				<div class="dropdown-content">
-					<a href="../adminproduct/productAddList.jsp">판매자 상품등록 승인대기 목록</a>
+					<a href="../adminProduct/productAddList.jsp">판매자 상품등록 승인대기 목록</a>
 				</div>
 			</div>
 		</td>

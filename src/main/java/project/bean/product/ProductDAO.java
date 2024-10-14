@@ -113,7 +113,7 @@ public class ProductDAO {
 		int product_num = 0;
 		try {
 			conn = getConn();
-			sql = "insert into product values(product_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, 'N', systimestamp,systimestamp,?,'0')";
+			sql = "insert into product values(product_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'N', ?, systimestamp,systimestamp,?,'0')";
 			
 			pstmt = conn.prepareStatement(sql, new String[] { "PRODUCT_NUM" });
 		
@@ -125,8 +125,10 @@ public class ProductDAO {
 			pstmt.setInt(5, dto.getPrice()); // 상품 가격
 			pstmt.setInt(6, dto.getDelivery_price()); // 배송비
 			pstmt.setString(7, dto.getHas_delivery_fee()); // 배송비 여부
-			pstmt.setInt(8, dto.getStock()); // 상품 재고
-			pstmt.setInt(9, dto.getFirst_stock()+dto.getStock());// 상품 최초 재고
+			pstmt.setInt(8, dto.getBuy_limit()); // 배송비 여부
+			pstmt.setInt(9, dto.getStock()); // 상품 재고
+			pstmt.setString(10, dto.getBusiness_name()); // 상품 재고
+			pstmt.setInt(11, dto.getFirst_stock()+dto.getStock());// 상품 최초 재고
 
 			pstmt.executeUpdate();
 		

@@ -70,20 +70,6 @@ public class MemberDAO {
 	//회원가입
 	public int insertPro(MemberDTO dto) {
 		int result = 0;
-		System.out.println(dto.getId());
-		System.out.println(dto.getVendor());
-		System.out.println(dto.getBusiness_number());
-		System.out.println(dto.getBusiness_name());
-		System.out.println(dto.getPw());
-		System.out.println(dto.getName());
-		System.out.println(dto.getEmail());
-		System.out.println(dto.getCellphone());
-		System.out.println(dto.getPhone());
-		System.out.println(dto.getGender());
-		System.out.println(dto.getBirth());
-		if(dto.getVendor() == null) {	//vedor값이 null일 때 (일반회원일 때) vendor값을 1로 설정
-			dto.setVendor("1");
-		}
 		try {
 			conn = getConn();
 			sql = "	insert into member values(member_seq.nextval,?,?,?,?,?,?,?,?,?,'BRONZE',sysdate,'1',?,?)";

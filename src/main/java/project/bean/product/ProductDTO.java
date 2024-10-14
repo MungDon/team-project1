@@ -27,6 +27,8 @@ public class ProductDTO {
 	
 	private int stock;								// 재고
 	
+	private int buy_limit;								// 재고
+	
 	private Timestamp created_date;		// 상품 등록 일시
 	
 	private Timestamp modified_date;	// 상품 수정 일시
@@ -219,11 +221,13 @@ public class ProductDTO {
 		dto.setCategory_num(Integer.parseInt(request.getParameter("category_num")));
 		dto.setProduct_name(request.getParameter("product_name"));
 		dto.setProduct_info(request.getParameter("product_info"));
+		dto.setBuy_limit(Integer.parseInt(request.getParameter("buy_limit")));
 		dto.setPrice(Integer.parseInt(request.getParameter("price")));
 		dto.setDelivery_price(Integer.parseInt(request.getParameter("delivery_price")));
 		dto.setHas_delivery_fee(request.getParameter("has_delivery_fee"));
 		dto.setStock(Integer.parseInt(request.getParameter("stock")));
 		dto.setFirst_stock(Integer.parseInt(request.getParameter("first_stock")));
+		dto.setBusiness_name(request.getParameter("business_name"));
 		
 		return dto;
 	}
@@ -234,6 +238,14 @@ public class ProductDTO {
 
 	public void setBusiness_name(String business_name) {
 		this.business_name = business_name;
+	}
+
+	public int getBuy_limit() {
+		return buy_limit;
+	}
+
+	public void setBuy_limit(int buy_limit) {
+		this.buy_limit = buy_limit;
 	}
 	
 }

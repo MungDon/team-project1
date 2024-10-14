@@ -36,6 +36,7 @@
 		color: skyblue; /* 선택된 링크의 색상 */
 		font-weight: bold; /* 선택된 링크의 텍스트를 굵게 표시 */
 	}
+	.1
 </style>
 <jsp:include page="../admin/adminHeader.jsp"></jsp:include>
 <%
